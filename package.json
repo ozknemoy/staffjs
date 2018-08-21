@@ -40,7 +40,10 @@
     "core-js": "^2.4.1",
     "dotenv": "^4.0.0",
     "ng-socket-io": "^0.2.4",
+    "reflect-metadata": "^0.1.12",
     "rxjs": "^5.5.2",
+    "sequelize": "^4.38.0",
+    "sequelize-typescript": "^0.6.6",
     "webpack-node-externals": "^1.6.0",
     "zone.js": "^0.8.20"
   },
