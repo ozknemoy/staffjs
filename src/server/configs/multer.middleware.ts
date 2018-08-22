@@ -27,7 +27,7 @@ const storage = multer.diskStorage({
 
 
 export const MULTER_ROUTES: { path: string, method: string, url?: string }[] = <any>[
-  {path: '/upload/staff', method: RequestMethod.POST},
+  {path: '/upload/personnel', method: RequestMethod.POST},
   {path: '/profiles/document/files', method: RequestMethod.POST}
 ];
 

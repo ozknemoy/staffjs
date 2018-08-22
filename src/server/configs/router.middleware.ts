@@ -3,7 +3,6 @@ import {Middleware, NestMiddleware, ExpressMiddleware, RequestMethod} from '@nes
 
 export const FRONT_ROUTES: { path: string, method: string, url?: string }[] = <any>[
   {path: '/', method: RequestMethod.GET, url: 'home'},
-  {path: '/staff-list', method: RequestMethod.GET, url: 'staff-list'},
   {path: 'test', method: RequestMethod.GET},
 ];
 

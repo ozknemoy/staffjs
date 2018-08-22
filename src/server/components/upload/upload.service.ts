@@ -5,8 +5,9 @@ import {ErrHandler} from "../../services/error-handler.service";
 import * as fs from "fs";
 import xlsx from 'node-xlsx';
 import {INodeXlsxParsed} from "../../interfaces/node-xlsx";
-import Staff, {IStaff} from "../staff/staff.interface";
-import {StaffService} from "../staff/staff.service";
+import {IStaff} from "../personnel/personnel.interface";
+import {StaffService} from "../personnel/personnel.service";
+import Staff from "../personnel/personnel.model";
 
 @Component()
 export class UploadService {
@@ -23,7 +24,7 @@ export class UploadService {
     return Promise.all(
       staff[0].data.map(st => Staff.create(new IStaff(st)))
     ).then(d => {
-      return this.staffService.getAllStaff()
+      return this.staffService.getAll()
     });
   }
 

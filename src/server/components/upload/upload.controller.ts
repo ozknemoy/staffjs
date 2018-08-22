@@ -9,8 +9,8 @@ export class UploadController {
 
   }
 
-  @Post('staff')
-  async uploadStaff(@Headers() headers, @Req() {files})/*:PromiseLike<IFileUpload>*/ {
+  @Post('personnel')
+  async uploadPersonnel(@Headers() headers, @Req() {files})/*:PromiseLike<IFileUpload>*/ {
 
     return this.uploadService.readExcelFile(files[0])
       /*.catch((e) => this.errHandler.sentToFront(e))*/

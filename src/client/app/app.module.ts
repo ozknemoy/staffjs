@@ -15,7 +15,9 @@ import {FileUploaderComponent} from "./components-stateless/file-uploader/file-u
 import {HttpService} from "./services/http.service";
 import {ToastModule} from "ng2-toastr";
 import {NoopAnimationsModule} from "@angular/platform-browser/animations";
-import {StaffListComponent} from "./staff/staff-list.component";
+import {StaffListComponent} from "./components-view/staff/staff-list.component";
+import {StaffEditComponent} from "./components-view/staff/staff-edit.component";
+import {FormsModule} from "@angular/forms";
 
 const config: SocketIoConfig = { url: 'http://localhost:5400', options: {} };
 
@@ -25,15 +27,17 @@ const config: SocketIoConfig = { url: 'http://localhost:5400', options: {} };
     AboutComponent,
     ContactComponent,
     StaffListComponent,
+    StaffEditComponent,
 
     FileUploaderComponent
   ],
   imports: [
+    FormsModule,
     NoopAnimationsModule,
     BrowserModule.withServerTransition({ appId: 'nestJS' }),
     HttpClientModule,
     SocketIoModule.forRoot(config),
-    RouterModule.forRoot(routes),
+    RouterModule.forRoot(routes, {useHash: false}),
     FileUploadModule,
     ToastModule.forRoot(),
 

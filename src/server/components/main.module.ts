@@ -1,9 +1,9 @@
 import {MiddlewaresConsumer, Module} from '@nestjs/common';
 import { ApiController } from './api/api.controller';
-import {StaffController} from './staff/staff.controller';
+import {StaffController} from './personnel/personnel.controller';
 import {FRONT_ROUTES, RouterMiddleware} from '../configs/router.middleware';
 import {MULTER_ROUTES, MulterMiddleware} from '../configs/multer.middleware';
-import {StaffService} from "./staff/staff.service";
+import {StaffService} from "./personnel/personnel.service";
 import {UploadController} from "./upload/upload.controller";
 import {ErrHandler} from "../services/error-handler.service";
 import {UploadService} from "./upload/upload.service";

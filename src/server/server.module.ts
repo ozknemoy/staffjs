@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 
 
 import { EventsGateway } from './events.gateway.';
-import {MainModule} from './modules/main.module';
+import {MainModule} from './components/main.module';
 import {StaticModule} from './static-module/static.module';
 
 

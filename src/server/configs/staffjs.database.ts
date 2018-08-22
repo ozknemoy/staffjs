@@ -1,5 +1,5 @@
 import {Sequelize} from 'sequelize-typescript';
-import Staff from '../modules/staff/staff.interface';
+import Staff from "../components/personnel/personnel.model";
 
 
 export const staffJsDB = new Sequelize({

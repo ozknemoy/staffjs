@@ -3,7 +3,7 @@
     "target": "http://localhost:5400",
     "secure": false
   },
-  "/staff": {
+  "/personnel": {
     "target": "http://localhost:5400",
     "secure": false
   },
