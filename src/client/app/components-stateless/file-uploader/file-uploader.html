@@ -1,0 +1,7 @@
+
+<label [ngClass]="{'pointer-none':uploader.isUploading}" class="{{uploaderClass}}">
+    <input type="file" style="display:none"
+           ng2FileSelect
+           [uploader]="uploader"
+           accept="{{accept}}">Выбрать файл
+</label>

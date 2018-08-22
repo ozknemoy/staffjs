@@ -5,9 +5,10 @@ import { EventsGateway } from './events.gateway.';
 import {MainModule} from './modules/main.module';
 import {StaticModule} from './static-module/static.module';
 
+
 @Module({
   imports: [MainModule, StaticModule],
   controllers: [],
-  components: [EventsGateway]
+  components: [EventsGateway, ]
 })
 export class ApplicationModule {}

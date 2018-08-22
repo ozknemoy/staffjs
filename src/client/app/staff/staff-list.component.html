@@ -1,0 +1,16 @@
+
+<file-uploader [size]="1000000"
+               url="upload/staff"
+               uploaderClass="btn btn-warning btn-sm"
+               accept=".xls"></file-uploader>
+
+<table>
+  <tr>
+    <th>Номер</th>
+    <th>ФИО</th>
+  </tr>
+  <tr *ngFor="let st of staffList$ | async">
+    <td>{{st.number}}</td>
+    <td>{{st.name}}</td>
+  </tr>
+</table>

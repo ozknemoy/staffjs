@@ -1,16 +1,17 @@
 import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement} from 'sequelize-typescript';
 
 @Table({
-  /*timestamps: true,*/
+  tableName: 'staff'
 })
-export default class StaffModel extends Model<StaffModel> {
+export default class Staff extends Model<Staff> implements IStaff {
 
   @AutoIncrement
   @Unique
   @PrimaryKey
   @Column id: number;
 
-  @Column number: number;
+
+  @Column number: string;
   @Column name: string;
   @Column inn: string;
   @Column insurance: string;
@@ -40,13 +41,41 @@ export default class StaffModel extends Model<StaffModel> {
   @Column scienceBranch: string;
   @Column gradeDate: string;
 
-  @Column age: number;
 
-  @Column breed: string;
 }
 
-export interface IStaff {
-  readonly name: string;
-  readonly age: number;
-  readonly breed: string;
+export class IStaff {
+  constructor(args) {
+    Object.keys(this).forEach((prop, i) => this[prop] = args[i])
+  }
+
+  id: number;
+  number: string = null;
+  name: string = null;
+  inn: string = null;
+  insurance: string = null;
+  birthDate: string = null;
+  birthPlace: string = null;
+  citizenship: string = null;
+  maritalStatus: string = null;
+  passport: string = null;
+  passportIssued: string = null;
+  passportDate: string = null;
+  address: string = null;
+  passportRegDate: string = null;
+  education: string = null;
+  institution: string = null;
+  institutionFaculty: string = null;
+  graduationYear: string = null;
+  institutionSpecialty: string = null;
+  institutionQualification: string = null;
+  diplomaNumber: string = null;
+  afterInstEdu: string = null;
+  afterInstEduFacility: string = null;
+  afterInstDoc: string = null;
+  afterInstGraduation: string = null;
+  afterInstSpecialty: string = null;
+  grade: string = null;
+  scienceBranch: string = null;
+  gradeDate: string = null;
 }

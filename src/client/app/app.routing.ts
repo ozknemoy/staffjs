@@ -1,5 +1,6 @@
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
+import {StaffListComponent} from "./staff/staff-list.component";
 
 export const routes = [
   {
@@ -14,5 +15,9 @@ export const routes = [
   {
     path: 'contact',
     loadChildren: './contact/contact.module#ContactModule'
+  },
+  {
+    path: 'staff-list',
+    component: StaffListComponent
   }
 ];
