@@ -18,6 +18,8 @@ import {NoopAnimationsModule} from "@angular/platform-browser/animations";
 import {StaffListComponent} from "./components-view/staff/staff-list.component";
 import {StaffEditComponent} from "./components-view/staff/staff-edit.component";
 import {FormsModule} from "@angular/forms";
+import {TabsModule} from "ngx-bootstrap/tabs";
+import {PrintButtonComponent} from "./components-stateless/print-button.component";
 
 const config: SocketIoConfig = { url: 'http://localhost:5400', options: {} };
 
@@ -29,7 +31,8 @@ const config: SocketIoConfig = { url: 'http://localhost:5400', options: {} };
     StaffListComponent,
     StaffEditComponent,
 
-    FileUploaderComponent
+    FileUploaderComponent,
+    PrintButtonComponent,
   ],
   imports: [
     FormsModule,
@@ -40,7 +43,7 @@ const config: SocketIoConfig = { url: 'http://localhost:5400', options: {} };
     RouterModule.forRoot(routes, {useHash: false}),
     FileUploadModule,
     ToastModule.forRoot(),
-
+    TabsModule.forRoot(),
   ],
   providers: [
     PingService,

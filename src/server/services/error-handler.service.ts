@@ -7,15 +7,7 @@ export class ErrHandlerService {
 
   // пока простое преобразование в массив ошибок  вложенность в errors
   handle(err: string | string[], code = this.STATUS_FOR_VALID_AND_UNIQUE_ERR) {
-    let body = {errors: {}};
-    if (Array.isArray(err)) {
-      err.forEach((e, i) => body.errors['dummi' + i] = [e])
-
-    } else {
-      body.errors = err;
-    }
-
-    throw new HttpException(body, code);
+    throw new HttpException(Array.isArray(err) ? err : [err], code);
   }
 
   /*is like SequelizeValidationError*/
@@ -27,7 +19,7 @@ export class ErrHandlerService {
     return this.handle('Не хватает прав', HttpStatus.FORBIDDEN)
   }
 
-  handlaAll(e, tableName, uniqueFields, status = this.STATUS_FOR_VALID_AND_UNIQUE_ERR) {
+  handlaAll(e, tableName?, uniqueFields?, status = this.STATUS_FOR_VALID_AND_UNIQUE_ERR) {
     switch (e.name) {
       case "SequelizeUniqueConstraintError":
         // отдаю поля uniqueFields={email:'Email уже существует'}

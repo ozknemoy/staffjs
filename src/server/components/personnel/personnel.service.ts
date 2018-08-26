@@ -5,11 +5,12 @@ import {staffJsDB} from "../../configs/staffjs.database";
 import Personnel from "./personnel.model";
 import Family from "./personnel-family.model";
 import {DbTransactions} from "../../services/db-transactions.service";
+import {ErrHandlerService} from "../../services/error-handler.service";
 
 @Component()
 export class PersonnelService {
 
-  constructor(private dbTransactions: DbTransactions) {}
+  constructor(private dbTransactions: DbTransactions, private errHandler: ErrHandlerService) {}
 
   getAllFullData() {
     return staffJsDB.query(`SELECT * FROM Staff`).spread((results, metadata) => results);
@@ -34,6 +35,7 @@ export class PersonnelService {
       oldPersModel.update(pers),
       this.dbTransactions.createOrUpdateRel(Family, 'personnelId', id, 'family', pers)
     ]).then(() => this.getOne(id))
+      .catch(err => this.errHandler.handlaAll(err))
   }
 
 

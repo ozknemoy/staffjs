@@ -26,7 +26,7 @@ export class DbTransactions {
         })
       }
       // create
-      return SubModel.bulkCreate(relNewValue)
+      return SubModel.bulkCreate(relNewValue.map(one => ({...one, ...{[fk]: id}})))
     }
     if (subModelOld && subModelOld.length) {
       return SubModel['destroy']({where: {[fk]: id}});

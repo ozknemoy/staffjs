@@ -10,5 +10,9 @@
   "/upload": {
     "target": "http://localhost:5400",
     "secure": false
+  },
+  "/print": {
+    "target": "http://localhost:5400",
+    "secure": false
   }
 }

@@ -5,5 +5,5 @@ export interface IFamily {
   personnelId: number;
   relationshipDegree: string;
   fullName: string;
-  birthYear: string;
+  birthYear: number;
 }
