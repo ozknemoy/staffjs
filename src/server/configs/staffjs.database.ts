@@ -1,5 +1,6 @@
 import {Sequelize} from 'sequelize-typescript';
-import Staff from "../components/personnel/personnel.model";
+import Personnel from "../components/personnel/personnel.model";
+import Family from "../components/personnel/personnel-family.model";
 
 
 export const staffJsDB = new Sequelize({
@@ -9,7 +10,6 @@ export const staffJsDB = new Sequelize({
   password: '1',
   port: 5432,
   define: {
-    // don't add the timestamp attributes (updatedAt, createdAt)
     timestamps: true,
     // prevent sequelize from pluralizing table names
     freezeTableName: true
@@ -20,7 +20,7 @@ export const staffJsDB = new Sequelize({
 });
 
 staffJsDB.addModels([
-  Staff,
+  Personnel, Family
 ]);
 // Before you can use your models you have to tell sequelize where they can be found. So either set
 // modelPaths in the sequelize config or add the required models later on by calling
@@ -31,5 +31,6 @@ staffJsDB.addModels([
 User.sync();
 */
 
-Staff.sync();
+Personnel.sync();
+Family.sync();
 

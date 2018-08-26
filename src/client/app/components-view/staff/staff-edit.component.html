@@ -1,7 +1,9 @@
 
+<button class="btn btn-sm btn-success" (click)="save()">Сохранить</button>
+
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm">
+    <div class="col-sm-4">
       <div class="form-group">
         <label>№карт</label>
         <input type="text" [(ngModel)]="worker.number" class="form-control">
@@ -48,7 +50,22 @@
       </div>
     </div>
     <div class="col-sm">
-      Одна из трёх колонок
+      Состав семьи
+
+      <table class="table table-sm table-responsive-sm table-bordered">
+        <tr class="">
+          <th>Степень родства <br>(ближайшие родственники)</th>
+          <th>Фамилия, имя, отчество</th>
+          <th>Год рождения</th>
+          <th><button class="btn btn-sm btn-success" (click)="addFamily()">Добавить</button></th>
+        </tr>
+        <tr *ngFor="let fam of worker.family; let i = index">
+          <td><input type="text" [(ngModel)]="fam.relationshipDegree" class="form-control"></td>
+          <td><input type="text" [(ngModel)]="fam.fullName" class="form-control"></td>
+          <td><input type="text" [(ngModel)]="fam.birthYear" class="form-control"></td>
+          <td><button class="btn btn-sm btn-danger" (click)="deleteFamily(i)">Удалить</button></td>
+        </tr>
+      </table>
     </div>
   </div>
 </div>

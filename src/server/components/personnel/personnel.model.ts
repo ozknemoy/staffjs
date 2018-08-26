@@ -1,16 +1,19 @@
-import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement} from 'sequelize-typescript';
-import {IStaff} from "./personnel.interface";
+import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement, HasMany} from 'sequelize-typescript';
+import {IPersonnel} from "./personnel.interface";
+import Family from "./personnel-family.model";
 
 @Table({
   tableName: 'staff'
 })
-export default class Staff extends Model<Staff> implements IStaff {
+export default class Personnel extends Model<Personnel> implements IPersonnel {
 
   @AutoIncrement
   @Unique
   @PrimaryKey
   @Column id: number;
 
+  @HasMany(() => Family)
+  family: Family[];
 
   @Column number: string;
   @Column name: string;

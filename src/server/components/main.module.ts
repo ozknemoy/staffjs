@@ -3,18 +3,20 @@ import { ApiController } from './api/api.controller';
 import {StaffController} from './personnel/personnel.controller';
 import {FRONT_ROUTES, RouterMiddleware} from '../configs/router.middleware';
 import {MULTER_ROUTES, MulterMiddleware} from '../configs/multer.middleware';
-import {StaffService} from "./personnel/personnel.service";
+import {PersonnelService} from "./personnel/personnel.service";
 import {UploadController} from "./upload/upload.controller";
-import {ErrHandler} from "../services/error-handler.service";
+import {ErrHandlerService} from "../services/error-handler.service";
 import {UploadService} from "./upload/upload.service";
+import {DbTransactions} from "../services/db-transactions.service";
 
 @Module({
   imports: [],
   controllers: [ApiController, StaffController, UploadController],
   components: [
-    StaffService,
-    ErrHandler,
+    PersonnelService,
+    ErrHandlerService,
     UploadService,
+    DbTransactions,
   ],
 })
 export class MainModule {

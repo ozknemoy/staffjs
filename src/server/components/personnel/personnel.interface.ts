@@ -1,6 +1,7 @@
+import {IFamily} from "./personnel-family.interface";
 
 
-export class IStaff {
+export class IPersonnel {
   constructor(args?) {
     if (args) {
       Object.keys(this).forEach((prop, i) => this[prop] = args[i])
@@ -36,4 +37,8 @@ export class IStaff {
   grade: string = null;
   scienceBranch: string = null;
   gradeDate: string = null;
+
+  family: /*number[] |*/ IFamily[] = null;
 }
+
+

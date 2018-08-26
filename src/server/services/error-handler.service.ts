@@ -1,7 +1,7 @@
 import {HttpException, HttpStatus} from "@nestjs/common";
 import {UniqueConstraintError} from "sequelize";
 
-export class ErrHandler {
+export class ErrHandlerService {
 
   public STATUS_FOR_VALID_AND_UNIQUE_ERR = HttpStatus.NOT_ACCEPTABLE;
 
