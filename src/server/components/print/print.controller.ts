@@ -1,4 +1,4 @@
-import {Controller, Post, Query, Res, Response} from "@nestjs/common";
+import {Controller, Post, Query, Res} from "@nestjs/common";
 import {PrintService} from "./print.service";
 
 
@@ -10,14 +10,11 @@ export class PrintComponent {
 
   @Post('t2')
   printT2(@Query('userId') userId: string, @Res() resp) {
-    resp.contentType('application/text');
-    console.time('1');
-    this.printService.printT2(userId).then(d => {
-      console.timeEnd('1');
-      console.log('+++++++++++++++++++');
-      return d
+    return this.printService.printT2(userId).then(data => {
+      resp.contentType('application/pdf; charset=utf-8');
+      resp.setHeader('content-disposition', 'attachment; filename=somename.pdf');
+      return resp.send(data);
     })
   }
-
 
 }

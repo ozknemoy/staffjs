@@ -10,23 +10,11 @@ const fontDescriptors = {
     bolditalics: path.join(__dirname, '../../fonts/Roboto-MediumItalic.ttf')
   }
 };
-
-var PdfPrinter = require('pdfmake');
-console.log('***********',__dirname);
-var printer = new PdfPrinter(fontDescriptors);
-
+const PdfPrinter = require('pdfmake');
+const printer = new PdfPrinter(fontDescriptors);
 
 const docDefinition = {
-  content: [
-    'This is a standard paragraph, using default style',
-    { text: 'This paragraph will have a bigger font', fontSize: 15 },
-    {text: [
-        'This paragraph is defined as an array of elements to make it possible to ',
-        { text: 'restyle part of it and make it bigger ', fontSize: 15 },
-        'than the rest.'
-      ]
-    }
-  ]
+  content: 'This is an sample PDF printed with pdfMake'
 };
 
 @Component()
@@ -36,39 +24,24 @@ export class PrintService {
 
   }
 
-  async printT2(userId) {
-    //const user = this.personnelService.getOne(userId);
-    return this.createPdfBinary(function(binary) {
-      //res.contentType('application/pdf');
-      return (binary);
-    }/*, function(error) {
-      return ('ERROR:' + error);
-    }*/);
-    // return await printer.createPdfKitDocument(docDefinition);
-
-
+  printT2(userId) {
+    // const user = this.personnelService.getOne(userId);
+    return this.printDoc(printer.createPdfKitDocument(docDefinition))
   }
 
-  createPdfBinary(callback) {
-
-
+  printDoc(doc) {
     return new Promise((res) => {
-      var doc = printer.createPdfKitDocument(docDefinition);
+      const chunks = [];
 
-      var chunks = [];
-      var result;
-
-      doc.on('data', function (chunk) {
+      doc.on('data', chunk => {
         chunks.push(chunk);
       });
-      doc.on('end', function () {
-        result = Buffer.concat(chunks);
-        res(callback('data:application/pdf;base64,' + result.toString('base64')));
+      doc.on('end', () => {
+        const result = Buffer.concat(chunks);
+        res(result);
       });
       doc.end();
     })
-
-
   }
 
 
