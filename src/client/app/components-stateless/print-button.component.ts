@@ -24,8 +24,9 @@ export class PrintButtonComponent {
         responseType: 'blob',
         // to display the full response & as 'body' for type cast
         observe: <'body'>'response',
-      }).subscribe((fullResponse) => {
-        saveAs(fullResponse.body, HandleData.getFileNameFromHttpResponse(fullResponse));
+      }).toPromise()
+      .then((fullResponse) => {
+        saveAs(fullResponse['body'], HandleData.getFileNameFromHttpResponse(fullResponse));
         // скачивает из json исходника
         // pdfMake.createPdf(fullResponse.body).download(HandleData.getFileNameFromHttpResponse(fullResponse));
       })
