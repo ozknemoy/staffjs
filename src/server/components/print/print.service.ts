@@ -1,5 +1,6 @@
 import {Component} from "@nestjs/common";
 import {PersonnelService} from "../personnel/personnel.service";
+import {PrintT2Builder} from './print-t2.class';
 const path = require('path');
 
 const fontDescriptors = {
@@ -20,13 +21,12 @@ const docDefinition = {
 @Component()
 export class PrintService {
 
-  constructor(private personnelService: PersonnelService) {
+  constructor(private personnelService: PersonnelService) {}
 
-  }
-
-  printT2(userId) {
-    // const user = this.personnelService.getOne(userId);
-    return this.printDoc(printer.createPdfKitDocument(docDefinition))
+  async printT2(userId) {
+    const user = await this.personnelService.getOne(userId);
+    const pdfSchema = new PrintT2Builder(user).make();
+    return this.printDoc(printer.createPdfKitDocument(pdfSchema))
   }
 
   printDoc(doc) {
@@ -43,6 +43,4 @@ export class PrintService {
       doc.end();
     })
   }
-
-
 }

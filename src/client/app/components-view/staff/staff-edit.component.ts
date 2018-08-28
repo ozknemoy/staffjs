@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import {IPersonnel} from "../../../../server/components/personnel/personnel.interface";
 import {ActivatedRoute} from "@angular/router";
 import {IFamily} from "../../../../server/components/personnel/personnel-family.interface";
+import * as _ from 'lodash/core'
+
 declare const pdfMake;
 @Component({
   selector: 'app-staff-edit',
@@ -11,25 +13,29 @@ declare const pdfMake;
 export class StaffEditComponent implements OnInit {
 
   worker = new IPersonnel();
+  pdf = [];
   constructor(private httpClient: HttpClient, private route: ActivatedRoute) { }
 
   async ngOnInit() {
     this.worker = await this.httpClient.get<any>('/personnel/' + this.route.snapshot.params.id).toPromise();
-    if(this.worker.family && this.worker.family.length) this.makeFamilyTable(this.worker.family)
+    this.pdfBuilder()
+      .makeFamilyTable(this.worker.family)
+      .build()
   }
 
-  makeFamilyTable(f) {
-    const body = f.map((row: IFamily) => [row.relationshipDegree, row.fullName, row.birthYear]);
-    const tbl = {
-      table: {
-        widths: [100, '*', '*'],
-        body: [['Степень родства (ближайшие родственники)', 'Фамилия, имя, отчество', 'Год рождения']]
-            .concat(body)
-      }
-    };
+  makeFamilyTable(f: IFamily[]) {
+
+    return this;
+  }
+
+  build() {
 
     const w = window.open('http://localhost:4200/staff-edit/29', '_blank ');
-    pdfMake.createPdf({content: [tbl]}).open({}, w);
+    pdfMake.createPdf({content: [this.pdf]}).open({}, w);
+  }
+
+  pdfBuilder() {
+    return this
   }
 
   addFamily() {
