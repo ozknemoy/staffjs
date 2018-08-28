@@ -1,0 +1,32 @@
+import IDoc from '../../../interfaces/doc.interface';
+import {BelongsTo, Column, ForeignKey, HasOne, Model, Table} from 'sequelize-typescript';
+import Doc from '../../../interfaces/doc.model';
+import {IPersonnel} from "../personnel.interface";
+import Personnel from "../personnel.model";
+import IProfRetraining from './personnel-prof-retraining.interface';
+
+@Table({
+  tableName: 'prof-retraining'
+})
+export default class ProfRetraining extends Model<ProfRetraining> implements IProfRetraining {
+  id: number;
+
+  @ForeignKey(() => Personnel)
+  @Column
+  personnelId:  number;
+
+  @BelongsTo(() => Personnel)
+  personnel: IPersonnel;
+
+  @ForeignKey(() => Doc)
+  @Column
+  docId: number;
+
+  @HasOne(() => Doc, 'docId')// второй параметр обязателен
+  doc: IDoc;
+
+  startEduDate: string;
+  endEduDate: string;
+  specialty: string;
+  reason: string;
+}

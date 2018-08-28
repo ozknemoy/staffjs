@@ -19,7 +19,7 @@
             <label>ФИО</label>
             <input type="text" [(ngModel)]="worker.name" class="form-control">
           </div>
-          <div class="form-group">
+          <!--<div class="form-group">
             <label>ИНН</label>
             <input type="text" [(ngModel)]="worker.inn" class="form-control">
           </div>
@@ -54,7 +54,7 @@
           <div class="form-group">
             <label>Дата выдачи</label>
             <input type="text" [(ngModel)]="worker.passportDate" class="form-control">
-          </div>
+          </div>-->
         </div>
         <div class="col-sm">
 
@@ -71,7 +71,7 @@
           <th>Год рождения</th>
           <th><button class="btn btn-sm btn-success" (click)="addFamily()">Добавить</button></th>
         </tr>
-        <tr *ngFor="let fam of worker.family; let i = index">
+        <tr *ngFor="let fam of worker.families; let i = index">
           <td><input type="text" [(ngModel)]="fam.relationshipDegree" class="form-control"></td>
           <td><input type="text" [(ngModel)]="fam.fullName" class="form-control"></td>
           <td><input type="number" [(ngModel)]="fam.birthYear" class="form-control"></td>

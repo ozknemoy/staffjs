@@ -1,4 +1,4 @@
-import {IPersonnel} from "./personnel.interface";
+import {IPersonnel} from '../personnel.interface';
 
 
 export interface IPassport {

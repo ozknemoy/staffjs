@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {IPersonnel} from "../../../../server/components/personnel/personnel.interface";
 import {ActivatedRoute} from "@angular/router";
-import {IFamily} from "../../../../server/components/personnel/personnel-family.interface";
+import {IFamily} from "../../../../server/components/personnel/relations/personnel-family.interface";
 import * as _ from 'lodash/core'
 
 declare const pdfMake;
@@ -19,7 +19,7 @@ export class StaffEditComponent implements OnInit {
   async ngOnInit() {
     this.worker = await this.httpClient.get<any>('/personnel/' + this.route.snapshot.params.id).toPromise();
     this.pdfBuilder()
-      .makeFamilyTable(this.worker.family)
+      .makeFamilyTable(this.worker.families)
       .build()
   }
 
@@ -39,11 +39,11 @@ export class StaffEditComponent implements OnInit {
   }
 
   addFamily() {
-    this.worker.family.push(<any>{})
+    this.worker.families.push(<any>{})
   }
 
   deleteFamily(i) {
-    this.worker.family.splice(i, 1)
+    this.worker.families.splice(i, 1)
   }
 
   save() {

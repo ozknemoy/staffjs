@@ -1,9 +1,9 @@
 import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, HasOne, BelongsTo} from 'sequelize-typescript';
-import {IStaff} from "../personnel.interface";
-import IWorkplace from './personnel-workplace.interface';
+import {IPersonnel} from "../personnel.interface";
 import IAttestation from './personnel-attestation.interface';
 import Doc from '../../../interfaces/doc.model';
 import IDoc from '../../../interfaces/doc.interface';
+import Personnel from "../personnel.model";
 
 @Table({
   tableName: 'attestation'
@@ -26,7 +26,7 @@ export default class Attestation extends Model<Attestation> implements IAttestat
   @ForeignKey(() => Doc)
   docId: number;
 
-  @HasOne(() => Doc)
+  @HasOne(() => Doc, 'docId')
   doc: IDoc;
 
   @Column date: string;

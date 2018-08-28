@@ -2,6 +2,8 @@ import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, Has
 import Doc from '../../../interfaces/doc.model';
 import IDoc from '../../../interfaces/doc.interface';
 import IQualificationImprovement from './personnel-qual-improvement.interface';
+import Personnel from "../personnel.model";
+import {IPersonnel} from "../personnel.interface";
 
 @Table({
   tableName: 'qualification-improvement'
@@ -24,7 +26,7 @@ export default class QualificationImprovement extends Model<QualificationImprove
   @ForeignKey(() => Doc)
   docId: number;
 
-  @HasOne(() => Doc)
+  @HasOne(() => Doc, 'docId')
   doc: IDoc;
 
   @Column startEduDate: string;

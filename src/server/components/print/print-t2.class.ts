@@ -14,7 +14,7 @@ export class PrintT2Builder {
   }
 
   private makeFamilyTable() {
-    const f = this.pers.family;
+    const f = this.pers.families;
     if (_.isEmpty(f)) {
       return this;
     }

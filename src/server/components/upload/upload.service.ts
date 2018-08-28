@@ -5,7 +5,7 @@ import {ErrHandlerService} from "../../services/error-handler.service";
 import * as fs from "fs";
 import xlsx from 'node-xlsx';
 import {INodeXlsxParsed} from "../../interfaces/node-xlsx";
-import {IPersonnel} from "../personnel/personnel.interface";
+import {IPersonnel, IPersonnelAdapter} from "../personnel/personnel.interface";
 import {PersonnelService} from "../personnel/personnel.service";
 import Personnel from "../personnel/personnel.model";
 
@@ -22,7 +22,7 @@ export class UploadService {
     const staff: INodeXlsxParsed = xlsx.parse(fs.readFileSync(excelPath));
     fs.unlink(excelPath);
     return Promise.all(
-      staff[0].data.map(st => Personnel.create(new IPersonnel(st)))
+      staff[0].data.map(st => Personnel.create(new IPersonnelAdapter(st)))
     ).then(d => {
       return this.personnelService.getAll()
     });

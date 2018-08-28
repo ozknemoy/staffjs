@@ -1,5 +1,7 @@
-import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey} from 'sequelize-typescript';
+import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, BelongsTo} from 'sequelize-typescript';
 import IWorkplace from './personnel-workplace.interface';
+import Personnel from "../personnel.model";
+import {IPersonnel} from "../personnel.interface";
 
 @Table({
   tableName: 'workplace'
@@ -13,7 +15,10 @@ export default class Workplace extends Model<Workplace> implements IWorkplace {
 
   @Column
   @ForeignKey(() => Personnel)
-  personnelId;
+  personnelId: number;
+
+  @BelongsTo(() => Personnel)
+  personnel: IPersonnel;
 
   @Column date: string;
   @Column department: string;

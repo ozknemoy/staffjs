@@ -2,9 +2,9 @@ import {
   Table, Column, Model, PrimaryKey, AutoIncrement, BelongsTo,
   ForeignKey, BeforeUpdate, BeforeCreate, Is, IsEmail, Min
 } from 'sequelize-typescript';
-import Personnel from "./personnel.model";
-import {IPassport} from "./personnel-passport.interface";
-import {IPersonnel} from "./personnel.interface";
+import Personnel from '../personnel.model';
+import {IPassport} from './personnel-passport.interface';
+import {IPersonnel} from '../personnel.interface';
 
 @Table({
   tableName: 'passport'

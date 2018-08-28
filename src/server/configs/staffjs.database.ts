@@ -1,6 +1,14 @@
 import {Sequelize} from 'sequelize-typescript';
 import Personnel from "../components/personnel/personnel.model";
-import Family from "../components/personnel/personnel-family.model";
+import Family from "../components/personnel/relations/personnel-family.model";
+import Attestation from "../components/personnel/relations/personnel-attestation.model";
+import Passport from "../components/personnel/relations/personnel-passport.model";
+import {default as ProfRetraining} from "../components/personnel/relations/personnel-prof-retraining.model";
+import QualificationImprovement from "../components/personnel/relations/personnel-qual-improvement.model";
+import Doc from "../interfaces/doc.model";
+import Workplace from "../components/personnel/relations/personnel-workplace.model";
+import Reward from "../components/personnel/relations/personnel-reward.model";
+import SocialSecurity from "../components/personnel/relations/personnel-social-security.model";
 
 
 export const staffJsDB = new Sequelize({
@@ -20,7 +28,8 @@ export const staffJsDB = new Sequelize({
 });
 
 staffJsDB.addModels([
-  Personnel, Family
+  Personnel, Family, Attestation, Passport, ProfRetraining, QualificationImprovement,
+  Reward, Doc, SocialSecurity, Workplace
 ]);
 // Before you can use your models you have to tell sequelize where they can be found. So either set
 // modelPaths in the sequelize config or add the required models later on by calling
@@ -33,4 +42,13 @@ User.sync();
 
 Personnel.sync();
 Family.sync();
+Attestation.sync();
+Passport.sync();
+ProfRetraining.sync();
+QualificationImprovement.sync();
+Reward.sync();
+SocialSecurity.sync();
+Workplace.sync();
+
+Doc.sync();
 

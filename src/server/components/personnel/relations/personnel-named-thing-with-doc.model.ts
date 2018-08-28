@@ -1,8 +1,9 @@
-import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, HasOne, BelongsTo} from 'sequelize-typescript';
-
+import {Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, HasOne, BelongsTo} from 'sequelize-typescript';
 import Doc from '../../../interfaces/doc.model';
 import IDoc from '../../../interfaces/doc.interface';
-import IPersonnelNamedThingWithDoc from './personnel-reward.interface';
+import Personnel from "../personnel.model";
+import {IPersonnel} from "../personnel.interface";
+import {IPersonnelNamedThingWithDoc} from "./personnel-named-thing-with-doc.interface";
 
 
 export default class PersonnelNamedThingWithDoc extends Model<PersonnelNamedThingWithDoc> implements IPersonnelNamedThingWithDoc {
@@ -23,7 +24,7 @@ export default class PersonnelNamedThingWithDoc extends Model<PersonnelNamedThin
   @ForeignKey(() => Doc)
   docId: number;
 
-  @HasOne(() => Doc)
+  @HasOne(() => Doc, 'docId')
   doc: IDoc;
 
   @Column name: string;

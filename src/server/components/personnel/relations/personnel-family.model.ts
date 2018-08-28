@@ -3,8 +3,8 @@ import {
   ForeignKey, BeforeUpdate, BeforeCreate, Is, IsEmail, Min
 } from 'sequelize-typescript';
 import {IFamily} from "./personnel-family.interface";
-import Personnel from "./personnel.model";
-import {isValidDate, isValidTimeStamp, isValidYear} from "../../helpers/is-valid-date";
+import Personnel from "../personnel.model";
+import {isValidDate, isValidTimeStamp, isValidYear} from "../../../helpers/is-valid-date";
 
 @Table({
   tableName: 'family'
