@@ -1,7 +1,17 @@
 import {IFamily} from "./personnel-family.interface";
+import {IPassport} from "./personnel-passport.interface";
 
 
 export class IPersonnel {
+  id: number;
+  number: string = null;
+  name: string = null;
+  passport: IPassport = null;
+  family: IFamily[] = null;
+}
+
+
+export class IPersonnelAdapter {
   constructor(args?) {
     if (args) {
       Object.keys(this).forEach((prop, i) => this[prop] = args[i])
@@ -13,6 +23,7 @@ export class IPersonnel {
   name: string = null;
   inn: string = null;
   insurance: string = null;
+  // passport
   birthDate: string = null;
   birthPlace: string = null;
   citizenship: string = null;
@@ -22,6 +33,7 @@ export class IPersonnel {
   passportDate: string = null;
   address: string = null;
   passportRegDate: string = null;
+
   education: string = null;
   institution: string = null;
   institutionFaculty: string = null;
