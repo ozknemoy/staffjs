@@ -18,9 +18,9 @@ export class StaffEditComponent implements OnInit {
 
   async ngOnInit() {
     this.worker = await this.httpClient.get<any>('/personnel/' + this.route.snapshot.params.id).toPromise();
-    this.pdfBuilder()
+    /*this.pdfBuilder()
       .makeFamilyTable(this.worker.families)
-      .build()
+      .build()*/
   }
 
   makeFamilyTable(f: IFamily[]) {

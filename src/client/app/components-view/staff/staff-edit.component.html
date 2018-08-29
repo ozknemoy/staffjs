@@ -19,6 +19,14 @@
             <label>ФИО</label>
             <input type="text" [(ngModel)]="worker.name" class="form-control">
           </div>
+          <div class="form-group">
+            <label>ФИО</label>
+            <input type="text" [(ngModel)]="worker.surname" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>ФИО</label>
+            <input type="text" [(ngModel)]="worker.middleName" class="form-control">
+          </div>
           <!--<div class="form-group">
             <label>ИНН</label>
             <input type="text" [(ngModel)]="worker.inn" class="form-control">
@@ -78,6 +86,8 @@
           <td><button class="btn btn-sm btn-danger" (click)="deleteFamily(i)">Удалить</button></td>
         </tr>
       </table>
+
+      <personnel-qual-improvement></personnel-qual-improvement>
     </tab>
   </tabset>
 

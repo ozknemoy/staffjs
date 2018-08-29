@@ -2,9 +2,13 @@
 export class DbTransactions {
 
   // при данной реализации надо обязательно возвращать на фронт объект и писать его в модель чтобы сохранялись id
-  async createOrUpdateRel(SubModel, fk: string, id: number, propRels: string, newParentValue: Object) {
-    const relNewValue = newParentValue[propRels];
+  async createOrUpdateRel<T>(SubModel, fk: string, id: number, propRels: keyof T, newParentValue: T) {
+    const _relNewValue = newParentValue[propRels];
+    // если связь -to-one то эмулирую -to-many
+    const relNewValue: any[] = (_relNewValue && !Array.isArray(_relNewValue)) ? [_relNewValue] : <any>_relNewValue;
+
     const subModelOld = await SubModel['findAll']({where: {[fk]: id}});
+    console.log('********', relNewValue);
     if (newParentValue && relNewValue && relNewValue.length) {
       // update
       if (subModelOld && subModelOld.length) {
@@ -25,13 +29,62 @@ export class DbTransactions {
           return Promise.resolve(null)
         })
       }
+      падает тут на фк тк нет на доке форинкия . он на самом родителе
       // create
       return SubModel.bulkCreate(relNewValue.map(one => ({...one, ...{[fk]: id}})))
     }
+    console.log('--------------');
     if (subModelOld && subModelOld.length) {
       return SubModel['destroy']({where: {[fk]: id}});
     }
     return Promise.resolve(null)
+  }
+
+  // для моделей Many без взаимосвязей
+  async createOrUpdateManyWithoutRels(_Model, fk: string, id: number, newValue: any[]) {
+    const modelOld = await _Model['findAll']({where: {[fk]: id}});
+    if (newValue && newValue.length) {
+      // update
+      if (modelOld && modelOld.length) {
+        // find already used
+        return Promise.all(newValue.map(rowForSave => {
+          // тут привязка на то что у новых элементов нет id
+          if (rowForSave.id) {
+            return modelOld.find(oneSubModel => rowForSave.id === oneSubModel.id).update(rowForSave)
+          }
+          return _Model.create({...rowForSave, ...{[fk]: id}})
+        })).then(() => {
+          // надо проверить удалялись ли строки
+          // просто проверяю есть ли у старых id которых уже нет в новом
+          const subValuesForDelete = modelOld.filter(old => !newValue.find(sub => old.id === sub.id));
+          if (subValuesForDelete && subValuesForDelete.length) {
+            return _Model['destroy']({where: {id: subValuesForDelete.map(sub => sub.id)}})
+          }
+          return Promise.resolve(null)
+        })
+      }
+      // create
+      return _Model.bulkCreate(newValue.map(one => ({...one, ...{[fk]: id}})))
+    }
+    if (modelOld && modelOld.length) {
+      return _Model['destroy']({where: {[fk]: id}});
+    }
+    return Promise.resolve(null)
+  }
+
+  async createOrUpdateManyWithRelOneToOne(newValues: any[], _Model, SubModel, propRels: string, fk: string) {
+
+    return Promise.all([
+      newValues.map(newParentValue => {
+        // update
+        if (newParentValue.id) {
+          return _Model.findById(newParentValue.id)
+            .then(oldModel => oldModel.update(newParentValue))
+            .then(() => this.createOrUpdateRel(SubModel, fk, newParentValue.id, propRels, newParentValue))
+        }
+
+      })
+    ]);
   }
 
 }

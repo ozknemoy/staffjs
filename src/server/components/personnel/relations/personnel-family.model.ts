@@ -24,7 +24,7 @@ export default class Family extends Model<Family> implements IFamily {
   @BelongsTo(() => Personnel)
   personnel: number;
 
-  @IsEmail @Column relationshipDegree: string;
+  @Column relationshipDegree: string;
   @Column fullName: string;
 
   @Min(1900)

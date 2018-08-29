@@ -9,6 +9,7 @@ import {StaffListComponent} from "./components-view/staff/staff-list.component";
 import {StaffEditComponent} from "./components-view/staff/staff-edit.component";
 import {PrintButtonComponent} from "./components-stateless/print-button.component";
 import {vendorsModules} from './app.vendors';
+import {QualImprovementComponent} from "./components-view/staff/qual-improvement/qual-improvement-edit.component";
 
 declare const require;
 const pdfMake = require('pdfmake/build/pdfmake.js');
@@ -24,6 +25,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     ContactComponent,
     StaffListComponent,
     StaffEditComponent,
+    QualImprovementComponent,
 
     FileUploaderComponent,
     PrintButtonComponent,

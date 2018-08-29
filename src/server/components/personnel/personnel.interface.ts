@@ -4,12 +4,15 @@ import IQualImprovement from "./relations/personnel-qual-improvement.interface";
 import IAttestation from "./relations/personnel-attestation.interface";
 import {IPersonnelNamedThingWithDoc} from "./relations/personnel-named-thing-with-doc.interface";
 import IProfRetraining from "./relations/personnel-prof-retraining.interface";
+import {Column} from "sequelize-typescript";
 
 
 export class IPersonnel {
   id: number;
   number: string = null;
   name: string = null;
+  surname: string = null;
+  middleName: string = null;
 
   attestations: IAttestation[] = null;
   families: IFamily[] = null;

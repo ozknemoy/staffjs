@@ -15,8 +15,13 @@ export class HttpService {
     return this.http.get(this.BASE_URL + url)
   }
 
-  post(url, data: any, config)  {
+  post(url, data: any, config?)  {
     return this.http.post(this.BASE_URL + url, data, config)
+  }
+
+
+  put(url, data: any, config?)  {
+    return this.http.put(this.BASE_URL + url, data, config)
   }
 
   uploadFileWithAuth(maxFileSize, url, filename = "file") {

@@ -1,0 +1,33 @@
+
+<div class="float-right">
+  <button class="btn btn-sm btn-success" (click)="save()">Сохранить</button>
+</div>
+ПОВЫШЕНИЕ КВАЛИФИКАЦИИ
+<table class="table table-sm table-responsive-sm table-bordered">
+  <tr>
+    <th colspan="2">Дата</th>
+    <th rowspan="2">Вид повышения квалификации</th>
+    <th rowspan="2">Наименование образовательного учреждения, место его нахождения</th>
+    <th colspan="3">Документ(удостоверение, свидетельство)</th>
+    <th rowspan="2">Основание</th>
+    <th rowspan="2"><button class="btn btn-sm btn-success" (click)="addRow()">Добавить</button></th>
+  </tr>
+  <tr>
+    <th>начала обучения</th>
+    <th>окончания обучения</th>
+    <th>наименование</th>
+    <th>серия, номер</th>
+    <th>дата</th>
+  </tr>
+  <tr *ngFor="let q of qualImprovement; let i = index">
+    <td><input type="date" [(ngModel)]="q.startEduDate" class="form-control"></td>
+    <td><input type="date" [(ngModel)]="q.endEduDate" class="form-control"></td>
+    <td><input type="text" [(ngModel)]="q.type" class="form-control"></td>
+    <td><input type="text" [(ngModel)]="q.institutionName" class="form-control"></td>
+    <td><input type="text" [(ngModel)]="q.doc.name" class="form-control"></td>
+    <td><input type="text" [(ngModel)]="q.doc.number" class="form-control"></td>
+    <td><input type="date" [(ngModel)]="q.doc.date" class="form-control"></td>
+    <td><input type="text" [(ngModel)]="q.reason" class="form-control"></td>
+    <td><button class="btn btn-sm btn-danger" (click)="deleteRow(i)">Удалить</button></td>
+  </tr>
+</table>

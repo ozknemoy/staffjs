@@ -18,7 +18,7 @@ export const staffJsDB = new Sequelize({
   password: '1',
   port: 5432,
   define: {
-    timestamps: true,
+    timestamps: false,
     // prevent sequelize from pluralizing table names
     freezeTableName: true
   },
@@ -26,6 +26,7 @@ export const staffJsDB = new Sequelize({
   // storage: ':memory:',
   modelPaths: [__dirname + '/../models']
 });
+
 
 staffJsDB.addModels([
   Personnel, Family, Attestation, Passport, ProfRetraining, QualImprovement,

@@ -1,10 +1,13 @@
 import IDoc from '../../../interfaces/doc.interface';
-import {BelongsTo, Column, ForeignKey, HasOne, Model, Table} from 'sequelize-typescript';
+import {BelongsTo, Column, DefaultScope, ForeignKey, HasOne, Model, Table} from 'sequelize-typescript';
 import Doc from '../../../interfaces/doc.model';
 import {IPersonnel} from "../personnel.interface";
 import Personnel from "../personnel.model";
 import IProfRetraining from './personnel-prof-retraining.interface';
 
+@DefaultScope({
+  include: [() => Doc]
+})
 @Table({
   tableName: 'prof-retraining'
 })

@@ -1,4 +1,7 @@
-import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement, HasMany, HasOne} from 'sequelize-typescript';
+import {
+  Table, Column, Model, PrimaryKey, Unique, AutoIncrement, HasMany, HasOne,
+  DefaultScope
+} from 'sequelize-typescript';
 import {IPersonnel} from "./personnel.interface";
 import Family from "./relations/personnel-family.model";
 import Passport from "./relations/personnel-passport.model";
@@ -18,7 +21,7 @@ import SocialSecurity from './relations/personnel-social-security.model';
 @Table({
   tableName: 'staff'
 })
-export default class Personnel extends Model<Personnel> /*implements IPersonnel*/ {
+export default class Personnel extends Model<Personnel> implements IPersonnel {
 
   @AutoIncrement
   @Unique
@@ -27,9 +30,10 @@ export default class Personnel extends Model<Personnel> /*implements IPersonnel*
 
   @Column number: string;
   @Column name: string;
+  @Column surname: string;
+  @Column middleName: string;
   @Column inn: string;
   @Column insurance: string;
-
 
 
   @HasMany(() => Attestation)
