@@ -4,20 +4,21 @@ import Family from "./relations/personnel-family.model";
 import Passport from "./relations/personnel-passport.model";
 import {IPassport} from "./relations/personnel-passport.interface";
 import {IFamily} from "./relations/personnel-family.interface";
-import IProfessionalRetraining, {default as IProfRetraining} from "./relations/personnel-prof-retraining.interface";
-import ProfessionalRetraining, {default as ProfRetraining} from "./relations/personnel-prof-retraining.model";
+import IProfRetraining from "./relations/personnel-prof-retraining.interface";
+import ProfRetraining from "./relations/personnel-prof-retraining.model";
 import Attestation from "./relations/personnel-attestation.model";
 import IAttestation from "./relations/personnel-attestation.interface";
-import QualificationImprovement from "./relations/personnel-qual-improvement.model";
-import IQualificationImprovement from "./relations/personnel-qual-improvement.interface";
-import Reward, {default as SocialSecurity} from "./relations/personnel-social-security.model";
+import QualImprovement from "./relations/personnel-qual-improvement.model";
+import IQualImprovement from "./relations/personnel-qual-improvement.interface";
 import {IPersonnelNamedThingWithDoc} from "./relations/personnel-named-thing-with-doc.interface";
 import {ISocialSecurity} from "./relations/personnel-social-security.interface";
+import Reward from './relations/personnel-reward.model';
+import SocialSecurity from './relations/personnel-social-security.model';
 
 @Table({
   tableName: 'staff'
 })
-export default class Personnel extends Model<Personnel> implements IPersonnel {
+export default class Personnel extends Model<Personnel> /*implements IPersonnel*/ {
 
   @AutoIncrement
   @Unique
@@ -34,17 +35,17 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @HasMany(() => Attestation)
   attestations: IAttestation[];
 
-  @HasMany(() => Family)
-  families: IFamily[];
-
   @HasOne(() => Passport)
   passport: IPassport;
+
+  @HasMany(() => Family)
+  families: IFamily[];
 
   @HasMany(() => ProfRetraining)
   profRetrainings: IProfRetraining[];
 
-  @HasMany(() => QualificationImprovement)
-  qualificationImprovements: IQualificationImprovement[];
+  @HasMany(() => QualImprovement)
+  qualificationImprovements: IQualImprovement[];
 
   @HasMany(() => Reward)
   rewards: IPersonnelNamedThingWithDoc[];

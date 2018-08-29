@@ -6,7 +6,7 @@ export default class IProfRetraining {
   startEduDate: string;
   endEduDate: string;
   specialty: string;
+  profRetrainingDocId: number;
   doc: IDoc;
-  docId: number;
   reason: string;
 }

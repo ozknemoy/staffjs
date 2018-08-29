@@ -4,7 +4,7 @@ import Family from "../components/personnel/relations/personnel-family.model";
 import Attestation from "../components/personnel/relations/personnel-attestation.model";
 import Passport from "../components/personnel/relations/personnel-passport.model";
 import {default as ProfRetraining} from "../components/personnel/relations/personnel-prof-retraining.model";
-import QualificationImprovement from "../components/personnel/relations/personnel-qual-improvement.model";
+import QualImprovement from "../components/personnel/relations/personnel-qual-improvement.model";
 import Doc from "../interfaces/doc.model";
 import Workplace from "../components/personnel/relations/personnel-workplace.model";
 import Reward from "../components/personnel/relations/personnel-reward.model";
@@ -28,7 +28,7 @@ export const staffJsDB = new Sequelize({
 });
 
 staffJsDB.addModels([
-  Personnel, Family, Attestation, Passport, ProfRetraining, QualificationImprovement,
+  Personnel, Family, Attestation, Passport, ProfRetraining, QualImprovement,
   Reward, Doc, SocialSecurity, Workplace
 ]);
 // Before you can use your models you have to tell sequelize where they can be found. So either set
@@ -40,15 +40,19 @@ staffJsDB.addModels([
 User.sync();
 */
 
+// обязательный порядок
 Personnel.sync();
-Family.sync();
+Doc.sync();
+
+// не обязательный
 Attestation.sync();
 Passport.sync();
+Family.sync();
 ProfRetraining.sync();
-QualificationImprovement.sync();
+QualImprovement.sync();
 Reward.sync();
 SocialSecurity.sync();
-Workplace.sync();
+//Workplace.sync();
 
-Doc.sync();
+
 

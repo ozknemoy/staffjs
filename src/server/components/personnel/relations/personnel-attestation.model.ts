@@ -8,7 +8,7 @@ import Personnel from "../personnel.model";
 @Table({
   tableName: 'attestation'
 })
-export default class Attestation extends Model<Attestation> implements IAttestation {
+export default class Attestation extends Model<Attestation> /*implements IAttestation*/ {
 
   @AutoIncrement
   @Unique
@@ -24,9 +24,9 @@ export default class Attestation extends Model<Attestation> implements IAttestat
 
   @Column
   @ForeignKey(() => Doc)
-  docId: number;
+  attestationDocId: number;
 
-  @HasOne(() => Doc, 'docId')
+  @BelongsTo(() => Doc, 'attestationDocId')
   doc: IDoc;
 
   @Column date: string;

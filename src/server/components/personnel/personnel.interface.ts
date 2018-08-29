@@ -1,6 +1,6 @@
 import {IFamily} from "./relations/personnel-family.interface";
 import {IPassport} from "./relations/personnel-passport.interface";
-import IQualificationImprovement from "./relations/personnel-qual-improvement.interface";
+import IQualImprovement from "./relations/personnel-qual-improvement.interface";
 import IAttestation from "./relations/personnel-attestation.interface";
 import {IPersonnelNamedThingWithDoc} from "./relations/personnel-named-thing-with-doc.interface";
 import IProfRetraining from "./relations/personnel-prof-retraining.interface";
@@ -15,7 +15,7 @@ export class IPersonnel {
   families: IFamily[] = null;
   passport: IPassport = null;
   profRetrainings: IProfRetraining[] = null;
-  qualificationImprovements: IQualificationImprovement[] = null;
+  qualificationImprovements: IQualImprovement[] = null;
   rewards: IPersonnelNamedThingWithDoc[] = null;
 }
 

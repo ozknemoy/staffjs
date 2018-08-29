@@ -6,6 +6,7 @@ export default class IAttestation  {
   personnelId:  number;
   date: string;
   doc: IDoc;
+  docId: number;
   resolution: string;
   reason: string;
 }

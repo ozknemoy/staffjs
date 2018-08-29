@@ -6,12 +6,7 @@ import {IPersonnel} from "../personnel.interface";
 import {IPersonnelNamedThingWithDoc} from "./personnel-named-thing-with-doc.interface";
 
 
-export default class PersonnelNamedThingWithDoc extends Model<PersonnelNamedThingWithDoc> implements IPersonnelNamedThingWithDoc {
-
-  @AutoIncrement
-  @Unique
-  @PrimaryKey
-  @Column id: number;
+export default class PersonnelNamedThingWithDoc extends Model<PersonnelNamedThingWithDoc> {
 
   @Column
   @ForeignKey(() => Personnel)
@@ -19,13 +14,6 @@ export default class PersonnelNamedThingWithDoc extends Model<PersonnelNamedThin
 
   @BelongsTo(() => Personnel)
   personnel: IPersonnel;
-
-  @Column
-  @ForeignKey(() => Doc)
-  docId: number;
-
-  @HasOne(() => Doc, 'docId')
-  doc: IDoc;
 
   @Column name: string;
 

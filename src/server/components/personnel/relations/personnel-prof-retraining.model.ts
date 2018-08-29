@@ -20,9 +20,9 @@ export default class ProfRetraining extends Model<ProfRetraining> implements IPr
 
   @ForeignKey(() => Doc)
   @Column
-  docId: number;
+  profRetrainingDocId: number;
 
-  @HasOne(() => Doc, 'docId')// второй параметр обязателен
+  @BelongsTo(() => Doc, 'profRetrainingDocId')// второй параметр обязателен
   doc: IDoc;
 
   startEduDate: string;

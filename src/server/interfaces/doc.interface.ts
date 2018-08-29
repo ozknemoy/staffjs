@@ -2,7 +2,7 @@
 
 export default class IDoc {
   id: number;
-  docNumber: string;
-  docName?: string;
-  docDate: string;
+  number: string;
+  name?: string;
+  date: string;
 }

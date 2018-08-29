@@ -1,14 +1,14 @@
 import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, HasOne, BelongsTo} from 'sequelize-typescript';
 import Doc from '../../../interfaces/doc.model';
 import IDoc from '../../../interfaces/doc.interface';
-import IQualificationImprovement from './personnel-qual-improvement.interface';
+import IQualImprovement from './personnel-qual-improvement.interface';
 import Personnel from "../personnel.model";
 import {IPersonnel} from "../personnel.interface";
 
 @Table({
   tableName: 'qualification-improvement'
 })
-export default class QualificationImprovement extends Model<QualificationImprovement> implements IQualificationImprovement {
+export default class QualImprovement extends Model<QualImprovement> implements IQualImprovement {
 
   @AutoIncrement
   @Unique
@@ -24,9 +24,9 @@ export default class QualificationImprovement extends Model<QualificationImprove
 
   @Column
   @ForeignKey(() => Doc)
-  docId: number;
+  qualImprovementDocId: number;
 
-  @HasOne(() => Doc, 'docId')
+  @BelongsTo(() => Doc, 'qualImprovementDocId')
   doc: IDoc;
 
   @Column startEduDate: string;
