@@ -1,7 +1,8 @@
 
 import {IPersonnel} from "../personnel.interface";
+import IDoc from '../../../interfaces/doc.interface';
 
-export class IPersonnelNamedThingWithDoc {
+export class IPersonnelNamedThingWithDoc extends IDoc {
   id: number;
   personnelId: number;
   personnel: IPersonnel;

@@ -36,6 +36,11 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @Column insurance: string;
 
 
+
+  // в самом конце анкеты
+  @Column extraInfo: string;
+
+
   @HasMany(() => Attestation)
   attestations: IAttestation[];
 

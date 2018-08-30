@@ -8,7 +8,6 @@ import {DbTransactions} from "../../services/db-transactions.service";
 import {ErrHandlerService} from "../../services/error-handler.service";
 import QualImprovement from "./relations/personnel-qual-improvement.model";
 import IQualImprovement from "./relations/personnel-qual-improvement.interface";
-import Doc from "../../interfaces/doc.model";
 
 @Component()
 export class PersonnelService {
@@ -54,7 +53,7 @@ export class PersonnelService {
   async saveOrCreateQualImprovements(personnelId, qualImprovements: IQualImprovement[]) {
     const oldQualImpModels = await this.getQualImprovementsByParent(personnelId);
     return this.dbTransactions
-      .createOrUpdateManyWithRelOneToOne(qualImprovements, QualImprovement, Doc, 'doc', 'qualImprovementDocId')
+      .createOrUpdateManyWithRelOneToOne(qualImprovements, QualImprovement,/* Doc,*/ 'doc', 'qualImprovementDocId')
 
     /*this.dbTransactions
       .createOrUpdateRel(Doc, 'qualImprovementDocId', personnelId, qualImprovements)

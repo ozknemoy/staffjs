@@ -1,14 +1,12 @@
-import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, HasOne, BelongsTo} from 'sequelize-typescript';
+import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, BelongsTo} from 'sequelize-typescript';
 import {IPersonnel} from "../personnel.interface";
 import IAttestation from './personnel-attestation.interface';
-import Doc from '../../../interfaces/doc.model';
-import IDoc from '../../../interfaces/doc.interface';
 import Personnel from "../personnel.model";
 
 @Table({
   tableName: 'attestation'
 })
-export default class Attestation extends Model<Attestation> /*implements IAttestation*/ {
+export default class Attestation extends Model<Attestation> implements IAttestation {
 
   @AutoIncrement
   @Unique
@@ -22,15 +20,10 @@ export default class Attestation extends Model<Attestation> /*implements IAttest
   @BelongsTo(() => Personnel)
   personnel: IPersonnel;
 
-  @Column
-  @ForeignKey(() => Doc)
-  attestationDocId: number;
-
-  @BelongsTo(() => Doc, 'attestationDocId')
-  doc: IDoc;
-
   @Column date: string;
   @Column resolution: string;
   @Column reason: string;
-
+  @Column docNumber: string;
+  /*dummy*/ docName: string;
+  @Column docDate: string;
 }

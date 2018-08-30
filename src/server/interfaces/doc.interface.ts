@@ -1,8 +1,8 @@
+import {Column} from 'sequelize-typescript';
 
 
 export default class IDoc {
-  id: number;
-  number: string;
-  name?: string;
-  date: string;
+  docNumber: string = null;
+  docName: string = null;
+  docDate: string = null;
 }
