@@ -4,7 +4,7 @@ import {HttpService} from "../../../services/http.service";
 import IQualImprovement from "../../../../../server/components/personnel/relations/personnel-qual-improvement.interface";
 
 @Component({
-  selector: 'personnel-qual-improvement',
+  selector: 'staff-qual-improvement',
   templateUrl: './qual-improvement-edit.component.html'
 })
 export class QualImprovementComponent implements OnInit {
