@@ -6,10 +6,12 @@ import { PingService } from './shared/services/ping.services';
 import {FileUploaderComponent} from "./components-stateless/file-uploader/file-uploader.component";
 import {HttpService} from "./services/http.service";
 import {StaffListComponent} from "./components-view/staff/staff-list.component";
-import {StaffEditComponent} from "./components-view/staff/staff-edit.component";
+import {StaffMainInfoComponent} from "./components-view/staff/main-info/main-info-edit.component";
 import {PrintButtonComponent} from "./components-stateless/print-button.component";
 import {vendorsModules} from './app.vendors';
 import {QualImprovementComponent} from "./components-view/staff/qual-improvement/qual-improvement-edit.component";
+import {StaffEditComponent} from "./components-view/staff/staff-edit.component";
+import {FamilyComponent} from "./components-view/staff/family/family-edit.component";
 
 declare const require;
 const pdfMake = require('pdfmake/build/pdfmake.js');
@@ -25,7 +27,9 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     ContactComponent,
     StaffListComponent,
     StaffEditComponent,
+    StaffMainInfoComponent,
     QualImprovementComponent,
+    FamilyComponent,
 
     FileUploaderComponent,
     PrintButtonComponent,

@@ -16,15 +16,15 @@
             <input type="text" [(ngModel)]="worker.number" class="form-control">
           </div>
           <div class="form-group">
-            <label>ФИО</label>
-            <input type="text" [(ngModel)]="worker.name" class="form-control">
-          </div>
-          <div class="form-group">
-            <label>ФИО</label>
+            <label>Фамилия</label>
             <input type="text" [(ngModel)]="worker.surname" class="form-control">
           </div>
           <div class="form-group">
-            <label>ФИО</label>
+            <label>Иимя</label>
+            <input type="text" [(ngModel)]="worker.name" class="form-control">
+          </div>
+          <div class="form-group">
+            <label>Отчество</label>
             <input type="text" [(ngModel)]="worker.middleName" class="form-control">
           </div>
           <!--<div class="form-group">
@@ -69,25 +69,8 @@
         </div>
       </div>
     </tab>
-    <tab heading="Состав семьи">
-      Состав семьи
+    <tab heading="55555555">
 
-      <table class="table table-sm table-responsive-sm table-bordered">
-        <tr>
-          <th>Степень родства <br>(ближайшие родственники)</th>
-          <th>Фамилия, имя, отчество</th>
-          <th>Год рождения</th>
-          <th><button class="btn btn-sm btn-success" (click)="addFamily()">Добавить</button></th>
-        </tr>
-        <tr *ngFor="let fam of worker.families; let i = index">
-          <td><input type="text" [(ngModel)]="fam.relationshipDegree" class="form-control"></td>
-          <td><input type="text" [(ngModel)]="fam.fullName" class="form-control"></td>
-          <td><input type="number" [(ngModel)]="fam.birthYear" class="form-control"></td>
-          <td><button class="btn btn-sm btn-danger" (click)="deleteFamily(i)">Удалить</button></td>
-        </tr>
-      </table>
-
-      <personnel-qual-improvement></personnel-qual-improvement>
     </tab>
   </tabset>
 

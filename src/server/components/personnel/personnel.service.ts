@@ -8,6 +8,7 @@ import {DbTransactions} from "../../services/db-transactions.service";
 import {ErrHandlerService} from "../../services/error-handler.service";
 import QualImprovement from "./relations/personnel-qual-improvement.model";
 import IQualImprovement from "./relations/personnel-qual-improvement.interface";
+import {IFamily} from "./relations/personnel-family.interface";
 
 @Component()
 export class PersonnelService {
@@ -46,19 +47,23 @@ export class PersonnelService {
     return Personnel.create(pers, { include: [ Family ]})
   }
 
-  getQualImprovementsByParent(personnelId) {
-    return QualImprovement.findAll({where: {personnelId}})
+  getByParent(_Model, personnelId: number) {
+    return _Model.findAll({where: {personnelId}})
   }
 
-  async saveOrCreateQualImprovements(personnelId, qualImprovements: IQualImprovement[]) {
-    const oldQualImpModels = await this.getQualImprovementsByParent(personnelId);
+  saveOrCreateQualImprovements(personnelId, qualImprovements: IQualImprovement[]) {
+    //const oldQualImpModels = await this.getQualImprovementsByParent(personnelId);
     return this.dbTransactions
-      .createOrUpdateManyWithRelOneToOne(qualImprovements, QualImprovement,/* Doc,*/ 'doc', 'qualImprovementDocId')
+      .createOrUpdateManyWithoutRels(QualImprovement, 'personnelId', personnelId, qualImprovements)
+      .then(() => this.getByParent(QualImprovement, personnelId))
+      .catch(err => this.errHandler.handlaAll(err))
+  }
 
-    /*this.dbTransactions
-      .createOrUpdateRel(Doc, 'qualImprovementDocId', personnelId, qualImprovements)
-      .then(() => this.getQualImprovements(personnelId))
-      .catch(err => this.errHandler.handlaAll(err))*/
+  saveOrCreateFamily(personnelId, families: IFamily[]) {
+    return this.dbTransactions
+      .createOrUpdateManyWithoutRels(Family, 'personnelId', personnelId, families)
+      .then(() => this.getByParent(Family, personnelId))
+      .catch(err => this.errHandler.handlaAll(err))
   }
 
 }

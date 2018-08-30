@@ -3,12 +3,11 @@ export class DbTransactions {
 
   // при данной реализации надо обязательно возвращать на фронт объект и писать его в модель чтобы сохранялись id
   async createOrUpdateRel<T>(SubModel, fk: string, id: number, propRels: keyof T, newParentValue: T) {
-    const _relNewValue = newParentValue[propRels];
+    const relNewValue  = <any>newParentValue[propRels];
     // если связь -to-one то эмулирую -to-many
-    const relNewValue: any[] = (_relNewValue && !Array.isArray(_relNewValue)) ? [_relNewValue] : <any>_relNewValue;
+    //const relNewValue: any[] = (_relNewValue && !Array.isArray(_relNewValue)) ? [_relNewValue] : <any>_relNewValue;
 
     const subModelOld = await SubModel['findAll']({where: {[fk]: id}});
-    console.log('********', relNewValue);
     if (newParentValue && relNewValue && relNewValue.length) {
       // update
       if (subModelOld && subModelOld.length) {
@@ -29,11 +28,9 @@ export class DbTransactions {
           return Promise.resolve(null)
         })
       }
-      падает тут на фк тк нет на доке форинкия . он на самом родителе
       // create
       return SubModel.bulkCreate(relNewValue.map(one => ({...one, ...{[fk]: id}})))
     }
-    console.log('--------------');
     if (subModelOld && subModelOld.length) {
       return SubModel['destroy']({where: {[fk]: id}});
     }
@@ -41,8 +38,8 @@ export class DbTransactions {
   }
 
   // для моделей Many без взаимосвязей
-  async createOrUpdateManyWithoutRels(_Model, fk: string, id: number, newValue: any[]) {
-    const modelOld = await _Model['findAll']({where: {[fk]: id}});
+  async createOrUpdateManyWithoutRels(_Model, fk: string, parentId: number, newValue: any[]) {
+    const modelOld = await _Model['findAll']({where: {[fk]: parentId}});
     if (newValue && newValue.length) {
       // update
       if (modelOld && modelOld.length) {
@@ -52,7 +49,7 @@ export class DbTransactions {
           if (rowForSave.id) {
             return modelOld.find(oneSubModel => rowForSave.id === oneSubModel.id).update(rowForSave)
           }
-          return _Model.create({...rowForSave, ...{[fk]: id}})
+          return _Model.create({...rowForSave, ...{[fk]: parentId}})
         })).then(() => {
           // надо проверить удалялись ли строки
           // просто проверяю есть ли у старых id которых уже нет в новом
@@ -64,14 +61,15 @@ export class DbTransactions {
         })
       }
       // create
-      return _Model.bulkCreate(newValue.map(one => ({...one, ...{[fk]: id}})))
+      return _Model.bulkCreate(newValue.map(one => ({...one, ...{[fk]: parentId}})))
     }
     if (modelOld && modelOld.length) {
-      return _Model['destroy']({where: {[fk]: id}});
+      return _Model['destroy']({where: {[fk]: parentId}});
     }
     return Promise.resolve(null)
   }
 
+  /* начал реализовывать но пока бросил
   async createOrUpdateManyWithRelOneToOne(newValues: any[], _Model, SubModel, propRels: string, fk: string) {
 
     return Promise.all([
@@ -85,6 +83,6 @@ export class DbTransactions {
 
       })
     ]);
-  }
+  }*/
 
 }

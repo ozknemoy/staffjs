@@ -1,0 +1,21 @@
+
+<div class="float-right">
+  <button class="btn btn-sm btn-success" (click)="save()">Сохранить</button>
+</div>
+
+Состав семьи
+
+<table class="table table-sm table-responsive-sm table-bordered">
+  <tr>
+    <th class="w200">Степень родства <br>(ближайшие родственники)</th>
+    <th>Фамилия, имя, отчество</th>
+    <th class="w150">Год рождения</th>
+    <th class="w100"><button class="btn btn-sm btn-success" (click)="addRow()">Добавить</button></th>
+  </tr>
+  <tr *ngFor="let fam of families; let i = index">
+    <td><input type="text" [(ngModel)]="fam.relationshipDegree" class="form-control"></td>
+    <td><input type="text" [(ngModel)]="fam.fullName" class="form-control"></td>
+    <td><input type="number" [(ngModel)]="fam.birthYear" class="form-control"></td>
+    <td><button class="btn btn-sm btn-danger" (click)="deleteRow(i)">Удалить</button></td>
+  </tr>
+</table>

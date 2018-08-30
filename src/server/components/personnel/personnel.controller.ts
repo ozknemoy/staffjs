@@ -2,6 +2,9 @@ import {Body, Controller, Get, Param, Post, Put} from '@nestjs/common';
 import {PersonnelService} from "./personnel.service";
 import {IPersonnel} from "./personnel.interface";
 import IQualImprovement from "./relations/personnel-qual-improvement.interface";
+import {IFamily} from "./relations/personnel-family.interface";
+import QualImprovement from "./relations/personnel-qual-improvement.model";
+import Family from "./relations/personnel-family.model";
 
 
 @Controller('personnel')
@@ -26,11 +29,21 @@ export class StaffController {
 
   @Get(':id/qual-improvement')
   getQualImprovements(@Param('id') id) {
-    return this.personnelService.getQualImprovementsByParent(id);
+    return this.personnelService.getByParent(QualImprovement, id);
   }
 
   @Put(':id/qual-improvement')
   saveOrCreateQualImprovements(@Param('id') id, @Body() body: IQualImprovement[]) {
     return this.personnelService.saveOrCreateQualImprovements(id, body);
+  }
+
+  @Get(':id/family')
+  getFamily(@Param('id') id) {
+    return this.personnelService.getByParent(Family, id);
+  }
+
+  @Put(':id/family')
+  saveOrCreateFamily(@Param('id') id, @Body() body: IFamily[]) {
+    return this.personnelService.saveOrCreateFamily(id, body);
   }
 }

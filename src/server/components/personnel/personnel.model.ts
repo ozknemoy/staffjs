@@ -17,6 +17,8 @@ import {IPersonnelNamedThingWithDoc} from "./relations/personnel-named-thing-wit
 import {ISocialSecurity} from "./relations/personnel-social-security.interface";
 import Reward from './relations/personnel-reward.model';
 import SocialSecurity from './relations/personnel-social-security.model';
+import Vacation from "./relations/personnel-vacation.model";
+import IVacation from "./relations/personnel-vacation.interface";
 
 @Table({
   tableName: 'staff'
@@ -61,5 +63,8 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
 
   @HasMany(() => SocialSecurity)
   socialSecurities: ISocialSecurity[];
+
+  @HasMany(() => Vacation)
+  vacation: IVacation[];
 
 }

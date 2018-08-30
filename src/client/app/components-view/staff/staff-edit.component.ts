@@ -1,57 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {IPersonnel} from "../../../../server/components/personnel/personnel.interface";
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {IFamily} from "../../../../server/components/personnel/relations/personnel-family.interface";
-import * as _ from 'lodash/core'
 
-declare const pdfMake;
 @Component({
   selector: 'app-staff-edit',
-  templateUrl: './staff-edit.component.html'
+  template: `
+  <ul class="nav justify-content-start">
+    <li class="nav-item">
+      <a [routerLink]="['/staff-edit', id]" class="nav-link">Основная информация</a>
+    </li>
+    <li class="nav-item">
+      <a routerLink="qual-improvement" class="nav-link">Повышение квалификации</a>
+    </li>
+    <li class="nav-item">
+      <a routerLink="family" class="nav-link">Состав семьи</a>
+    </li>
+  </ul>
+  <router-outlet></router-outlet>
+  `
 })
 export class StaffEditComponent implements OnInit {
+  id;
+  constructor(private route: ActivatedRoute) {}
 
-  worker = new IPersonnel();
-  pdf = [];
-  constructor(private httpClient: HttpClient, private route: ActivatedRoute) { }
-
-  async ngOnInit() {
-    this.worker = await this.httpClient.get<any>('/personnel/' + this.route.snapshot.params.id).toPromise();
-    /*this.pdfBuilder()
-      .makeFamilyTable(this.worker.families)
-      .build()*/
+  ngOnInit() {
+    this.id = this.route.snapshot.params.id;
   }
-
-  makeFamilyTable(f: IFamily[]) {
-
-    return this;
-  }
-
-  build() {
-
-    const w = window.open('http://localhost:4200/staff-edit/29', '_blank ');
-    pdfMake.createPdf({content: [this.pdf]}).open({}, w);
-  }
-
-  pdfBuilder() {
-    return this
-  }
-
-  addFamily() {
-    this.worker.families.push(<any>{})
-  }
-
-  deleteFamily(i) {
-    this.worker.families.splice(i, 1)
-  }
-
-  save() {
-    this.httpClient.put<any>('/personnel/' + this.worker.id, this.worker)
-      .toPromise()
-      .then((newWorker) => {
-        this.worker = newWorker;
-      });
-  }
-
 }

@@ -9,6 +9,7 @@ export default class PersonnelNamedThingWithDoc extends Model<PersonnelNamedThin
   @AutoIncrement
   @Unique
   @PrimaryKey
+  @Column
   id: number;
 
   @Column

@@ -13,7 +13,7 @@ export class QualImprovementComponent implements OnInit {
   constructor(private http: HttpService, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    this.id = this.route.snapshot.params.id;
+    this.id = this.route.snapshot.parent.params.id;
     this.http.get(`/personnel/${this.id}/qual-improvement`)
       .toPromise()
       .then((d: IQualImprovement[]) => this.qualImprovement = d)

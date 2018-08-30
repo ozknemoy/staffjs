@@ -13,6 +13,7 @@ export default class ProfRetraining extends Model<ProfRetraining> implements IPr
   @AutoIncrement
   @Unique
   @PrimaryKey
+  @Column
   id: number;
 
   @ForeignKey(() => Personnel)
