@@ -32,12 +32,19 @@ export class PersonnelService {
     return Personnel.findOne({where: {id}})
   }
 
-  async updateOne(id: number, pers: IPersonnel) {
+  async updateOneWithRel(id: number, pers: IPersonnel, ModelRel, propName: keyof IPersonnel) {
+    console.log('////', ModelRel);
     const oldPersModel = await this.getOneWithoutInclude(id);
     return Promise.all([
       oldPersModel.update(pers),
-      this.dbTransactions.createOrUpdateRel(Family, 'personnelId', id, 'families', pers)
+      this.dbTransactions.createOrUpdateRel(ModelRel, 'personnelId', id, propName, pers)
     ]).then(() => this.getOne(id))
+      .catch(err => this.errHandler.handlaAll(err))
+  }
+
+  async updateOne(id: number, pers: IPersonnel) {
+    const oldPersModel = await this.getOneWithoutInclude(id);
+    return oldPersModel.update(pers)
       .catch(err => this.errHandler.handlaAll(err))
   }
 
@@ -52,7 +59,6 @@ export class PersonnelService {
   }
 
   saveOrCreateQualImprovements(personnelId, qualImprovements: IQualImprovement[]) {
-    //const oldQualImpModels = await this.getQualImprovementsByParent(personnelId);
     return this.dbTransactions
       .createOrUpdateManyWithoutRels(QualImprovement, 'personnelId', personnelId, qualImprovements)
       .then(() => this.getByParent(QualImprovement, personnelId))

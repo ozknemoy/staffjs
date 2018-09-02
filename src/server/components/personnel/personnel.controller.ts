@@ -1,10 +1,11 @@
-import {Body, Controller, Get, Param, Post, Put} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post, Put, Query} from '@nestjs/common';
 import {PersonnelService} from "./personnel.service";
 import {IPersonnel} from "./personnel.interface";
 import IQualImprovement from "./relations/personnel-qual-improvement.interface";
 import {IFamily} from "./relations/personnel-family.interface";
 import QualImprovement from "./relations/personnel-qual-improvement.model";
 import Family from "./relations/personnel-family.model";
+import Institution from "./relations/personnel-institution.model";
 
 
 @Controller('personnel')
@@ -23,8 +24,13 @@ export class StaffController {
   }
 
   @Put(':id')
-  updateOne(@Param('id') id, @Body() pers: IPersonnel) {
+  updateOne(@Param('id') id, @Body() pers: IPersonnel, @Query('rel') ModelRel?: string) {
     return this.personnelService.updateOne(id, pers);
+  }
+
+  @Put(':id/with-rel/institution')
+  updateOneInstitution(@Param('id') id, @Body() pers: IPersonnel) {
+    return this.personnelService.updateOneWithRel(id, pers, Institution, 'institutions');
   }
 
   @Get(':id/qual-improvement')

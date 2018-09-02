@@ -5,16 +5,32 @@ import IAttestation from "./relations/personnel-attestation.interface";
 import {IPersonnelNamedThingWithDoc} from "./relations/personnel-named-thing-with-doc.interface";
 import IProfRetraining from "./relations/personnel-prof-retraining.interface";
 import {Column} from "sequelize-typescript";
+import IInstitution from "./relations/personnel-institution.interface";
 
 
 export class IPersonnel {
   id: number;
+
   number: string = null;
+  inn: string = null;
+  insurance: string = null;
+  alphabet: string = null;
+  workNature: string = null;
+  workType: string = null;
+  sex: string = null;
+
   name: string = null;
   surname: string = null;
   middleName: string = null;
+  contractNumber: string = null;
+  contractDate: Date = null;
+  foreignLanguage: string = null;
+  foreignLanguageGrade: string = null;
+  educationName: string = null;
+
 
   attestations: IAttestation[] = null;
+  institutions: IInstitution[] = null;
   families: IFamily[] = null;
   passport: IPassport = null;
   profRetrainings: IProfRetraining[] = null;

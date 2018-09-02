@@ -12,6 +12,7 @@ import {vendorsModules} from './app.vendors';
 import {QualImprovementComponent} from "./components-view/staff/qual-improvement/qual-improvement-edit.component";
 import {StaffEditComponent} from "./components-view/staff/staff-edit.component";
 import {FamilyComponent} from "./components-view/staff/family/family-edit.component";
+import {EducationEditComponent} from "./components-view/staff/education/education-edit.component";
 
 declare const require;
 const pdfMake = require('pdfmake/build/pdfmake.js');
@@ -30,6 +31,8 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     StaffMainInfoComponent,
     QualImprovementComponent,
     FamilyComponent,
+    EducationEditComponent,
+
 
     FileUploaderComponent,
     PrintButtonComponent,

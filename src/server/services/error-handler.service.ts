@@ -33,6 +33,7 @@ export class ErrHandlerService {
       case 'SequelizeValidationError':
         return this.sentToFront(e);
     }
+    console.log('handlaAllError___________________', e);
     return this.handle('Не хватает прав', status)
 
   }

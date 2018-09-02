@@ -4,6 +4,7 @@ import {StaffMainInfoComponent} from "./components-view/staff/main-info/main-inf
 import {QualImprovementComponent} from "./components-view/staff/qual-improvement/qual-improvement-edit.component";
 import {StaffEditComponent} from "./components-view/staff/staff-edit.component";
 import {FamilyComponent} from "./components-view/staff/family/family-edit.component";
+import {EducationEditComponent} from "./components-view/staff/education/education-edit.component";
 
 export const routes = [
   {
@@ -34,6 +35,9 @@ export const routes = [
       }, {
         path: 'family',
         component: FamilyComponent
+      }, {
+        path: 'education',
+        component: EducationEditComponent
       }
     ]
   }, /**/

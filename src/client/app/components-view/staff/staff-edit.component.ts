@@ -9,6 +9,9 @@ import {ActivatedRoute} from "@angular/router";
       <a [routerLink]="['/staff-edit', id]" class="nav-link">Основная информация</a>
     </li>
     <li class="nav-item">
+      <a routerLink="education" class="nav-link">Образование</a>
+    </li>
+    <li class="nav-item">
       <a routerLink="qual-improvement" class="nav-link">Повышение квалификации</a>
     </li>
     <li class="nav-item">

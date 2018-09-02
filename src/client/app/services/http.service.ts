@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {FileUploader} from "ng2-file-upload";
 import {HttpClient} from "@angular/common/http";
+import {Observable, SubscribableOrPromise} from "rxjs/Observable";
 
 @Injectable()
 export class HttpService {
@@ -11,8 +12,8 @@ export class HttpService {
 
   }
 
-  get(url: string)  {
-    return this.http.get(this.BASE_URL + url)
+  get<T>(url: string)  {
+    return this.http.get<any>(this.BASE_URL + url)
   }
 
   post(url, data: any, config?)  {
@@ -21,7 +22,7 @@ export class HttpService {
 
 
   put(url, data: any, config?)  {
-    return this.http.put(this.BASE_URL + url, data, config)
+    return this.http.put<any>(this.BASE_URL + url, data, config)
   }
 
   uploadFileWithAuth(maxFileSize, url, filename = "file") {

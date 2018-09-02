@@ -11,6 +11,7 @@ import SocialSecurity from "../components/personnel/relations/personnel-social-s
 import Army from '../components/personnel/relations/personnel-army.model';
 import Vacation from '../components/personnel/relations/personnel-vacation.model';
 import IQualImprovement from "../components/personnel/relations/personnel-qual-improvement.interface";
+import Institution from "../components/personnel/relations/personnel-institution.model";
 
 
 export const staffJsDB = new Sequelize({
@@ -32,7 +33,7 @@ export const staffJsDB = new Sequelize({
 
 staffJsDB.addModels([
   Personnel, Family, Attestation, Passport, ProfRetraining, QualImprovement,
-  Reward, SocialSecurity, Workplace, Army, Vacation
+  Reward, SocialSecurity, Workplace, Army, Vacation, Institution
 ]);
 // Before you can use your models you have to tell sequelize where they can be found. So either set
 // modelPaths in the sequelize config or add the required models later on by calling
@@ -46,6 +47,7 @@ User.sync();
 // обязательный порядок
 Personnel.sync();
 
+
 // не обязательный
 Attestation.sync();
 Passport.sync();
@@ -56,11 +58,11 @@ Reward.sync();
 SocialSecurity.sync();
 Army.sync();
 Vacation.sync();
-//Workplace.sync();
+Institution.sync();
+Workplace.sync();
 
-/*Personnel
-  .create({id: 29, name: 'john'})
-  .then(() => {
-    return QualImprovement.create({id: 1, personnelId: 29, name: 'john'})
-  });*/
+//Personnel.create({id: 29, name: 'john'});
+//QualImprovement.upsert({id: 1, personnelId: 29, reason: 'tak nado'});
+//Family.upsert({"id":1,"personnelId":29,"relationshipDegree":"1","fullName":"2","birthYear":2222});
 
+//Institution.upsert({/*"id":1,*/"personnelId":29,"name":"1","docName":"2","docCode":"3","docNumber":"4","qualification":"6","specialty":"7","endDate":5});

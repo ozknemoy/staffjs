@@ -19,9 +19,14 @@ import Reward from './relations/personnel-reward.model';
 import SocialSecurity from './relations/personnel-social-security.model';
 import Vacation from "./relations/personnel-vacation.model";
 import IVacation from "./relations/personnel-vacation.interface";
+import IInstitution from "./relations/personnel-institution.interface";
+import Institution from "./relations/personnel-institution.model";
+import Workplace from "./relations/personnel-workplace.model";
+import IWorkplace from "./relations/personnel-workplace.interface";
 
 @Table({
-  tableName: 'staff'
+  tableName: 'staff',
+  timestamps: true
 })
 export default class Personnel extends Model<Personnel> implements IPersonnel {
 
@@ -29,15 +34,22 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @Unique
   @PrimaryKey
   @Column id: number;
-
   @Column number: string;
+  @Column inn: string;
+  @Column insurance: string;
+  @Column alphabet: string;
+  @Column workNature: string;
+  @Column workType: string;
+  @Column sex: string;
+
   @Column name: string;
   @Column surname: string;
   @Column middleName: string;
-  @Column inn: string;
-  @Column insurance: string;
-
-
+  @Column contractNumber: string;
+  @Column contractDate: Date;
+  @Column foreignLanguage: string;
+  @Column foreignLanguageGrade: string;
+  @Column educationName: string;
 
   // в самом конце анкеты
   @Column extraInfo: string;
@@ -45,6 +57,9 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
 
   @HasMany(() => Attestation)
   attestations: IAttestation[];
+
+  @HasMany(() => Institution)
+  institutions: IInstitution[];
 
   @HasOne(() => Passport)
   passport: IPassport;
@@ -66,5 +81,8 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
 
   @HasMany(() => Vacation)
   vacation: IVacation[];
+
+  @HasMany(() => Workplace)
+  workplaces: IWorkplace[];
 
 }
