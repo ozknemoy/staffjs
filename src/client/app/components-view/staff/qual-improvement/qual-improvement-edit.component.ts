@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {HttpService} from "../../../services/http.service";
 import IQualImprovement from "../../../../../server/components/personnel/relations/personnel-qual-improvement.interface";
+import {HandleData} from '../../../shared/services/handle-data';
 
 @Component({
   selector: 'staff-qual-improvement',
@@ -9,6 +10,7 @@ import IQualImprovement from "../../../../../server/components/personnel/relatio
 })
 export class QualImprovementComponent implements OnInit {
   id: string;
+  private dateProps: (keyof IQualImprovement)[] = ['startEduDate', 'endEduDate', 'docDate'];
   public qualImprovement: IQualImprovement[];
   constructor(private http: HttpService, private route: ActivatedRoute) { }
 
@@ -16,7 +18,7 @@ export class QualImprovementComponent implements OnInit {
     this.id = this.route.snapshot.parent.params.id;
     this.http.get(`/personnel/${this.id}/qual-improvement`)
       .toPromise()
-      .then((d: IQualImprovement[]) => this.qualImprovement = d)
+      .then((d: IQualImprovement[]) => this.qualImprovement = HandleData.handleDatesInArrFromServer(d, this.dateProps))
   }
 
   addRow() {
@@ -28,9 +30,10 @@ export class QualImprovementComponent implements OnInit {
   }
 
   save() {
-    this.http.put(`/personnel/${this.id}/qual-improvement`, this.qualImprovement)
+    const tbl = HandleData.handleDatesInArrToServer(this.qualImprovement, this.dateProps);
+    this.http.put(`/personnel/${this.id}/qual-improvement`, tbl)
       .toPromise()
-      .then((d) => this.qualImprovement = <any>d);
+      .then((d) => this.qualImprovement = HandleData.handleDatesInArrFromServer(<any>d, this.dateProps));
   }
 
 }

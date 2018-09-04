@@ -22,5 +22,5 @@ export default class PersonnelNamedThingWithDoc extends Model<PersonnelNamedThin
   @Column name: string;
   @Column docNumber: string;
   @Column docName: string;
-  @Column docDate: string;
+  @Column docDate: Date;
 }

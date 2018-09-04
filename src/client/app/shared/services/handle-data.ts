@@ -1,8 +1,6 @@
 import {HttpHeaders} from '@angular/common/http/src/headers';
+import {moment} from 'ngx-bootstrap/chronos/test/chain';
 
-/**
- * Created by Vakarchuk.DM on 13.09.2017.
- */
 
 declare const Set;
 
@@ -11,23 +9,6 @@ export interface ISimpleObj {
 }
 
 export class HandleData {
-
-  constructor() {}
-
-  static sliceByArrayOfNumbers(_str: string, _mask: number[], specialChar = '-', doNotCleanOlsSpecialChar = false): string {
-    if (!_str || !_mask) return null;
-    if (!doNotCleanOlsSpecialChar) _str = _str.replace(new RegExp(specialChar, 'g'), '');
-    let str = '';
-    let charNow = 0;
-    const mask = [0].concat(_mask);
-    mask.forEach(function (maskNum, i) {
-      if (i < mask.length) {
-        str = str + (i > 1 ? specialChar : '') + _str.slice(charNow, charNow + maskNum);
-      }
-      charNow += maskNum;
-    });
-    return str;
-  }
 
   static getFileNameFromHttpResponse(httpResponse) {
     const contentDispositionHeader = decodeURIComponent((<HttpHeaders>httpResponse.headers).get('Content-Disposition'));
@@ -70,8 +51,42 @@ export class HandleData {
   static arrayHasUniqueFields(array: any[], ...fields: string[]): boolean {
     const valueArr = array.map(row => (fields.map(field => row[field])).toString());
     // откидываю повторяющиеся значения
-    let deduped = [...Array['from'](new Set(valueArr))];
+    const deduped = [...Array['from'](new Set(valueArr))];
     return valueArr.length === deduped.length;
   }
 
+  // https://blog.theodo.fr/2018/01/tips-tricks-date-handling-moment-js/
+  static dateToServer(date: string) {
+    return (date && typeof date === 'string') ? moment(date).utc() : null;
+  }
+
+  static dateFromServer(date: string) {
+    return date ? moment(date).format('YYYY-MM-DD') : date;
+  }
+
+  static copy<T>(arr: T[]): T[] {
+    return JSON.parse(JSON.stringify(arr))
+  }
+
+  static handleDatesInObjectToServer<T>(obj: T, stringsArr: (keyof T)[]) {
+    stringsArr.forEach( (str) => {
+        obj[str] = <any>HandleData.dateToServer(<any>obj[str])
+    });
+    return obj
+  };
+
+  static handleDatesInObjectFromServer<T>(obj: T, stringsArr: (keyof T)[]) {
+    stringsArr.forEach( (str) => {
+      obj[str] = <any>HandleData.dateFromServer(<any>obj[str])
+    });
+    return obj
+  };
+
+  static handleDatesInArrToServer<T>(arr: T[], stringsArr: (keyof T)[]) {
+    return HandleData.copy(arr).map( (row: T) => HandleData.handleDatesInObjectToServer(row, stringsArr));
+  };
+
+  static handleDatesInArrFromServer<T>(arr: T[], stringsArr: (keyof T)[]) {
+    return HandleData.copy(arr).map( (row: T) => HandleData.handleDatesInObjectFromServer(row, stringsArr));
+  };
 }

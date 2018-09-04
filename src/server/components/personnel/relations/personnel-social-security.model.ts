@@ -15,5 +15,5 @@ export default class SocialSecurity extends PersonnelNamedThingWithDoc implement
   @Column reason: string;
   @Column docNumber: string;
   /*dummy*/ docName: string;
-  @Column docDate: string;
+  @Column docDate: Date;
 }

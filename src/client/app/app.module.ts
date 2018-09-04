@@ -13,6 +13,7 @@ import {QualImprovementComponent} from "./components-view/staff/qual-improvement
 import {StaffEditComponent} from "./components-view/staff/staff-edit.component";
 import {FamilyComponent} from "./components-view/staff/family/family-edit.component";
 import {EducationEditComponent} from "./components-view/staff/education/education-edit.component";
+import {ProfRetrainingComponent} from './components-view/staff/prof-retrainig/prof-retrainig-edit.component';
 
 declare const require;
 const pdfMake = require('pdfmake/build/pdfmake.js');
@@ -32,7 +33,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     QualImprovementComponent,
     FamilyComponent,
     EducationEditComponent,
-
+    ProfRetrainingComponent,
 
     FileUploaderComponent,
     PrintButtonComponent,

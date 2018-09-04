@@ -9,6 +9,8 @@ import {ErrHandlerService} from "../../services/error-handler.service";
 import QualImprovement from "./relations/personnel-qual-improvement.model";
 import IQualImprovement from "./relations/personnel-qual-improvement.interface";
 import {IFamily} from "./relations/personnel-family.interface";
+import ProfRetraining from './relations/personnel-prof-retraining.model';
+import IProfRetraining from './relations/personnel-prof-retraining.interface';
 
 @Component()
 export class PersonnelService {
@@ -69,6 +71,13 @@ export class PersonnelService {
     return this.dbTransactions
       .createOrUpdateManyWithoutRels(Family, 'personnelId', personnelId, families)
       .then(() => this.getByParent(Family, personnelId))
+      .catch(err => this.errHandler.handlaAll(err))
+  }
+
+  saveOrCreateProfRetraining(personnelId, profRetrainings: IProfRetraining[]) {
+    return this.dbTransactions
+      .createOrUpdateManyWithoutRels(ProfRetraining, 'personnelId', personnelId, profRetrainings)
+      .then(() => this.getByParent(ProfRetraining, personnelId))
       .catch(err => this.errHandler.handlaAll(err))
   }
 

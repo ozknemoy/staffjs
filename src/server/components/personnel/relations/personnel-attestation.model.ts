@@ -25,5 +25,5 @@ export default class Attestation extends Model<Attestation> implements IAttestat
   @Column reason: string;
   @Column docNumber: string;
   /*dummy*/ docName: string;
-  @Column docDate: string;
+  @Column docDate: Date;
 }

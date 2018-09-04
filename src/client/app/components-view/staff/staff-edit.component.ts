@@ -17,6 +17,9 @@ import {ActivatedRoute} from "@angular/router";
     <li class="nav-item">
       <a routerLink="family" class="nav-link">Состав семьи</a>
     </li>
+    <li class="nav-item">
+      <a routerLink="prof-retrainig" class="nav-link">Проф переподготовка</a>
+    </li>
   </ul>
   <router-outlet></router-outlet>
   `

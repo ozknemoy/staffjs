@@ -31,6 +31,6 @@ export default class QualImprovement extends Model<QualImprovement> implements I
   @Column reason: string;
   @Column docNumber: string;
   @Column docName: string;
-  @Column docDate: string;
+  @Column docDate: Date;
 
 }

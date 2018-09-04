@@ -29,5 +29,5 @@ export default class ProfRetraining extends Model<ProfRetraining> implements IPr
   @Column reason: string;
   @Column docNumber: string;
   @Column docName: string;
-  @Column docDate: string;
+  @Column docDate: Date;
 }

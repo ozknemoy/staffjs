@@ -5,6 +5,7 @@ import {QualImprovementComponent} from "./components-view/staff/qual-improvement
 import {StaffEditComponent} from "./components-view/staff/staff-edit.component";
 import {FamilyComponent} from "./components-view/staff/family/family-edit.component";
 import {EducationEditComponent} from "./components-view/staff/education/education-edit.component";
+import {ProfRetrainingComponent} from './components-view/staff/prof-retrainig/prof-retrainig-edit.component';
 
 export const routes = [
   {
@@ -22,8 +23,6 @@ export const routes = [
     component: StaffListComponent
   }, {
     path: 'staff-edit/:id',
-    //redirectTo: 'staff-edit/',
-    //pathMatch: 'full',
     component: StaffEditComponent,
     children: [
       {
@@ -38,6 +37,9 @@ export const routes = [
       }, {
         path: 'education',
         component: EducationEditComponent
+      }, {
+        path: 'prof-retrainig',
+        component: ProfRetrainingComponent
       }
     ]
   }, /**/
