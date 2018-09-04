@@ -23,15 +23,15 @@ export default class Passport extends Model<Passport> implements IPassport {
   @BelongsTo(() => Personnel)
   personnel: IPersonnel;
 
-  @Column birthDate: string;
+  @Column birthDate: Date;
   @Column birthPlace: string;
   @Column citizenship: string;
   @Column maritalStatus: string;
   @Column number: string;
   @Column passportIssued: string;
-  @Column passportDate: string;
+  @Column passportDate: Date;
   @Column address: string;
-  @Column passportRegDate: string;
+  @Column passportRegDate: Date;
 
 
 

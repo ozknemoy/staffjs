@@ -4,23 +4,31 @@ import {ActivatedRoute} from "@angular/router";
 @Component({
   selector: 'app-staff-edit',
   template: `
-  <ul class="nav justify-content-start">
-    <li class="nav-item">
-      <a [routerLink]="['/staff-edit', id]" class="nav-link">Основная информация</a>
-    </li>
-    <li class="nav-item">
-      <a routerLink="education" class="nav-link">Образование</a>
-    </li>
-    <li class="nav-item">
-      <a routerLink="qual-improvement" class="nav-link">Повышение квалификации</a>
-    </li>
-    <li class="nav-item">
-      <a routerLink="family" class="nav-link">Состав семьи</a>
-    </li>
-    <li class="nav-item">
-      <a routerLink="prof-retrainig" class="nav-link">Проф переподготовка</a>
-    </li>
-  </ul>
+  <div class="btn-group" dropdown>
+    <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+      Button dropdown <span class="navbar-toggler-icon"></span>
+    </button>
+    <ul class="dropdown-menu" *dropdownMenu>
+      <li class="nav-item">
+        <a [routerLink]="['/staff-edit', id]" class="dropdown-item">Основная информация</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="education" class="dropdown-item">Образование</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="qual-improvement" class="dropdown-item">Повышение квалификации</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="family" class="dropdown-item">Состав семьи</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="prof-retrainig" class="dropdown-item">Проф переподготовка</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="attestation" class="dropdown-item">Аттестация</a>
+      </li>
+    </ul>
+  </div>
   <router-outlet></router-outlet>
   `
 })

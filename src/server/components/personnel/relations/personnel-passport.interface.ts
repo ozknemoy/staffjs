@@ -4,13 +4,13 @@ import {IPersonnel} from '../personnel.interface';
 export interface IPassport {
   id: number
   personnel: IPersonnel
-  birthDate: string
+  birthDate: Date
   birthPlace: string
   citizenship: string
   maritalStatus: string
   number: string
   passportIssued: string
-  passportDate: string
+  passportDate: Date
   address: string
-  passportRegDate: string
+  passportRegDate: Date
 }

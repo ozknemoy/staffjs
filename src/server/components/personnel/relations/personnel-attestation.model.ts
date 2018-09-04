@@ -20,7 +20,7 @@ export default class Attestation extends Model<Attestation> implements IAttestat
   @BelongsTo(() => Personnel)
   personnel: IPersonnel;
 
-  @Column date: string;
+  @Column date: Date;
   @Column resolution: string;
   @Column reason: string;
   @Column docNumber: string;

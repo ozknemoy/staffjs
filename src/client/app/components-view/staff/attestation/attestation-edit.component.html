@@ -1,0 +1,26 @@
+
+<div class="float-right">
+  <button class="btn btn-sm btn-success" (click)="save()">Сохранить</button>
+</div>
+АТТЕСТАЦИЯ
+<table class="table table-sm table-responsive-sm table-bordered">
+  <tr>
+    <th rowspan="2" class="text-center">Дата аттестации</th>
+    <th rowspan="2">Решение комиссии</th>
+    <th colspan="2">Документ (протокол)</th>
+    <th rowspan="2">Основание</th>
+    <th rowspan="2"><button class="btn btn-sm btn-success" (click)="addRow()">Добавить</button></th>
+  </tr>
+  <tr>
+    <th>номер</th>
+    <th class="text-center">дата</th>
+  </tr>
+  <tr *ngFor="let a of attestations; let i = index">
+    <td><input type="date" [(ngModel)]="a.date" class="form-control"></td>
+    <td><input type="text" [(ngModel)]="a.resolution" class="form-control"></td>
+    <td><input type="text" [(ngModel)]="a.docNumber" class="form-control"></td>
+    <td><input type="date" [(ngModel)]="a.docDate" class="form-control"></td>
+    <td><input type="text" [(ngModel)]="a.reason" class="form-control"></td>
+    <td><button class="btn btn-sm btn-danger" (click)="deleteRow(i)">Удалить</button></td>
+  </tr>
+</table>

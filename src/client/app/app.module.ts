@@ -14,6 +14,7 @@ import {StaffEditComponent} from "./components-view/staff/staff-edit.component";
 import {FamilyComponent} from "./components-view/staff/family/family-edit.component";
 import {EducationEditComponent} from "./components-view/staff/education/education-edit.component";
 import {ProfRetrainingComponent} from './components-view/staff/prof-retrainig/prof-retrainig-edit.component';
+import {AttestationComponent} from './components-view/staff/attestation/attestation-edit.component';
 
 declare const require;
 const pdfMake = require('pdfmake/build/pdfmake.js');
@@ -34,6 +35,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     FamilyComponent,
     EducationEditComponent,
     ProfRetrainingComponent,
+    AttestationComponent,
 
     FileUploaderComponent,
     PrintButtonComponent,

@@ -20,7 +20,7 @@ export default class Workplace extends Model<Workplace> implements IWorkplace {
   @BelongsTo(() => Personnel)
   personnel: IPersonnel;
 
-  @Column date: string;
+  @Column date: Date;
   @Column department: string;
   @Column specialty: string;
   @Column salary: string;

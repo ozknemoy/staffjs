@@ -11,6 +11,8 @@ import IQualImprovement from "./relations/personnel-qual-improvement.interface";
 import {IFamily} from "./relations/personnel-family.interface";
 import ProfRetraining from './relations/personnel-prof-retraining.model';
 import IProfRetraining from './relations/personnel-prof-retraining.interface';
+import IAttestation from './relations/personnel-attestation.interface';
+import Attestation from './relations/personnel-attestation.model';
 
 @Component()
 export class PersonnelService {
@@ -78,6 +80,13 @@ export class PersonnelService {
     return this.dbTransactions
       .createOrUpdateManyWithoutRels(ProfRetraining, 'personnelId', personnelId, profRetrainings)
       .then(() => this.getByParent(ProfRetraining, personnelId))
+      .catch(err => this.errHandler.handlaAll(err))
+  }
+
+  saveOrCreateAttestation(personnelId, attestations: IAttestation[]) {
+    return this.dbTransactions
+      .createOrUpdateManyWithoutRels(Attestation, 'personnelId', personnelId, attestations)
+      .then(() => this.getByParent(Attestation, personnelId))
       .catch(err => this.errHandler.handlaAll(err))
   }
 

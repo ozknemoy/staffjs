@@ -1,4 +1,5 @@
 import {TabsModule} from 'ngx-bootstrap/tabs';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import {SocketIoConfig, SocketIoModule} from 'ng-socket-io';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
@@ -21,4 +22,5 @@ export const vendorsModules = [
   FileUploadModule,
   ToastModule.forRoot(),
   TabsModule.forRoot(),
+  BsDropdownModule.forRoot(),
 ];

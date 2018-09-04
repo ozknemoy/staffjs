@@ -23,8 +23,8 @@ export default class ProfRetraining extends Model<ProfRetraining> implements IPr
   @BelongsTo(() => Personnel)
   personnel: IPersonnel;
 
-  @Column startEduDate: string;
-  @Column endEduDate: string;
+  @Column startEduDate: Date;
+  @Column endEduDate: Date;
   @Column specialty: string;
   @Column reason: string;
   @Column docNumber: string;

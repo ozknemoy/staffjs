@@ -8,6 +8,8 @@ import Family from "./relations/personnel-family.model";
 import Institution from "./relations/personnel-institution.model";
 import ProfRetraining from './relations/personnel-prof-retraining.model';
 import IProfRetraining from './relations/personnel-prof-retraining.interface';
+import IAttestation from './relations/personnel-attestation.interface';
+import Attestation from './relations/personnel-attestation.model';
 
 
 @Controller('personnel')
@@ -63,5 +65,15 @@ export class StaffController {
   @Put(':id/prof-retrainig')
   saveOrCreateProfRetraining(@Param('id') id, @Body() body: IProfRetraining[]) {
     return this.personnelService.saveOrCreateProfRetraining(id, body);
+  }
+
+  @Get(':id/attestation')
+  getAttestation(@Param('id') id) {
+    return this.personnelService.getByParent(Attestation, id);
+  }
+
+  @Put(':id/attestation')
+  saveOrCreateAttestation(@Param('id') id, @Body() body: IAttestation[]) {
+    return this.personnelService.saveOrCreateAttestation(id, body);
   }
 }

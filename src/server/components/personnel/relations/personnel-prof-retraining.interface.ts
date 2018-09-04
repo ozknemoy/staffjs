@@ -3,8 +3,8 @@ import IDoc from '../../../interfaces/doc.interface';
 export default class IProfRetraining extends IDoc {
   id: number;
   personnelId:  number;
-  startEduDate: string;
-  endEduDate: string;
+  startEduDate: Date;
+  endEduDate: Date;
   specialty: string;
   reason: string;
 }
