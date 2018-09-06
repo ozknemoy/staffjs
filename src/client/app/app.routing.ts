@@ -9,6 +9,7 @@ import {ProfRetrainingComponent} from './components-view/staff/prof-retrainig/pr
 import {AttestationComponent} from './components-view/staff/attestation/attestation-edit.component';
 import {PassportComponent} from './components-view/staff/passport/passport-edit.component';
 import {ArmyComponent} from './components-view/staff/army/army-edit.component';
+import {WorkplaceComponent} from './components-view/staff/workplace/workplace-edit.component';
 
 export const routes = [
   {
@@ -52,6 +53,9 @@ export const routes = [
       }, {
         path: 'army',
         component: ArmyComponent
+      }, {
+        path: 'workplace',
+        component: WorkplaceComponent
       }
     ]
   },

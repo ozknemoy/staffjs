@@ -1,0 +1,27 @@
+
+<div class="float-right">
+  <button class="btn btn-sm btn-success" (click)="save()">Сохранить</button>
+</div>
+ПРИЕМ НА РАБОТУ И ПЕРЕВОДЫ НА ДРУГУЮ РАБОТУ
+<div class="container-fluid">
+  <table class="table table-sm table-responsive-sm table-bordered">
+    <tr>
+      <th>Дата</th>
+      <th>Структурное подразделение</th>
+      <th>Должность (специальность, профессия), разряд, класс (категория) квалификации</th>
+      <th>Тарифная ставка (оклад), надбавка, руб.</th>
+      <th>Основание</th>
+      <th>
+        <button class="btn btn-sm btn-success" (click)="addRow()">Добавить</button>
+      </th>
+    </tr>
+    <tr *ngFor="let w of workplaces; let i = index">
+      <td><input type="date" [(ngModel)]="w.date" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="w.department" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="w.specialty" class="form-control"></td>
+      <td><input type="number" [(ngModel)]="w.salary" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="w.reason" class="form-control"></td>
+      <td><button class="btn btn-sm btn-danger" (click)="deleteRow(i)">Удалить</button></td>
+    </tr>
+  </table>
+</div>

@@ -23,8 +23,7 @@ export default class Workplace extends Model<Workplace> implements IWorkplace {
   @Column date: Date;
   @Column department: string;
   @Column specialty: string;
-  @Column salary: string;
+  @Column salary: number;
   @Column reason: string;
-
 
 }

@@ -1,9 +1,10 @@
 
 export default class IWorkplace {
+  constructor(public personnelId: number) {}
   id: number;
-  personnelId:  number;
   date: Date;
   department: string;
-  salary: string;
+  specialty: string;
+  salary: number;
   reason: string;
 }

@@ -14,6 +14,8 @@ import {IPassport} from './relations/personnel-passport.interface';
 import Passport from './relations/personnel-passport.model';
 import IArmy from './relations/personnel-army.interface';
 import Army from './relations/personnel-army.model';
+import Workplace from './relations/personnel-workplace.model';
+import IWorkplace from './relations/personnel-workplace.interface';
 
 
 @Controller('personnel')
@@ -99,5 +101,15 @@ export class StaffController {
   @Put(':id/army')
   saveOrCreateArmy(@Param('id') id, @Body() body: IArmy) {
     return this.personnelService.saveOrCreateArmy(id, body);
+  }
+
+  @Get(':id/workplace')
+  getWorkplace(@Param('id') personnelId) {
+    return this.personnelService.getByParent(Workplace, personnelId);
+  }
+
+  @Put(':id/workplace')
+  saveOrCreateWorkplace(@Param('id') id, @Body() body: IWorkplace[]) {
+    return this.personnelService.saveOrCreateWorkplace(id, body);
   }
 }

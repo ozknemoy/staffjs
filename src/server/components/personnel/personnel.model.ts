@@ -1,6 +1,6 @@
 import {
   Table, Column, Model, PrimaryKey, Unique, AutoIncrement, HasMany, HasOne,
-  DefaultScope
+  DefaultScope, Is
 } from 'sequelize-typescript';
 import {IPersonnel} from "./personnel.interface";
 import Family from "./relations/personnel-family.model";
@@ -24,6 +24,7 @@ import Institution from "./relations/personnel-institution.model";
 import Workplace from "./relations/personnel-workplace.model";
 import IWorkplace from "./relations/personnel-workplace.interface";
 
+export const phoneRegExp = /\d{11,13}/;
 @Table({
   tableName: 'staff',
   timestamps: true
@@ -34,6 +35,7 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @Unique
   @PrimaryKey
   @Column id: number;
+
   @Column number: string;
   @Column inn: string;
   @Column insurance: string;
@@ -52,7 +54,14 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @Column educationName: string;
 
   @Column profession: string;
-  @Column phone: string;
+
+  @Is((value: string) => {
+    if (!phoneRegExp.test(value)) {
+      throw new Error(`"${value}" не валидный телефон. Введите в формате 12345678901`);
+    }
+  })
+  @Column
+  phone: string;
 
   // в самом конце анкеты
   @Column extraInfo: string;

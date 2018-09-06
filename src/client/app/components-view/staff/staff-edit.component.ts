@@ -33,6 +33,9 @@ import {ActivatedRoute} from "@angular/router";
       <li class="nav-item">
         <a routerLink="army" class="dropdown-item">Воинский учет</a>
       </li>
+      <li class="nav-item">
+        <a routerLink="workplace" class="dropdown-item">Прием на работу</a>
+      </li>
     </ul>
   </div>
   <router-outlet></router-outlet>

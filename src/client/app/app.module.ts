@@ -17,6 +17,7 @@ import {ProfRetrainingComponent} from './components-view/staff/prof-retrainig/pr
 import {AttestationComponent} from './components-view/staff/attestation/attestation-edit.component';
 import {PassportComponent} from './components-view/staff/passport/passport-edit.component';
 import {ArmyComponent} from './components-view/staff/army/army-edit.component';
+import {WorkplaceComponent} from './components-view/staff/workplace/workplace-edit.component';
 
 declare const require;
 const pdfMake = require('pdfmake/build/pdfmake.js');
@@ -40,6 +41,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     AttestationComponent,
     PassportComponent,
     ArmyComponent,
+    WorkplaceComponent,
 
     FileUploaderComponent,
     PrintButtonComponent,

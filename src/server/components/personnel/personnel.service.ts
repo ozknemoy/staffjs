@@ -17,6 +17,8 @@ import {IPassport} from './relations/personnel-passport.interface';
 import Passport from './relations/personnel-passport.model';
 import Army from './relations/personnel-army.model';
 import IArmy from './relations/personnel-army.interface';
+import Workplace from './relations/personnel-workplace.model';
+import IWorkplace from './relations/personnel-workplace.interface';
 
 @Component()
 export class PersonnelService {
@@ -106,6 +108,13 @@ export class PersonnelService {
   saveOrCreateArmy(personnelId, army: IArmy) {
     return Army.upsert(army, { returning: true })
       .spread((_army, created) => _army)
+      .catch(err => this.errHandler.handlaAll(err))
+  }
+
+  saveOrCreateWorkplace(personnelId, workplace: IWorkplace[]) {
+    return this.dbTransactions
+      .createOrUpdateManyWithoutRels(Workplace, 'personnelId', personnelId, workplace)
+      .then(() => this.getByParent(Workplace, personnelId))
       .catch(err => this.errHandler.handlaAll(err))
   }
 
