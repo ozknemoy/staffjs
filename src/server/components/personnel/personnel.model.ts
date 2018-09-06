@@ -51,6 +51,9 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @Column foreignLanguageGrade: string;
   @Column educationName: string;
 
+  @Column profession: string;
+  @Column phone: string;
+
   // в самом конце анкеты
   @Column extraInfo: string;
 

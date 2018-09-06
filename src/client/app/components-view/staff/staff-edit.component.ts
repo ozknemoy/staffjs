@@ -6,11 +6,14 @@ import {ActivatedRoute} from "@angular/router";
   template: `
   <div class="btn-group" dropdown>
     <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
-      Button dropdown <span class="navbar-toggler-icon"></span>
+      Меню <span class="navbar-toggler-icon"></span>
     </button>
     <ul class="dropdown-menu" *dropdownMenu>
       <li class="nav-item">
         <a [routerLink]="['/staff-edit', id]" class="dropdown-item">Основная информация</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="passport" class="dropdown-item">Паспорт</a>
       </li>
       <li class="nav-item">
         <a routerLink="education" class="dropdown-item">Образование</a>
@@ -26,6 +29,9 @@ import {ActivatedRoute} from "@angular/router";
       </li>
       <li class="nav-item">
         <a routerLink="attestation" class="dropdown-item">Аттестация</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="army" class="dropdown-item">Воинский учет</a>
       </li>
     </ul>
   </div>

@@ -1,0 +1,54 @@
+
+<div class="float-right">
+  <button class="btn btn-sm btn-success" (click)="save()">Сохранить</button>
+</div>
+СВЕДЕНИЯ О ВОИНСКОМ УЧЕТЕ
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-6">
+      <div class="form-group">
+        <label>Категория запаса</label>
+        <input type="text" [(ngModel)]="army.reserveCategory" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Воинское звание</label>
+        <input type="text" [(ngModel)]="army.rank" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Состав (профиль)</label>
+        <input type="text" [(ngModel)]="army.profile" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Полное кодовое обозначение ВУС</label>
+        <input type="text" [(ngModel)]="army.code" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Категория годности к военной службе</label>
+        <input type="text" [(ngModel)]="army.healthCategory" class="form-control">
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+        <label>Наименование военного комиссариата по месту жительства</label>
+        <input type="text" [(ngModel)]="army.commissariatName" class="form-control">
+      </div>
+      <div class="form-group">
+        <label class="col-form-label">Состоит на воинском учете</label>
+        <div class="row">
+          <div class="col-6">
+            <input type="text" [(ngModel)]="army.militaryAccount" class="form-control">
+            <small class="form-text text-muted">общем (номер команды, партии)</small>
+          </div>
+          <div class="col-6">
+            <input type="text" [(ngModel)]="army.militaryAccountSpecial" class="form-control">
+            <small class="form-text text-muted">специальном</small>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Отметка о снятии с воинского учета</label>
+        <input type="text" [(ngModel)]="army.checkMilitaryAccount" class="form-control">
+      </div>
+    </div>
+  </div>
+</div>

@@ -7,6 +7,8 @@ import {FamilyComponent} from "./components-view/staff/family/family-edit.compon
 import {EducationEditComponent} from "./components-view/staff/education/education-edit.component";
 import {ProfRetrainingComponent} from './components-view/staff/prof-retrainig/prof-retrainig-edit.component';
 import {AttestationComponent} from './components-view/staff/attestation/attestation-edit.component';
+import {PassportComponent} from './components-view/staff/passport/passport-edit.component';
+import {ArmyComponent} from './components-view/staff/army/army-edit.component';
 
 export const routes = [
   {
@@ -30,6 +32,9 @@ export const routes = [
         path: '',
         component: StaffMainInfoComponent
       }, {
+        path: 'passport',
+        component: PassportComponent
+      }, {
         path: 'qual-improvement',
         component: QualImprovementComponent
       }, {
@@ -44,7 +49,10 @@ export const routes = [
       }, {
         path: 'attestation',
         component: AttestationComponent
+      }, {
+        path: 'army',
+        component: ArmyComponent
       }
     ]
-  }, /**/
+  },
 ];

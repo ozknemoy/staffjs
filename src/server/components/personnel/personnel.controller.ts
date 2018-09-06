@@ -10,6 +10,10 @@ import ProfRetraining from './relations/personnel-prof-retraining.model';
 import IProfRetraining from './relations/personnel-prof-retraining.interface';
 import IAttestation from './relations/personnel-attestation.interface';
 import Attestation from './relations/personnel-attestation.model';
+import {IPassport} from './relations/personnel-passport.interface';
+import Passport from './relations/personnel-passport.model';
+import IArmy from './relations/personnel-army.interface';
+import Army from './relations/personnel-army.model';
 
 
 @Controller('personnel')
@@ -75,5 +79,25 @@ export class StaffController {
   @Put(':id/attestation')
   saveOrCreateAttestation(@Param('id') id, @Body() body: IAttestation[]) {
     return this.personnelService.saveOrCreateAttestation(id, body);
+  }
+
+  @Get(':id/passport')
+  getPassport(@Param('id') personnelId) {
+    return this.personnelService.getOneByParent(Passport, personnelId);
+  }
+
+  @Put(':id/passport')
+  saveOrCreatePassport(@Param('id') id, @Body() body: IPassport) {
+    return this.personnelService.saveOrCreatePassport(id, body);
+  }
+
+  @Get(':id/army')
+  getArmy(@Param('id') personnelId) {
+    return this.personnelService.getOneByParent(Army, personnelId);
+  }
+
+  @Put(':id/army')
+  saveOrCreateArmy(@Param('id') id, @Body() body: IArmy) {
+    return this.personnelService.saveOrCreateArmy(id, body);
   }
 }

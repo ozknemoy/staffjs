@@ -33,14 +33,22 @@
         <label>Дата  трудового договора</label>
         <input type="date" [(ngModel)]="worker.contractDate" class="form-control">
       </div>
+      <div class="form-group">
+        <label>Профессия</label>
+        <input type="text" [(ngModel)]="worker.profession" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Номер телефона</label>
+        <input type="text" [(ngModel)]="worker.phone" class="form-control">
+      </div>
     </div>
     <div class="col">
       <div class="form-group">
         <label>Идентификационный номер налогоплательщика</label>
         <input type="text" [(ngModel)]="worker.inn" class="form-control">
       </div>
-      <div>
-        <label>Номер страхового свидетельства государственного пенсионного страхования</label>
+      <div class="form-group">
+        <label>Номер страхового свидетельства</label>
         <input type="text" [(ngModel)]="worker.insurance" class="form-control">
       </div>
       <div class="form-group">

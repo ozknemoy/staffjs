@@ -1,6 +1,6 @@
 import {
   Table, Column, Model, PrimaryKey, AutoIncrement, BelongsTo,
-  ForeignKey, BeforeUpdate, BeforeCreate, Is, IsEmail, Min
+  ForeignKey, BeforeUpdate, BeforeCreate, Is, IsEmail, Min, NotEmpty
 } from 'sequelize-typescript';
 import Personnel from '../personnel.model';
 import {IPassport} from './personnel-passport.interface';
@@ -16,6 +16,7 @@ export default class Passport extends Model<Passport> implements IPassport {
   @Column
   id: number;
 
+  @NotEmpty
   @ForeignKey(() => Personnel)
   @Column
   personnelId: number;
@@ -31,6 +32,7 @@ export default class Passport extends Model<Passport> implements IPassport {
   @Column passportIssued: string;
   @Column passportDate: Date;
   @Column address: string;
+  @Column addressFact: string;
   @Column passportRegDate: Date;
 
 

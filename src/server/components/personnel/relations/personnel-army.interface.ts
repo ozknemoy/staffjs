@@ -1,8 +1,8 @@
 
 
 export default class IArmy {
+  constructor(public personnelId: number) {}
   id: number;
-  personnelId: number;
   reserveCategory: string;
   rank: string;
   profile: string;

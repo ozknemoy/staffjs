@@ -1,0 +1,54 @@
+
+<div class="float-right">
+  <button class="btn btn-sm btn-success" (click)="save()">Сохранить</button>
+</div>
+ПАСПОРТ
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-6">
+      <div class="form-group">
+        <label>Номер</label>
+        <input type="text" [(ngModel)]="passport.number" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Дата выдачи</label>
+        <input type="date" [(ngModel)]="passport.passportDate" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Выдан</label>
+        <input type="text" [(ngModel)]="passport.passportIssued" class="form-control">
+        <small class="form-text text-muted">наименование органа, выдавшего паспорт</small>
+      </div>
+      <div class="form-group">
+        <label>Место рождения</label>
+        <input type="text" [(ngModel)]="passport.birthPlace" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Дата рождения</label>
+        <input type="date" [(ngModel)]="passport.birthDate" class="form-control">
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+        <label>Гражданство</label>
+        <input type="text" [(ngModel)]="passport.citizenship" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Адрес места жительства</label>
+        <input type="text" [(ngModel)]="passport.address" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Адрес места жительства (фактический)</label>
+        <input type="text" [(ngModel)]="passport.addressFact" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Дата регистрации по месту жительства</label>
+        <input type="date" [(ngModel)]="passport.passportRegDate" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Состояние в браке</label>
+        <input type="date" [(ngModel)]="passport.maritalStatus" class="form-control">
+      </div>
+    </div>
+  </div>
+</div>

@@ -28,6 +28,8 @@ export class IPersonnel {
   foreignLanguageGrade: string = null;
   educationName: string = null;
 
+  profession: string = null;
+  phone: string = null;
 
   attestations: IAttestation[] = null;
   institutions: IInstitution[] = null;

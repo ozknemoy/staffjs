@@ -13,6 +13,10 @@ import ProfRetraining from './relations/personnel-prof-retraining.model';
 import IProfRetraining from './relations/personnel-prof-retraining.interface';
 import IAttestation from './relations/personnel-attestation.interface';
 import Attestation from './relations/personnel-attestation.model';
+import {IPassport} from './relations/personnel-passport.interface';
+import Passport from './relations/personnel-passport.model';
+import Army from './relations/personnel-army.model';
+import IArmy from './relations/personnel-army.interface';
 
 @Component()
 export class PersonnelService {
@@ -29,7 +33,7 @@ export class PersonnelService {
   }
 
   getOne(id) {
-    return Personnel.findOne({where: {id},  include: [{ all: true }]})
+    return Personnel.findOne({where: {id}/*,  include: [{ all: true }]*/})
   }
 
   getOneWithoutInclude(id) {
@@ -37,7 +41,6 @@ export class PersonnelService {
   }
 
   async updateOneWithRel(id: number, pers: IPersonnel, ModelRel, propName: keyof IPersonnel) {
-    console.log('////', ModelRel);
     const oldPersModel = await this.getOneWithoutInclude(id);
     return Promise.all([
       oldPersModel.update(pers),
@@ -60,6 +63,10 @@ export class PersonnelService {
 
   getByParent(_Model, personnelId: number) {
     return _Model.findAll({where: {personnelId}})
+  }
+
+  getOneByParent(_Model, personnelId: number) {
+    return _Model.findOne({where: {personnelId}})
   }
 
   saveOrCreateQualImprovements(personnelId, qualImprovements: IQualImprovement[]) {
@@ -87,6 +94,18 @@ export class PersonnelService {
     return this.dbTransactions
       .createOrUpdateManyWithoutRels(Attestation, 'personnelId', personnelId, attestations)
       .then(() => this.getByParent(Attestation, personnelId))
+      .catch(err => this.errHandler.handlaAll(err))
+  }
+
+  saveOrCreatePassport(personnelId, passport: IPassport) {
+    return Passport.upsert(passport, { returning: true })
+      .spread((_passport, created) => _passport)
+      .catch(err => this.errHandler.handlaAll(err))
+  }
+
+  saveOrCreateArmy(personnelId, army: IArmy) {
+    return Army.upsert(army, { returning: true })
+      .spread((_army, created) => _army)
       .catch(err => this.errHandler.handlaAll(err))
   }
 
