@@ -4,4 +4,5 @@ export default class IWorkExp {
   amountD: number = null;
   amountM: number = null;
   amountY: number = null;
+  typeId: number = null;
 }

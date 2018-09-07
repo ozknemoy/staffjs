@@ -11,3 +11,10 @@
 .w300  {
   width: 300px;
 }
+
+
+#toast-container > div.toast {
+  width: auto;
+  min-width: 500px;
+  max-width: 90vw;
+}

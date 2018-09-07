@@ -36,6 +36,15 @@ import {ActivatedRoute} from "@angular/router";
       <li class="nav-item">
         <a routerLink="workplace" class="dropdown-item">Прием на работу</a>
       </li>
+      <li class="nav-item">
+        <a routerLink="reward" class="dropdown-item">Награды</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="social-security" class="dropdown-item">Социальные льготы</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="work-exp" class="dropdown-item">Стаж работы </a>
+      </li>
     </ul>
   </div>
   <router-outlet></router-outlet>

@@ -4,9 +4,9 @@ import {IPersonnel} from "../personnel.interface";
 import IWorkExp from './personnel-work-exp.interface';
 
 @Table({
-  tableName: 'work-experience'
+  tableName: 'work-exp'
 })
-export default class Workplace extends Model<Workplace> implements IWorkExp {
+export default class WorkExp extends Model<WorkExp> implements IWorkExp {
 
   @AutoIncrement
   @Unique
@@ -24,5 +24,6 @@ export default class Workplace extends Model<Workplace> implements IWorkExp {
   @Column amountD: number;
   @Column amountM: number;
   @Column amountY: number;
+  @Column typeId: number;
 
 }

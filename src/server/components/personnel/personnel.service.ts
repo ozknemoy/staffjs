@@ -19,6 +19,13 @@ import Army from './relations/personnel-army.model';
 import IArmy from './relations/personnel-army.interface';
 import Workplace from './relations/personnel-workplace.model';
 import IWorkplace from './relations/personnel-workplace.interface';
+import {IPersonnelNamedThingWithDoc} from './relations/personnel-named-thing-with-doc.interface';
+import Reward from './relations/personnel-reward.model';
+import {ISocialSecurity} from './relations/personnel-social-security.interface';
+import SocialSecurity from './relations/personnel-social-security.model';
+import IWorkExp from './relations/personnel-work-exp.interface';
+import WorkExp from './relations/personnel-work-exp.model';
+import {workExpTypesDict} from '../../../shared/work-exp-types.dict';
 
 @Component()
 export class PersonnelService {
@@ -118,4 +125,36 @@ export class PersonnelService {
       .catch(err => this.errHandler.handlaAll(err))
   }
 
+  saveOrCreateReward(personnelId, reward: IPersonnelNamedThingWithDoc[]) {
+    return this.dbTransactions
+      .createOrUpdateManyWithoutRels(Reward, 'personnelId', personnelId, reward)
+      .then(() => this.getByParent(Reward, personnelId))
+      .catch(err => this.errHandler.handlaAll(err))
+  }
+
+  saveOrCreateSocialSecurity(personnelId, socialSec: ISocialSecurity[]) {
+    return this.dbTransactions
+      .createOrUpdateManyWithoutRels(SocialSecurity, 'personnelId', personnelId, socialSec)
+      .then(() => this.getByParent(SocialSecurity, personnelId))
+      .catch(err => this.errHandler.handlaAll(err))
+  }
+
+  async getOrCreateNGetWorkExp(personnelId) {
+    // при первом запросе надо создать 3 стандартные строчки
+    const workExp = await this.getByParent(WorkExp, personnelId);
+    if (workExp) {
+      return workExp
+    }
+    await Promise.all(
+      workExpTypesDict.map(row => WorkExp.create({typeId: row.id, personnelId}))
+    );
+    return this.getByParent(WorkExp, personnelId);
+  }
+
+  saveOrCreateWorkExp(personnelId, workExp: IWorkExp[]) {
+    return this.dbTransactions
+      .createOrUpdateManyWithoutRels(WorkExp, 'personnelId', personnelId, workExp)
+      .then(() => this.getByParent(WorkExp, personnelId))
+      .catch(err => this.errHandler.handlaAll(err))
+  }
 }

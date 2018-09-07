@@ -2,5 +2,5 @@ import {IPersonnelNamedThingWithDoc} from "./personnel-named-thing-with-doc.inte
 
 
 export class ISocialSecurity extends IPersonnelNamedThingWithDoc {
-  reason: string
+  reason: string = null;
 }

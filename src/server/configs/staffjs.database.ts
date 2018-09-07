@@ -10,8 +10,8 @@ import Reward from "../components/personnel/relations/personnel-reward.model";
 import SocialSecurity from "../components/personnel/relations/personnel-social-security.model";
 import Army from '../components/personnel/relations/personnel-army.model';
 import Vacation from '../components/personnel/relations/personnel-vacation.model';
-import IQualImprovement from "../components/personnel/relations/personnel-qual-improvement.interface";
 import Institution from "../components/personnel/relations/personnel-institution.model";
+import WorkExp from '../components/personnel/relations/personnel-work-exp.model';
 
 
 export const staffJsDB = new Sequelize({
@@ -33,7 +33,7 @@ export const staffJsDB = new Sequelize({
 
 staffJsDB.addModels([
   Personnel, Family, Attestation, Passport, ProfRetraining, QualImprovement,
-  Reward, SocialSecurity, Workplace, Army, Vacation, Institution
+  Reward, SocialSecurity, Workplace, Army, Vacation, Institution, WorkExp
 ]);
 // Before you can use your models you have to tell sequelize where they can be found. So either set
 // modelPaths in the sequelize config or add the required models later on by calling
@@ -60,6 +60,7 @@ Army.sync();
 Vacation.sync();
 Institution.sync();
 Workplace.sync();
+WorkExp.sync();
 
 
 //Personnel.upsert({id: 29, name: 'john'});

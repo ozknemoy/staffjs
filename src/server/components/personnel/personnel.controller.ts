@@ -16,6 +16,11 @@ import IArmy from './relations/personnel-army.interface';
 import Army from './relations/personnel-army.model';
 import Workplace from './relations/personnel-workplace.model';
 import IWorkplace from './relations/personnel-workplace.interface';
+import Reward from './relations/personnel-reward.model';
+import {IPersonnelNamedThingWithDoc} from './relations/personnel-named-thing-with-doc.interface';
+import {ISocialSecurity} from './relations/personnel-social-security.interface';
+import SocialSecurity from './relations/personnel-social-security.model';
+import IWorkExp from './relations/personnel-work-exp.interface';
 
 
 @Controller('personnel')
@@ -111,5 +116,35 @@ export class StaffController {
   @Put(':id/workplace')
   saveOrCreateWorkplace(@Param('id') id, @Body() body: IWorkplace[]) {
     return this.personnelService.saveOrCreateWorkplace(id, body);
+  }
+
+  @Get(':id/reward')
+  getReward(@Param('id') personnelId) {
+    return this.personnelService.getByParent(Reward, personnelId);
+  }
+
+  @Put(':id/reward')
+  saveOrCreateReward(@Param('id') id, @Body() body: IPersonnelNamedThingWithDoc[]) {
+    return this.personnelService.saveOrCreateReward(id, body);
+  }
+
+  @Get(':id/social-security')
+  getSocialSecurity(@Param('id') personnelId) {
+    return this.personnelService.getByParent(SocialSecurity, personnelId);
+  }
+
+  @Put(':id/social-security')
+  saveOrCreateSocialSecurity(@Param('id') id, @Body() body: ISocialSecurity[]) {
+    return this.personnelService.saveOrCreateSocialSecurity(id, body);
+  }
+
+  @Get(':id/work-exp')
+  getWorkExp(@Param('id') personnelId) {
+    return this.personnelService.getOrCreateNGetWorkExp(personnelId);
+  }
+
+  @Put(':id/work-exp')
+  saveOrCreateWorkExp(@Param('id') id, @Body() body: IWorkExp[]) {
+    return this.personnelService.saveOrCreateWorkExp(id, body);
   }
 }

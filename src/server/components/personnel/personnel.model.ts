@@ -23,8 +23,11 @@ import IInstitution from "./relations/personnel-institution.interface";
 import Institution from "./relations/personnel-institution.model";
 import Workplace from "./relations/personnel-workplace.model";
 import IWorkplace from "./relations/personnel-workplace.interface";
+import WorkExp from './relations/personnel-work-exp.model';
 
 export const phoneRegExp = /\d{11,13}/;
+export const innRegExp = /\d{10,10}/;
+
 @Table({
   tableName: 'staff',
   timestamps: true
@@ -37,7 +40,14 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @Column id: number;
 
   @Column number: string;
-  @Column inn: string;
+
+  @Is('inn', (inn: string) => {
+    if (!innRegExp.test(inn) || inn.length !== 10) {
+      throw new Error(`Вы ввели не валидный ИНН "${inn}". Введите 10 цифр`);
+    }
+  })
+  @Column
+  inn: string;
   @Column insurance: string;
   @Column alphabet: string;
   @Column workNature: string;
@@ -55,9 +65,9 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
 
   @Column profession: string;
 
-  @Is((value: string) => {
+  @Is('phone', (value: string) => {
     if (!phoneRegExp.test(value)) {
-      throw new Error(`"${value}" не валидный телефон. Введите в формате 12345678901`);
+      throw new Error(`Вы ввели не валидный телефон "${value}". Введите 11-13 цифр, например 12345678901`);
     }
   })
   @Column
@@ -96,5 +106,8 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
 
   @HasMany(() => Workplace)
   workplaces: IWorkplace[];
+
+  @HasMany(() => WorkExp)
+  workExp: WorkExp[];
 
 }

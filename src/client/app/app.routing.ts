@@ -10,6 +10,8 @@ import {AttestationComponent} from './components-view/staff/attestation/attestat
 import {PassportComponent} from './components-view/staff/passport/passport-edit.component';
 import {ArmyComponent} from './components-view/staff/army/army-edit.component';
 import {WorkplaceComponent} from './components-view/staff/workplace/workplace-edit.component';
+import {RewardComponent} from './components-view/staff/reward/reward-edit.component';
+import {SocialSecurityComponent} from './components-view/staff/social-security/social-security.component';
 
 export const routes = [
   {
@@ -56,6 +58,12 @@ export const routes = [
       }, {
         path: 'workplace',
         component: WorkplaceComponent
+      }, {
+        path: 'reward',
+        component: RewardComponent
+      }, {
+        path: 'social-security',
+        component: SocialSecurityComponent
       }
     ]
   },

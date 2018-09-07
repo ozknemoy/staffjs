@@ -18,6 +18,10 @@ import {AttestationComponent} from './components-view/staff/attestation/attestat
 import {PassportComponent} from './components-view/staff/passport/passport-edit.component';
 import {ArmyComponent} from './components-view/staff/army/army-edit.component';
 import {WorkplaceComponent} from './components-view/staff/workplace/workplace-edit.component';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {MainInterceptor} from './config/http-interceptor';
+import {RewardComponent} from './components-view/staff/reward/reward-edit.component';
+import {SocialSecurityComponent} from './components-view/staff/social-security/social-security.component';
 
 declare const require;
 const pdfMake = require('pdfmake/build/pdfmake.js');
@@ -42,6 +46,8 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     PassportComponent,
     ArmyComponent,
     WorkplaceComponent,
+    RewardComponent,
+    SocialSecurityComponent,
 
     FileUploaderComponent,
     PrintButtonComponent,
@@ -50,6 +56,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   providers: [
     PingService,
     HttpService,
+    {provide: HTTP_INTERCEPTORS, useClass: MainInterceptor, multi: true},
   ],
   bootstrap: [AppComponent]
 })
