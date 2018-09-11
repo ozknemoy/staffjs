@@ -43,7 +43,7 @@ import {ActivatedRoute} from "@angular/router";
         <a routerLink="social-security" class="dropdown-item">Социальные льготы</a>
       </li>
       <li class="nav-item">
-        <a routerLink="work-exp" class="dropdown-item">Стаж работы </a>
+        <a routerLink="work-exp" class="dropdown-item">Стаж работы</a>
       </li>
     </ul>
   </div>

@@ -22,6 +22,7 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {MainInterceptor} from './config/http-interceptor';
 import {RewardComponent} from './components-view/staff/reward/reward-edit.component';
 import {SocialSecurityComponent} from './components-view/staff/social-security/social-security.component';
+import {WorkExpComponent} from './components-view/staff/work-exp/work-exp-edit.component';
 
 declare const require;
 const pdfMake = require('pdfmake/build/pdfmake.js');
@@ -48,6 +49,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     WorkplaceComponent,
     RewardComponent,
     SocialSecurityComponent,
+    WorkExpComponent,
 
     FileUploaderComponent,
     PrintButtonComponent,

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {HttpService} from "../../../services/http.service";
 import IWorkExp from '../../../../../server/components/personnel/relations/personnel-work-exp.interface';
+import {workExpTypesDict} from '../../../../../shared/work-exp-types.dict';
 
 @Component({
   selector: 'staff-work-exp',
@@ -10,6 +11,7 @@ import IWorkExp from '../../../../../server/components/personnel/relations/perso
 export class WorkExpComponent implements OnInit {
   id: string;
   public workExp: IWorkExp[];
+  public workExpTypesDict = workExpTypesDict;
   constructor(private http: HttpService, private route: ActivatedRoute) { }
 
   ngOnInit() {

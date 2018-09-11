@@ -62,6 +62,7 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @Column foreignLanguage: string;
   @Column foreignLanguageGrade: string;
   @Column educationName: string;
+  @Column afterInstEduName: string;
 
   @Column profession: string;
 

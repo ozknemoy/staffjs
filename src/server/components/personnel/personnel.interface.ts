@@ -27,6 +27,7 @@ export class IPersonnel {
   foreignLanguage: string = null;
   foreignLanguageGrade: string = null;
   educationName: string = null;
+  afterInstEduName: string = null;
 
   profession: string = null;
   phone: string = null;

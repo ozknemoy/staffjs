@@ -12,6 +12,7 @@ import {ArmyComponent} from './components-view/staff/army/army-edit.component';
 import {WorkplaceComponent} from './components-view/staff/workplace/workplace-edit.component';
 import {RewardComponent} from './components-view/staff/reward/reward-edit.component';
 import {SocialSecurityComponent} from './components-view/staff/social-security/social-security.component';
+import {WorkExpComponent} from './components-view/staff/work-exp/work-exp-edit.component';
 
 export const routes = [
   {
@@ -64,6 +65,9 @@ export const routes = [
       }, {
         path: 'social-security',
         component: SocialSecurityComponent
+      }, {
+        path: 'work-exp',
+        component: WorkExpComponent
       }
     ]
   },

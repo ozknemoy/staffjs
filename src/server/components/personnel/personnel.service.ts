@@ -26,7 +26,7 @@ import SocialSecurity from './relations/personnel-social-security.model';
 import IWorkExp from './relations/personnel-work-exp.interface';
 import WorkExp from './relations/personnel-work-exp.model';
 import {workExpTypesDict} from '../../../shared/work-exp-types.dict';
-
+import * as _ from 'lodash/core';
 @Component()
 export class PersonnelService {
 
@@ -64,14 +64,16 @@ export class PersonnelService {
       .catch(err => this.errHandler.handlaAll(err))
   }
 
-
   createOne(pers: Personnel) {
-
     return Personnel.create(pers, { include: [ Family ]})
   }
 
-  getByParent(_Model, personnelId: number) {
-    return _Model.findAll({where: {personnelId}})
+  getByParent(_Model, personnelId: number, order?: any[]) {
+    const options = {where: {personnelId}};
+    if (order) {
+      Object.assign(options, {order})
+    }
+    return _Model.findAll(options)
   }
 
   getOneByParent(_Model, personnelId: number) {
@@ -139,12 +141,17 @@ export class PersonnelService {
       .catch(err => this.errHandler.handlaAll(err))
   }
 
+  getWorkExp(personnelId) {
+    return this.getByParent(WorkExp, personnelId, [['id', 'ASC']]);
+  }
+
   async getOrCreateNGetWorkExp(personnelId) {
-    // при первом запросе надо создать 3 стандартные строчки
-    const workExp = await this.getByParent(WorkExp, personnelId);
-    if (workExp) {
+    // http://docs.sequelizejs.com/manual/tutorial/querying.html#ordering
+    const workExp = await this.getWorkExp(personnelId);
+    if (!_.isEmpty(workExp)) {
       return workExp
     }
+    // при первом запросе (когда еще нет данных для юзера) надо создать 3 стандартные строчки
     await Promise.all(
       workExpTypesDict.map(row => WorkExp.create({typeId: row.id, personnelId}))
     );
@@ -154,7 +161,7 @@ export class PersonnelService {
   saveOrCreateWorkExp(personnelId, workExp: IWorkExp[]) {
     return this.dbTransactions
       .createOrUpdateManyWithoutRels(WorkExp, 'personnelId', personnelId, workExp)
-      .then(() => this.getByParent(WorkExp, personnelId))
+      .then(() => this.getWorkExp(personnelId))
       .catch(err => this.errHandler.handlaAll(err))
   }
 }
