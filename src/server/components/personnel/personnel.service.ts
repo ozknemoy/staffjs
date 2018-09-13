@@ -42,7 +42,11 @@ export class PersonnelService {
   }
 
   getOne(id) {
-    return Personnel.findOne({where: {id}/*,  include: [{ all: true }]*/})
+    return Personnel.findOne({where: {id}})
+  }
+
+  getOneFull(id) {
+    return Personnel.findOne({where: {id},  include: [{ all: true }]})
   }
 
   getOneWithoutInclude(id) {

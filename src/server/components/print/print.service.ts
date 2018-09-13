@@ -1,6 +1,7 @@
 import {Component} from "@nestjs/common";
 import {PersonnelService} from "../personnel/personnel.service";
 import {PrintT2Builder} from './print-t2.class';
+import {IPdfSchema} from "../../interfaces/pdf-shema.interface";
 const path = require('path');
 
 const fontDescriptors = {
@@ -24,12 +25,13 @@ export class PrintService {
   constructor(private personnelService: PersonnelService) {}
 
   async printT2(userId) {
-    const user = await this.personnelService.getOne(userId);
-    const pdfSchema = new PrintT2Builder(user).make();
+    const user = await this.personnelService.getOneFull(userId);
+    const pdfSchema: IPdfSchema.Root = new PrintT2Builder(user).make();
+    console.log('***',pdfSchema.content[0].table.body);
     return this.printDoc(printer.createPdfKitDocument(pdfSchema))
   }
 
-  printDoc(doc) {
+  async printDoc(doc) {
     return new Promise((res) => {
       const chunks = [];
 

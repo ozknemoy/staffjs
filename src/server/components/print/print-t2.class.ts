@@ -13,6 +13,20 @@ export class PrintT2Builder {
       .build()
   }
 
+  addEmptyRow(table: (string | number)[][], rowAmount: number): (string | number)[][] {
+    if (!_.isEmpty(table) && table.length < rowAmount) {
+      const emptyRow = [];
+      const columnAmount = table[0].length;
+      while (emptyRow.length < columnAmount) {
+        emptyRow.push(Math.random())
+      }
+      while (table.length < rowAmount) {
+        table.push(emptyRow)
+      }
+    }
+    return table;
+  }
+
   private makeFamilyTable() {
     const f = this.pers.families;
     if (_.isEmpty(f)) {
@@ -24,7 +38,7 @@ export class PrintT2Builder {
       table: {
         widths: [90, '*', 90],
         body: [['Степень родства (ближайшие родственники)', 'Фамилия, имя, отчество', 'Год рождения']]
-          .concat(<string[][]>body)
+          .concat(<string[][]>this.addEmptyRow(body, 5))
       }
     };
     this.pdf.push(tbl);
