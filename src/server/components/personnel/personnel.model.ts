@@ -49,7 +49,6 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @Column
   inn: string;
   @Column insurance: string;
-  @Column alphabet: string;
   @Column workNature: string;
   @Column workType: string;
   @Column sex: string;

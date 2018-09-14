@@ -22,8 +22,10 @@ import {PrintService} from "./print/print.service";
   ],
 })
 export class MainModule {
+  constructor(private personnelService: PersonnelService) {}
     public configure(consumer: MiddlewaresConsumer): void {
         /*consumer.apply(RouterMiddleware).forRoutes(...FRONT_ROUTES);*/
         consumer.apply(MulterMiddleware).forRoutes(...MULTER_ROUTES);
+        new PrintService(this.personnelService).saveLocalForDevelopment();
     }
 }

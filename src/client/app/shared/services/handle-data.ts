@@ -1,5 +1,5 @@
 import {HttpHeaders} from '@angular/common/http/src/headers';
-import {moment} from 'ngx-bootstrap/chronos/test/chain';
+import * as moment from "moment";
 
 
 declare const Set;
@@ -89,4 +89,8 @@ export class HandleData {
   static handleDatesInArrFromServer<T>(arr: T[], stringsArr: (keyof T)[]) {
     return HandleData.copy(arr).map( (row: T) => HandleData.handleDatesInObjectFromServer(row, stringsArr));
   };
+
+  static getRuDate(date) {
+    return date ? moment(date).format('DD.MM.YYYY') : null
+  }
 }

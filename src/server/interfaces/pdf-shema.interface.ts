@@ -15,6 +15,7 @@ export module IPdfSchema {
       tableHeader?: IPdfSchema.SubStyle
     },
     defaultStyle?: {
+      layout?: any
       alignment?: string
     }
   }

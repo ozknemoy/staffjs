@@ -14,7 +14,6 @@ export class IPersonnel {
   number: string = null;
   inn: string = null;
   insurance: string = null;
-  alphabet: string = null;
   workNature: string = null;
   workType: string = null;
   sex: string = null;
