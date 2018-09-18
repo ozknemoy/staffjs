@@ -49,21 +49,24 @@ export class PersonnelService {
     return Personnel.findOne({where: {id},  include: [{ all: true }]})
   }
 
-  getOneWithoutInclude(id) {
-    return Personnel.findOne({where: {id}})
+  getOneWithInclude(id, _Model) {
+    return Personnel.findOne({
+      where: {id},
+      include: [_Model],
+      /*order: [[Personnel, 'id', 'ASC']]*/})
   }
 
   async updateOneWithRel(id: number, pers: IPersonnel, ModelRel, propName: keyof IPersonnel) {
-    const oldPersModel = await this.getOneWithoutInclude(id);
+    const oldPersModel = await this.getOne(id);
     return Promise.all([
       oldPersModel.update(pers),
       this.dbTransactions.createOrUpdateRel(ModelRel, 'personnelId', id, propName, pers)
-    ]).then(() => this.getOne(id))
+    ]).then(() => this.getOneWithInclude(id, ModelRel))
       .catch(err => this.errHandler.handlaAll(err))
   }
 
   async updateOne(id: number, pers: IPersonnel) {
-    const oldPersModel = await this.getOneWithoutInclude(id);
+    const oldPersModel = await this.getOne(id);
     return oldPersModel.update(pers)
       .catch(err => this.errHandler.handlaAll(err))
   }
@@ -73,6 +76,7 @@ export class PersonnelService {
   }
 
   getByParent(_Model, personnelId: number, order?: any[]) {
+    // http://docs.sequelizejs.com/manual/tutorial/querying.html#ordering
     const options = {where: {personnelId}};
     if (order) {
       Object.assign(options, {order})
@@ -150,7 +154,6 @@ export class PersonnelService {
   }
 
   async getOrCreateNGetWorkExp(personnelId) {
-    // http://docs.sequelizejs.com/manual/tutorial/querying.html#ordering
     const workExp = await this.getWorkExp(personnelId);
     if (!_.isEmpty(workExp)) {
       return workExp

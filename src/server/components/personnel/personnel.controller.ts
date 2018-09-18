@@ -34,8 +34,17 @@ export class StaffController {
   }
 
   @Get(':id')
-  getOne(@Param('id') id) {
-    return this.personnelService.getOne(id);
+  getOne(@Param('id') id, @Query('withRel') withRel) {
+    let _Model;
+    switch (withRel) {
+      case 'institution': {
+        _Model = Institution;
+        break;
+      }
+    }
+    return !_Model
+      ? this.personnelService.getOne(id)
+      : this.personnelService.getOneWithInclude(id, _Model);
   }
 
   @Put(':id')

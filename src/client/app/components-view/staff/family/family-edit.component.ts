@@ -22,7 +22,7 @@ export class FamilyComponent implements OnInit {
   }
 
   addRow() {
-    this.families.push(new IFamily())
+    this.families.push(new IFamily(+this.id))
   }
 
   deleteRow(i) {

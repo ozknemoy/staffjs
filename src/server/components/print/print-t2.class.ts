@@ -5,6 +5,7 @@ import {HandleData} from '../../../client/app/shared/services/handle-data';
 import * as moment from 'moment';
 import {IPdfSchema} from '../../interfaces/pdf-shema.interface';
 import {defaultFontSize, defaultTableLayout, tableFontSize} from './print.constants';
+import IInstitution from "../personnel/relations/personnel-institution.interface";
 
 export class PrintT2Builder {
   private pdf = [];
@@ -14,9 +15,9 @@ export class PrintT2Builder {
 
   make() {
     return this
-      .makeHeader()
+      //.makeHeader()
       .makeSectionOne()
-      .makeFamilyTable()
+      //.makeFamilyTable()
       .build();
   }
 
@@ -75,7 +76,7 @@ export class PrintT2Builder {
     const tbl = {
       fontSize: tableFontSize,
       table: {
-        widths: ['auto', 'auto', 'auto', 'auto', 22, 'auto', 'auto', 'auto'],
+        widths: ['auto', 'auto', 'auto', 'auto', 22, 'auto', 50, 'auto'],
         body: [[
           'Дата составления',
           'Табельный номер',
@@ -131,12 +132,98 @@ export class PrintT2Builder {
             }]
         ]
       },
-      //layout: Object.assign({noBorders: true}, defaultTableLayout),
-      //alignment: 'right',
+      //
       // registerDefaultTableLayouts
-       layout: 'noBorders'
+      layout: 'noBorders'
     }];
-    this.pdf = this.pdf.concat([title, undertitle]);
+    const mainInfo = [
+      {
+        columns: [
+          '1. Фамилия',
+          {text: HandleData.getUnderlined(worker.surname, 30), decoration: 'underline'},
+          {text: 'Имя', alignment: 'right'},
+          {text: worker.name, decoration: 'underline'},
+          {text: 'Отчество', alignment: 'right'},
+          {text: worker.middleName, decoration: 'underline'}
+        ],
+        columnGap: 5
+      }, {
+        text: [
+          '2. Дата рождения  ',
+          {
+            text: worker.passport ? HandleData.getRuDate(worker.passport.birthDate) : '',
+            decoration: 'underline'
+          },
+        ]
+      }, {
+        text: [
+          '3. Место рождения  ',
+          {
+            text: worker.passport ? worker.passport.birthPlace : '',
+            decoration: 'underline'
+          },
+        ]
+      }, {
+        text: [
+          '4. Гражданство  ',
+          {
+            text: worker.passport ? worker.passport.citizenship : '',
+            decoration: 'underline'
+          },
+        ]
+      }, {
+        columns: [
+          {
+            text: '5. Знание иностранного языка',
+            width: '40%'
+          }, {
+            text: worker.foreignLanguage,
+            decoration: 'underline'
+          }, {
+            text: worker.foreignLanguageGrade,
+            decoration: 'underline'
+          }
+        ]
+      }, {
+        text: [
+          '6. Образование ',
+          {
+            text: worker.educationName,
+            decoration: 'underline'
+          },
+        ]
+      },
+    ];
+
+    const firstEdu = !_.isEmpty(worker.institutions) ? worker.institutions[0] : new IInstitution();
+    const eduTables =
+      {
+        fontSize: tableFontSize,
+        table: {
+          //widths: ['auto', 'auto', 'auto', 'auto', 22, 'auto', 50, 'auto'],
+          body: [[
+            {text: 'Наименование образовательного учреждения', rowSpan: 2},
+            {text: 'Документ об образовании, о квалификации или наличии специальных знаний', colSpan: 3}, {}, {},
+            {text: 'Год окончания', rowSpan: 2},
+            {text: 'Квалификация по документу об образовании', rowSpan: 2},
+            {text: 'Направление или специальность по документу', rowSpan: 2},
+          ], [
+            '', 'наименование', 'серия', 'номер', '', '', '',
+          ], [
+            firstEdu.name,
+            firstEdu.docName,
+            firstEdu.docCode,
+            firstEdu.docNumber,
+            HandleData.getRuDate(firstEdu.endDate),
+            firstEdu.qualification,
+            firstEdu.specialty
+          ]]
+        },
+        //layout: defaultTableLayout
+      }
+
+    ;
+    this.pdf = this.pdf.concat([/*title, undertitle, mainInfo,*/ eduTables]);
     console.log(this.pdf);
 
     return this;

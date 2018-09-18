@@ -4,7 +4,6 @@ import IQualImprovement from "./relations/personnel-qual-improvement.interface";
 import IAttestation from "./relations/personnel-attestation.interface";
 import {IPersonnelNamedThingWithDoc} from "./relations/personnel-named-thing-with-doc.interface";
 import IProfRetraining from "./relations/personnel-prof-retraining.interface";
-import {Column} from "sequelize-typescript";
 import IInstitution from "./relations/personnel-institution.interface";
 
 

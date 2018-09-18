@@ -1,9 +1,11 @@
-import {AutoIncrement, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table, Unique} from 'sequelize-typescript';
+import {AutoIncrement, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table, Unique, DefaultScope} from 'sequelize-typescript';
 import {IPersonnel} from "../personnel.interface";
 import Personnel from "../personnel.model";
 import IInstitution from "./personnel-institution.interface";
 
-
+/*@DefaultScope({
+  order: [['id', 'ASC']]
+})*/
 @Table({
   tableName: 'institution'
 })

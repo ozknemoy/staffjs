@@ -1,5 +1,6 @@
 import {HttpHeaders} from '@angular/common/http/src/headers';
 import * as moment from "moment";
+import * as _ from 'lodash/core';
 
 
 declare const Set;
@@ -92,5 +93,17 @@ export class HandleData {
 
   static getRuDate(date) {
     return date ? moment(date).format('DD.MM.YYYY') : null
+  }
+
+  // (имя,6) -> имя____
+  static getUnderlined(str: string | number, length: number): string {
+    if (_.isEmpty(str)) {
+      return ' '
+    }
+    str = str.toString();
+    while (str.length < length) {
+      str += ' '
+    }
+    return str
   }
 }

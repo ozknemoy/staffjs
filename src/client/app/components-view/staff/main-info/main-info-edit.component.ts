@@ -20,32 +20,21 @@ export class StaffMainInfoComponent implements OnInit {
   constructor(protected http: HttpService, protected route: ActivatedRoute) { }
 
   async ngOnInit() {
-    this.worker = await this.http.get(`personnel/${this.route.parent.snapshot.params.id}`).toPromise();
-    /*this.pdfBuilder()
-      .makeFamilyTable(this.worker.families)
-      .build()*/
-  }
-
-  makeFamilyTable(f: IFamily[]) {
-    return this;
-  }
-
-  build() {
-    const w = window.open('http://localhost:4200/staff-edit/29', '_blank ');
-    pdfMake.createPdf({content: [this.pdf]}).open({}, w);
+    const suffix = this.rel ? `?withRel=${this.rel}` : '';
+    this.worker = await this.http.get(`personnel/${this.route.parent.snapshot.params.id + suffix}`).toPromise();
   }
 
   pdfBuilder() {
     return this
   }
 
-  addFamily() {
+  /*addFamily() {
     this.worker.families.push(<any>{})
   }
 
   deleteFamily(i) {
     this.worker.families.splice(i, 1)
-  }
+  }*/
 
   save() {
     console.log(this.worker.educationName);

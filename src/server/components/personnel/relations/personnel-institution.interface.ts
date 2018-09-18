@@ -1,7 +1,7 @@
 
 export default class IInstitution {
+  constructor(public personnelId: number) {}
   id: number = null;
-  personnelId:  number = null;
   name: string = null;
   docName: string = null;
   docCode: string = null;

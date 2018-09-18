@@ -16,7 +16,7 @@ export class EducationEditComponent extends StaffMainInfoComponent  {
   }
 
   addRow() {
-    this.worker.institutions.push(new IInstitution())
+    this.worker.institutions.push(new IInstitution(+this.id))
   }
 
   deleteRow(i) {
