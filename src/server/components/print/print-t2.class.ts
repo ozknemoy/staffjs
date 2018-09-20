@@ -195,9 +195,11 @@ export class PrintT2Builder {
       },
     ];
 
-    const firstEdu = !_.isEmpty(worker.institutions) ? worker.institutions[0] : new IInstitution();
-    const eduTables =
-      {
+    const firstEdu = !_.isEmpty(worker.institutions) ? worker.institutions[0] : new IInstitution(this.pers.id);
+    const secondEdu = !_.isEmpty(worker.institutions) && worker.institutions.length > 1
+      ? worker.institutions[1]
+      : new IInstitution(this.pers.id);
+    const eduTables = {
         fontSize: tableFontSize,
         table: {
           //widths: ['auto', 'auto', 'auto', 'auto', 22, 'auto', 50, 'auto'],
@@ -209,24 +211,28 @@ export class PrintT2Builder {
             {text: 'Направление или специальность по документу', rowSpan: 2},
           ], [
             '', 'наименование', 'серия', 'номер', '', '', '',
-          ], [
-            firstEdu.name,
-            firstEdu.docName,
-            firstEdu.docCode,
-            firstEdu.docNumber,
-            HandleData.getRuDate(firstEdu.endDate),
-            firstEdu.qualification,
-            firstEdu.specialty
-          ]]
+          ], this.getEduTableRow(firstEdu), this.getEduTableRow(secondEdu)]
         },
         //layout: defaultTableLayout
       }
 
     ;
-    this.pdf = this.pdf.concat([/*title, undertitle, mainInfo,*/ eduTables]);
-    console.log(this.pdf);
+    this.pdf = this.pdf.concat([title, undertitle, mainInfo, eduTables]);
+    //console.log(this.pdf);
 
     return this;
+  }
+
+  private getEduTableRow(inst: IInstitution) {
+    return [
+      inst.name,
+      inst.docName,
+      inst.docCode,
+      inst.docNumber,
+      HandleData.getRuDate(inst.endDate),
+      inst.qualification,
+      inst.specialty
+    ]
   }
 
   private build(): IPdfSchema.Root {

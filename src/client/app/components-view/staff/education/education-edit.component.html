@@ -44,7 +44,9 @@
       <th rowspan="2">Квалификация по документу об образовании</th>
       <th rowspan="2">Направление или специальность по документу</th>
       <th rowspan="2">
-        <button class="btn btn-sm btn-success" (click)="addRow()">Добавить</button>
+        <button class="btn btn-sm btn-success"
+                (click)="addRow()"
+                [disabled]="worker.institutions?.length > 2">Добавить</button>
       </th>
     </tr>
     <tr>
