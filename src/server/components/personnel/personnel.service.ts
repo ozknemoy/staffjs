@@ -1,6 +1,6 @@
 
 import {IPersonnel} from "./personnel.interface";
-import {Component} from "@nestjs/common";
+import {Body, Component, Param} from '@nestjs/common';
 import {staffJsDB} from "../../configs/staffjs.database";
 import Personnel from "./personnel.model";
 import Family from "./relations/personnel-family.model";
@@ -27,6 +27,11 @@ import IWorkExp from './relations/personnel-work-exp.interface';
 import WorkExp from './relations/personnel-work-exp.model';
 import {workExpTypesDict} from '../../../shared/work-exp-types.dict';
 import * as _ from 'lodash/core';
+import Institution from './relations/personnel-institution.model';
+import ScientificInst from './relations/personnel-scientific-inst.model';
+import IScientificInst from './relations/personnel-scientific-inst.interface';
+import {HandleData} from '../../../client/app/shared/services/handle-data';
+import IInstitution from './relations/personnel-institution.interface';
 @Component()
 export class PersonnelService {
 
@@ -49,10 +54,10 @@ export class PersonnelService {
     return Personnel.findOne({where: {id},  include: [{ all: true }]})
   }
 
-  getOneWithInclude(id, _Model) {
+  getOneWithInclude(id, ..._Model) {
     return Personnel.findOne({
       where: {id},
-      include: [_Model],
+      include: _Model,
       /*order: [[Personnel, 'id', 'ASC']]*/})
   }
 
@@ -86,6 +91,26 @@ export class PersonnelService {
 
   getOneByParent(_Model, personnelId: number) {
     return _Model.findOne({where: {personnelId}})
+  }
+
+  getEdu(id) {
+    return this.getOneWithInclude(id, Institution, ScientificInst).then((pers: IPersonnel) => {
+      if(!_.isEmpty(pers.institutions)) {
+        pers.institutions = HandleData.sortArrById(pers.institutions)
+      }
+      return pers
+    });
+  }
+
+  saveEdu(personnelId, pers: IPersonnel) {
+    // если хоть одно поле заполнено то создаю новую/сохраняю старую строку
+    const scientificInstExist = _.values(pers.scientificInst).some(val => !!val);
+    return Promise.all([
+      this.updateOneWithRel(personnelId, pers, Institution, 'institutions'),
+      scientificInstExist
+        ? ScientificInst.upsert(Object.assign(pers.scientificInst, {personnelId}))
+        : Promise.resolve(true)
+    ]).then(() => this.getEdu(personnelId))
   }
 
   saveOrCreateQualImprovements(personnelId, qualImprovements: IQualImprovement[]) {

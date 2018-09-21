@@ -26,10 +26,10 @@ export class PrintService {
     const file = await this.printT2(29);
     writeFile('t2-dev.pdf', file, (e) => {
       console.log('------saveLocalForDevelopment------', e);
-
     });
     return
   }
+
   async printT2(userId) {
     const user = await this.personnelService.getOneFull(userId);
     const pdfSchema: IPdfSchema.Root = new PrintT2Builder(user).make();

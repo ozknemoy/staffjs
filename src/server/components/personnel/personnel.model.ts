@@ -24,6 +24,8 @@ import Institution from "./relations/personnel-institution.model";
 import Workplace from "./relations/personnel-workplace.model";
 import IWorkplace from "./relations/personnel-workplace.interface";
 import WorkExp from './relations/personnel-work-exp.model';
+import IScientificInst from './relations/personnel-scientific-inst.interface';
+import ScientificInst from './relations/personnel-scientific-inst.model';
 
 export const phoneRegExp = /\d{11,13}/;
 export const innRegExp = /\d{10,10}/;
@@ -110,4 +112,6 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @HasMany(() => WorkExp)
   workExp: WorkExp[];
 
+  @HasOne(() => ScientificInst)
+  scientificInst: IScientificInst;
 }

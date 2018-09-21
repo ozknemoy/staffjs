@@ -21,6 +21,8 @@ import {IPersonnelNamedThingWithDoc} from './relations/personnel-named-thing-wit
 import {ISocialSecurity} from './relations/personnel-social-security.interface';
 import SocialSecurity from './relations/personnel-social-security.model';
 import IWorkExp from './relations/personnel-work-exp.interface';
+import IScientificInst from './relations/personnel-scientific-inst.interface';
+import ScientificInst from './relations/personnel-scientific-inst.model';
 
 
 @Controller('personnel')
@@ -52,9 +54,14 @@ export class StaffController {
     return this.personnelService.updateOne(id, pers);
   }
 
-  @Put(':id/with-rel/institution')
-  updateOneInstitution(@Param('id') id, @Body() pers: IPersonnel) {
-    return this.personnelService.updateOneWithRel(id, pers, Institution, 'institutions');
+  @Get(':id/edu')
+  getEdu(@Param('id') id) {
+    return this.personnelService.getEdu(id);
+  }
+
+  @Put(':id/edu')
+  updateEdu(@Param('id') id, @Body() pers: IPersonnel) {
+    return this.personnelService.saveEdu(id, pers);
   }
 
   @Get(':id/qual-improvement')

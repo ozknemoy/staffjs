@@ -65,7 +65,7 @@ export class HandleData {
     return date ? moment(date).format('YYYY-MM-DD') : date;
   }
 
-  static copy<T>(arr: T[]): T[] {
+  static copy<T>(arr: T): T {
     return JSON.parse(JSON.stringify(arr))
   }
 
@@ -95,15 +95,27 @@ export class HandleData {
     return date ? moment(date).format('DD.MM.YYYY') : null
   }
 
+  static getRuDateWithoutDays(date) {
+    return date ? moment(date).format('MM.YYYY') : null
+  }
+
   // (имя,6) -> имя____
-  static getUnderlined(str: string | number, length: number): string {
+  static getUnderlined(str: string | number, length: number, forceUnderline?): string {
     if (_.isEmpty(str)) {
-      return ' '
+      str = '';
+    } else {
+      str = str.toString();
     }
-    str = str.toString();
-    while (str.length < length) {
-      str += ' '
+    if (_.isEmpty(str) || forceUnderline) {
+      while (str.length < length) {
+        str += ' '
+      }
     }
+
     return str
+  }
+
+  static sortArrById<T extends {id: number}>(arr: T[]): T[] {
+    return arr.sort((a: T, b) => a.id > b.id ? 1 : -1)
   }
 }

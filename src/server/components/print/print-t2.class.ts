@@ -5,7 +5,9 @@ import {HandleData} from '../../../client/app/shared/services/handle-data';
 import * as moment from 'moment';
 import {IPdfSchema} from '../../interfaces/pdf-shema.interface';
 import {defaultFontSize, defaultTableLayout, tableFontSize} from './print.constants';
-import IInstitution from "../personnel/relations/personnel-institution.interface";
+import IInstitution from '../personnel/relations/personnel-institution.interface';
+import {PrintHelpers} from './print-helpers.class';
+import IScientificInst from '../personnel/relations/personnel-scientific-inst.interface';
 
 export class PrintT2Builder {
   private pdf = [];
@@ -16,24 +18,10 @@ export class PrintT2Builder {
   make() {
     return this
       //.makeHeader()
-      .makeSectionOne()
+      .makeSectionFirstToSixth()
+      .makeSectionSeventh()
       //.makeFamilyTable()
       .build();
-  }
-
-  addEmptyRow(table: (string | number)[][], rowAmount: number): (string | number)[][] {
-    if (!_.isEmpty(table) && table.length < rowAmount) {
-      const columnAmount = table[0].length;
-      const emptyRow = [];
-      while (emptyRow.length < columnAmount) {
-        emptyRow.push(' ');
-      }
-      while (table.length < rowAmount) {
-        // каждый раз надо создавать новый массив тк копии библиотека игнорирует
-        table.push(emptyRow.slice());
-      }
-    }
-    return table;
   }
 
   private makeFamilyTable() {
@@ -51,7 +39,7 @@ export class PrintT2Builder {
           'Степень родства (ближайшие родственники)',
           'Фамилия, имя, отчество',
           'Год рождения'
-        ]].concat(<string[][]>this.addEmptyRow(body, 5))
+        ], ...PrintHelpers.addEmptyRow(body, 5)]
       },
       layout: defaultTableLayout
     };
@@ -63,8 +51,8 @@ export class PrintT2Builder {
     const worker = this.pers;
     // https://github.com/bpampuch/pdfmake/blob/master/examples/textDecorations.js
     const name = {text: INSTITUTIONS_NAME + '\n\n', decoration: 'underline', width: '*'/*, decorationStyle: 'dashed'*/};
-    const tblBody = [[
-      worker.contractDate ? moment(worker.contractDate).format('DD.MM.YYYY') : null,
+    const tblBody = [
+      HandleData.getRuDate(worker.contractDate),
       worker.number,
       worker.inn,
       worker.insurance,
@@ -72,7 +60,7 @@ export class PrintT2Builder {
       worker.workNature,
       worker.workType,
       worker.sex
-    ]];
+    ];
     const tbl = {
       fontSize: tableFontSize,
       table: {
@@ -86,7 +74,7 @@ export class PrintT2Builder {
           'Характер работы',
           'Вид работы',
           'Пол',
-        ]].concat(tblBody)
+        ], tblBody]
       },
       layout: defaultTableLayout
     };
@@ -102,7 +90,7 @@ export class PrintT2Builder {
     return this;
   }
 
-  private makeSectionOne() {
+  private makeSectionFirstToSixth() {
     const worker = this.pers;
     const title = {
       text: [
@@ -139,19 +127,19 @@ export class PrintT2Builder {
     const mainInfo = [
       {
         columns: [
-          '1. Фамилия',
-          {text: HandleData.getUnderlined(worker.surname, 30), decoration: 'underline'},
-          {text: 'Имя', alignment: 'right'},
-          {text: worker.name, decoration: 'underline'},
-          {text: 'Отчество', alignment: 'right'},
-          {text: worker.middleName, decoration: 'underline'}
+          {text: '1. Фамилия', width: 70},
+          {text: HandleData.getUnderlined(worker.surname, 30, true), decoration: 'underline'},
+          {text: 'Имя', alignment: 'right', width: 65},
+          {text: HandleData.getUnderlined(worker.name, 30, true), decoration: 'underline'},
+          {text: 'Отчество', alignment: 'right', width: 65},
+          {text: HandleData.getUnderlined(worker.middleName, 23, true), decoration: 'underline'}
         ],
         columnGap: 5
       }, {
         text: [
           '2. Дата рождения  ',
           {
-            text: worker.passport ? HandleData.getRuDate(worker.passport.birthDate) : '',
+            text: HandleData.getUnderlined(worker.passport ? HandleData.getRuDate(worker.passport.birthDate) : '', 30),
             decoration: 'underline'
           },
         ]
@@ -159,7 +147,7 @@ export class PrintT2Builder {
         text: [
           '3. Место рождения  ',
           {
-            text: worker.passport ? worker.passport.birthPlace : '',
+            text: HandleData.getUnderlined(worker.passport ? worker.passport.birthPlace : '', 70),
             decoration: 'underline'
           },
         ]
@@ -167,20 +155,20 @@ export class PrintT2Builder {
         text: [
           '4. Гражданство  ',
           {
-            text: worker.passport ? worker.passport.citizenship : '',
+            text: HandleData.getUnderlined(worker.passport ? worker.passport.citizenship : '', 50),
             decoration: 'underline'
           },
         ]
       }, {
-        columns: [
+        text: [
+          '5. Знание иностранного языка ',
           {
-            text: '5. Знание иностранного языка',
-            width: '40%'
-          }, {
-            text: worker.foreignLanguage,
+            text: HandleData.getUnderlined(worker.foreignLanguage, 45),
             decoration: 'underline'
-          }, {
-            text: worker.foreignLanguageGrade,
+          },
+          '  ',
+          {
+            text: HandleData.getUnderlined(worker.foreignLanguageGrade, 50),
             decoration: 'underline'
           }
         ]
@@ -188,51 +176,93 @@ export class PrintT2Builder {
         text: [
           '6. Образование ',
           {
-            text: worker.educationName,
+            text: HandleData.getUnderlined(worker.educationName, 100),
             decoration: 'underline'
           },
         ]
       },
     ];
 
-    const firstEdu = !_.isEmpty(worker.institutions) ? worker.institutions[0] : new IInstitution(this.pers.id);
-    const secondEdu = !_.isEmpty(worker.institutions) && worker.institutions.length > 1
-      ? worker.institutions[1]
-      : new IInstitution(this.pers.id);
-    const eduTables = {
-        fontSize: tableFontSize,
-        table: {
-          //widths: ['auto', 'auto', 'auto', 'auto', 22, 'auto', 50, 'auto'],
-          body: [[
-            {text: 'Наименование образовательного учреждения', rowSpan: 2},
-            {text: 'Документ об образовании, о квалификации или наличии специальных знаний', colSpan: 3}, {}, {},
-            {text: 'Год окончания', rowSpan: 2},
-            {text: 'Квалификация по документу об образовании', rowSpan: 2},
-            {text: 'Направление или специальность по документу', rowSpan: 2},
-          ], [
-            '', 'наименование', 'серия', 'номер', '', '', '',
-          ], this.getEduTableRow(firstEdu), this.getEduTableRow(secondEdu)]
+    const bodyOne = (worker.institutions || []).map((inst) => this.getEduOneTableRow(inst));
+    const eduTableOne = {
+      margin: [0, 20],
+      fontSize: tableFontSize,
+      table: {
+        body: [[
+          {text: 'Наименование образовательного учреждения', rowSpan: 2},
+          {text: 'Документ об образовании, о квалификации или наличии специальных знаний', colSpan: 3}, {}, {},
+          {text: 'Год окончания', rowSpan: 2},
+          {text: 'Квалификация по документу об образовании', rowSpan: 2},
+          {text: 'Направление или специальность по документу', rowSpan: 2},
+        ], [
+          '', 'наименование', 'серия', 'номер', '', '', '',
+        ], ...PrintHelpers.addEmptyRow(bodyOne, 2)]
+      },
+      layout: defaultTableLayout
+    };
+    const afterInstEduName = {
+      text: [
+        'Послевузовское профессиональное образование ',
+        {
+          text: HandleData.getUnderlined(worker.afterInstEduName, 50),
+          decoration: 'underline'
         },
-        //layout: defaultTableLayout
-      }
-
-    ;
-    this.pdf = this.pdf.concat([title, undertitle, mainInfo, eduTables]);
-    //console.log(this.pdf);
+      ]
+    };
+    const scientificInst: IScientificInst = worker.scientificInst || <IScientificInst>{};
+    const eduTableTwo = {
+      margin: [0, 20],
+      fontSize: tableFontSize,
+      table: {
+        body: [[
+          'Наименование образовательного, научного учреждения',
+          'Документ об образовании, номер, дата выдачи',
+          'Год окончания',
+          'Направление или специальность по документу',
+        ], [
+          scientificInst.name,
+          scientificInst.fullInfo,
+          HandleData.getRuDateWithoutDays(scientificInst.endDate),
+          scientificInst.specialty
+        ]]
+      },
+      layout: defaultTableLayout
+    };
+    this.pdf = this.pdf.concat([title, undertitle, mainInfo, eduTableOne, afterInstEduName, eduTableTwo]);
 
     return this;
   }
 
-  private getEduTableRow(inst: IInstitution) {
+  private getEduOneTableRow(inst: IInstitution) {
     return [
       inst.name,
       inst.docName,
       inst.docCode,
       inst.docNumber,
-      HandleData.getRuDate(inst.endDate),
+      HandleData.getRuDateWithoutDays(inst.endDate),
       inst.qualification,
       inst.specialty
-    ]
+    ];
+  }
+
+  private makeSectionSeventh() {
+    const worker = this.pers;
+    const seventh = {
+      text: [
+        '7. Профессия \t',
+        {text: HandleData.getUnderlined(worker.profession, 70), decoration: 'underline'}
+        ]
+    };
+    const eightTitle = {
+      text: [
+        `8. Стаж работы (по состоянию на ${HandleData.getRuDate(new Date)}):`
+      ]
+    };
+    const eightTable = {
+
+    };
+    this.pdf = this.pdf.concat([seventh, eightTitle, eightTable]);
+    return this;
   }
 
   private build(): IPdfSchema.Root {

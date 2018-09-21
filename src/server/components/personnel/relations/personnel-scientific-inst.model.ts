@@ -2,14 +2,13 @@ import {AutoIncrement, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table, 
 import {IPersonnel} from "../personnel.interface";
 import Personnel from "../personnel.model";
 import IInstitution from "./personnel-institution.interface";
+import IScientificInst from './personnel-scientific-inst.interface';
 
-/*@DefaultScope({
-  order: [['id', 'ASC']]
-})*/
+
 @Table({
-  tableName: 'institution'
+  tableName: 'scientific-inst'
 })
-export default class Institution extends Model<Institution> implements IInstitution {
+export default class ScientificInst extends Model<ScientificInst> implements IScientificInst {
 
   @AutoIncrement
   @Unique
@@ -25,10 +24,7 @@ export default class Institution extends Model<Institution> implements IInstitut
   personnel: IPersonnel;
 
   @Column name: string;
-  @Column docName: string;
-  @Column docCode: string;
-  @Column docNumber: string;
-  @Column qualification: string;
+  @Column fullInfo: string;
   @Column specialty: string;
   @Column endDate: Date;
 }

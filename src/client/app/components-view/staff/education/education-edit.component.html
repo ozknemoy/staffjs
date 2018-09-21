@@ -45,8 +45,8 @@
       <th rowspan="2">Направление или специальность по документу</th>
       <th rowspan="2">
         <button class="btn btn-sm btn-success"
-                (click)="addRow()"
-                [disabled]="worker.institutions?.length > 2">Добавить</button>
+                (click)="addInst()"
+                [hidden]="worker.institutions?.length > 1">Добавить</button>
       </th>
     </tr>
     <tr>
@@ -59,10 +59,25 @@
       <td><input type="text" [(ngModel)]="q.docName" class="form-control"></td>
       <td><input type="text" [(ngModel)]="q.docCode" class="form-control"></td>
       <td><input type="text" [(ngModel)]="q.docNumber" class="form-control"></td>
-      <td><input type="number" [(ngModel)]="q.endDate" class="form-control"></td>
+      <td><input type="date" [(ngModel)]="q.endDate" class="form-control"></td>
       <td><input type="text" [(ngModel)]="q.qualification" class="form-control"></td>
       <td><input type="text" [(ngModel)]="q.specialty" class="form-control"></td>
-      <td><button class="btn btn-sm btn-danger" (click)="deleteRow(i)">Удалить</button></td>
+      <td><button class="btn btn-sm btn-danger" (click)="deleteInst(i)">Удалить</button></td>
+    </tr>
+  </table>
+
+  <table class="table table-sm table-responsive-sm table-bordered">
+    <tr>
+      <th>Наименование образовательного, научного учреждения</th>
+      <th>Документ об образовании, номер, дата выдачи</th>
+      <th>Год окончания</th>
+      <th>Направление или специальность по документу</th>
+    </tr>
+    <tr>
+      <td><input type="text" [(ngModel)]="worker.scientificInst.name" class="form-control"></td>
+      <td><textarea [(ngModel)]="worker.scientificInst.fullInfo" class="form-control" rows="3"></textarea></td>
+      <td><input type="date" [(ngModel)]="worker.scientificInst.endDate" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="worker.scientificInst.specialty" class="form-control"></td>
     </tr>
   </table>
 </div>

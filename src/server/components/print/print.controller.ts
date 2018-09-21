@@ -10,11 +10,12 @@ export class PrintComponent {
 
   @Post('t2')
   printT2(@Query('userId') userId: string, @Res() resp) {
-    return this.printService.printT2(userId).then(data => {
+    return this.printService.saveLocalForDevelopment()
+    /*return this.printService.printT2(userId).then(data => {
       resp.contentType('application/pdf; charset=utf-8');
       resp.setHeader('content-disposition', 'attachment; filename=somename.pdf');
       return resp.send(data);
-    })
+    })*/
   }
 
 }

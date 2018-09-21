@@ -5,6 +5,7 @@ import IAttestation from "./relations/personnel-attestation.interface";
 import {IPersonnelNamedThingWithDoc} from "./relations/personnel-named-thing-with-doc.interface";
 import IProfRetraining from "./relations/personnel-prof-retraining.interface";
 import IInstitution from "./relations/personnel-institution.interface";
+import IScientificInst from './relations/personnel-scientific-inst.interface';
 
 
 export class IPersonnel {
@@ -37,6 +38,7 @@ export class IPersonnel {
   profRetrainings: IProfRetraining[] = null;
   qualificationImprovements: IQualImprovement[] = null;
   rewards: IPersonnelNamedThingWithDoc[] = null;
+  scientificInst: IScientificInst = null;
 }
 
 
