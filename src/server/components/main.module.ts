@@ -26,6 +26,6 @@ export class MainModule {
     public configure(consumer: MiddlewaresConsumer): void {
         /*consumer.apply(RouterMiddleware).forRoutes(...FRONT_ROUTES);*/
         consumer.apply(MulterMiddleware).forRoutes(...MULTER_ROUTES);
-        new PrintService(this.personnelService).saveLocalForDevelopment();
+        new PrintService(this.personnelService).saveLocalForDevelopmentDocx();
     }
 }
