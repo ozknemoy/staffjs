@@ -21,7 +21,16 @@ export const pageMargins = {
 };
 
 export function addEmptyLineUnderlined(withComma = false) {
-  return new Paragraph('_________________________________________________________________________________________________________________________________________________' + withComma ? ',' : '');
+  return new Paragraph('____________________________________________________________________________________________________________'
+    + (withComma ? ',' : ''));
+}
+
+export function addUnderlineText(left: number, text: string) {
+  return new Paragraph()
+  /*.spacing({before: 1000})*/
+  /*.leftTabStop(9)*/
+    .indent({left}) // 720 TWIP === 720 / 20 pt === .5 in
+    .addRun(new TextRun(`(${text})`).italic().size(14));
 }
 
 export class PrintLaborContractScientificBuilder2 {
@@ -49,20 +58,23 @@ export class PrintLaborContractScientificBuilder2 {
         .addRun(new TextRun("от __________ №__________").break());
     this.doc.addParagraph(one);
 
-    const header = new Paragraph().center().style('12');
-    header.addRun(new TextRun('Трудовой договор №____').bold().break());
-    header.addRun(new TextRun('с научным работником').bold().break());
+    const header = new Paragraph().center().style('12')
+      .addRun(new TextRun('Трудовой договор №____').bold().break())
+      .addRun(new TextRun('с научным работником').bold().break());
     this.doc.addParagraph(header);
 
-    const four = new Paragraph('Санкт-Петербург                                                                                                                                                            «___»_________20__г.').right().style('9');
+    const four = new Paragraph('Санкт-Петербург                                                                                                                                                            «___»_________20__г.')
+      .right()
+      .style('9');
     this.doc.addParagraph(four);
     const five = new Paragraph().style('9')
-      .addRun(new TextRun('Федеральное государственное автономное образовательное учреждение высшего образования «Санкт-Петербургский   государственный   университет   аэрокосмического   приборостроения»,  в   лице   ректора/проректор').tab().break());
+      .addRun(new TextRun('Федеральное государственное автономное образовательное учреждение высшего образования «Санкт-Петербургский   государственный   университет   аэрокосмического   приборостроения»,  в   лице   ректора/проректор')
+        .tab()
+        .break());
     this.doc.addParagraph(five);
-    const underFive = new Paragraph()
-      .addRun(new TextRun('(нужное подчеркнуть)').italic().size(14)).spacing({before: 40});
-    this.doc.addParagraph(underFive);
-    this.doc.addParagraph(addEmptyLineUnderlined());
+
+    this.doc.addParagraph(addUnderlineText(720 * 9, 'нужное подчеркнуть'));
+    this.doc.addParagraph(addEmptyLineUnderlined(true));
     const underFio = new Paragraph()
       .center()
       .style('7')
