@@ -44,7 +44,7 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @Column number: string;
 
   @Is('inn', (inn: string) => {
-    if (!innRegExp.test(inn) || inn.length !== 10) {
+    if ((!innRegExp.test(inn) || inn.length !== 10) && inn ) {
       throw new Error(`Вы ввели не валидный ИНН "${inn}". Введите 10 цифр`);
     }
   })

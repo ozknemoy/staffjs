@@ -3,8 +3,7 @@ import {PersonnelService} from '../personnel/personnel.service';
 import {PrintT2Builder} from './print-t2.class';
 import {IPdfSchema} from '../../interfaces/pdf-shema.interface';
 import * as fs from 'fs';
-import {docsHeaders, PrintLaborContractScientificBuilder} from './print-labor-contract-scientific.class';
-import {PrintLaborContractScientificBuilder2} from './print-labor-contract-scientific2.class';
+import {PrintLaborContractScientificBuilder} from './print-labor-contract-scientific.class';
 import * as docx from "docx";
 
 const path = require('path');
@@ -34,7 +33,7 @@ export class PrintService {
     return;
   }
   async saveLocalForDevelopmentDocx() {
-    const file = await this.printLaborContractScientificBuilder(1);
+    await this.printLaborContractScientificBuilder(1);
 
     /*
     console.log('------------------', file);
@@ -68,34 +67,51 @@ export class PrintService {
 
   async printLaborContractScientificBuilder(userId) {
     const user = await this.personnelService.getOneFull(userId);
-    const dox = new PrintLaborContractScientificBuilder2(user).make();
-    //console.log('------------------', docx);
+    const dox = new PrintLaborContractScientificBuilder(user).make();
     return this.createOfficeFile(dox);
   }
 
   createOfficeFile(doc) {
     // Used to export the file into a .docx file
     //console.log('-------------', doc);
-    (new docx.Packer()).toBuffer(doc).then((b) => {
+    /*(new docx.Packer()).toBuffer(doc).then((b) => {
       //console.log(buffer);
       console.log('-----', b);
       fs.writeFileSync("doc-dev2.docx", b);
-    });
-
-    //
-    //exporter.pack("doc-dev2.docx");
-    /*const out = fs.createWriteStream('doc-dev.docx');
-
-    doc.generate(out, {
-      'finalize': function (written) {
-        //console.log('Finish to create a PowerPoint file.\nTotal bytes created: ' + written + '\n');
-      },
-      'error': function (err) {
-        //console.log(err);
-      }
     });*/
+    this._createOfficeFile(doc)
   }
 
+  _createOfficeFile(doc) {
+    const dir = 'E:/files/';
+    const name = 'doc-dev';
+    const ext = '.docx';
+    (new docx.Packer()).toBuffer(doc).then((b) => {
+      console.log('-----  ok make  -----');
+      // пробую писать
+      fs.writeFile(dir + name + ext, b, (e) => {
+        if (e) {
+          console.log('*****    ', e.code, '    *****');
+          // при неудаче добавляю номер
+          fs.writeFileSync(`${dir}${name}-${ +new Date}${ext}`, b);
+        } else {
+          console.log('-----  ok write  ----');
+          // при удаче удаляю файлы с номерами
+          fs.readdir(dir, (_e, files) => {
+            if (files.length) {
+              files.forEach(fileName => {
+                if (fileName.indexOf(name + '-') > -1) {
+                  fs.unlink(dir + fileName, () => {
+                  })
+                }
+              })
+            }
+          })
+        }
+
+      });
+    });
+  }
   async printOffice(doc) {
     
     return new Promise((res) => {

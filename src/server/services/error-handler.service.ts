@@ -30,11 +30,14 @@ export class ErrHandlerService {
           }
         }
         break;
+      case 'SequelizeDatabaseError': {
+        return this.handle('ошибка БД: ' + (e.parent ? e.parent.toString() : ''), HttpStatus.BAD_REQUEST)
+      }
       case 'SequelizeValidationError':
         return this.sentToFront(e);
     }
-    console.log('handlaAllError___________________', e);
-    return this.handle('Не хватает прав', status)
+    console.log('handleAllError___________________', e);
+    return this.handle(e.toString(), status)
 
   }
 

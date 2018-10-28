@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {IPersonnel} from "../../../../../server/components/personnel/personnel.interface";
 import {ActivatedRoute} from "@angular/router";
-import {IFamily} from "../../../../../server/components/personnel/relations/personnel-family.interface";
-import * as _ from 'lodash/core'
 import {HttpService} from "../../../services/http.service";
-
-declare const pdfMake;
+import {HandleData} from "../../../shared/services/handle-data";
 
 @Component({
   selector: 'app-staff-main-info',
@@ -14,36 +11,24 @@ declare const pdfMake;
 export class StaffMainInfoComponent implements OnInit {
 
   worker = new IPersonnel();
-  pdf = [];
+  private dateProps: (keyof IPersonnel)[] = ['contractDate'];
   // говорю беку не надо сохранять связь
   rel: string;
   constructor(protected http: HttpService, protected route: ActivatedRoute) { }
 
   async ngOnInit() {
     const suffix = this.rel ? `?withRel=${this.rel}` : '';
-    this.worker = await this.http.get(`personnel/${this.route.parent.snapshot.params.id + suffix}`).toPromise();
+    const worker = await this.http.get(`personnel/${this.route.parent.snapshot.params.id + suffix}`).toPromise();
+    this.worker = HandleData.handleDatesInObjectFromServer(worker, this.dateProps)
   }
-
-  pdfBuilder() {
-    return this
-  }
-
-  /*addFamily() {
-    this.worker.families.push(<any>{})
-  }
-
-  deleteFamily(i) {
-    this.worker.families.splice(i, 1)
-  }*/
 
   save() {
-    console.log(this.worker.educationName);
     const suffix = this.rel ? `/with-rel/${this.rel}` : '';
     this.http.put(`personnel/${this.worker.id + suffix}`, this.worker)
-      //.toPromise()
-      .subscribe((newWorker) => {
-        this.worker = <any>newWorker;
-      });
+      .toPromise()
+      .then((newWorker) =>
+        this.worker = HandleData.handleDatesInObjectFromServer(<any>newWorker, this.dateProps)
+      );
   }
 
 }
