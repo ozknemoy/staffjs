@@ -92,11 +92,11 @@ export class HandleData {
   };
 
   static getRuDate(date) {
-    return date ? moment(date).format('DD.MM.YYYY') : null
+    return date ? moment(new Date(date)).format('DD.MM.YYYY') : null
   }
 
   static getRuDateWithoutDays(date) {
-    return date ? moment(date).format('MM.YYYY') : null
+    return date ? moment(new Date(date)).format('MM.YYYY') : null
   }
 
   // (имя,6) -> имя____
@@ -127,7 +127,7 @@ export class HandleData {
     return HandleData.isNoValuePrimitive(value) || (Array.isArray(value) && !value.length)
   }
 
-  static fieldsOrNot(f: string | number | (string | number)[]) {
+  static fieldsOrNot(f: string | number | Date | (string | number | Date)[]) {
     let str;
     if (f && Array.isArray(f) && !_.isEmpty(f)) {
       str = f.map(_f => !HandleData.isNoValuePrimitive(_f) ? (_f + '') : null).filter(_f => !HandleData.isNoValuePrimitive(_f))
@@ -139,7 +139,7 @@ export class HandleData {
     return str
   }
 
-  static fieldsOrNotConcat<T>(f: (string | number)[], glue: string = ' '): string {
+  static fieldsOrNotConcat<T>(f: (string | number | Date)[], glue: string = ' '): string {
     return (<string[]>HandleData.fieldsOrNot(f)).join(glue);
   }
 
@@ -160,6 +160,9 @@ export class HandleData {
     return fullDate;
   }
 
+  /* раскидывает текст по рядам
+  * [123, 567, 890],[__________, ____________, ______________] -> [123 567, 890, __________]
+  * */
   static allocateTextToLines(mainText: string[], dummyText: string[]) {
     if (_.isEmpty(mainText)) {
       return dummyText
@@ -192,13 +195,14 @@ export class HandleData {
   }
 
   static getFIO([f, i, o], short = true): string {
-    if (HandleData.isNoValue(f) || HandleData.isNoValue(i) || HandleData.isNoValue(o)) {
+    // отчества может не быть
+    if (HandleData.isNoValue(f) || HandleData.isNoValue(i)) {
       return null
     }
     if (short) {
       i = HandleData.isNoValue(i) ? '' : i.charAt(0);
       o = HandleData.isNoValue(o) ? '' : o.charAt(0);
     }
-    return `${f} ${i}${o}`
+    return `${f} ${i}${short ? '' : ' '}${o}`
   }
 }
