@@ -21,13 +21,13 @@ export class PrintLaborContractScientificBuilder {
 
   make() {
     return this
-    .makeHeaderAndSectionOne()
+    /*.makeHeaderAndSectionOne()
     .makeSectionTwo()
       .makeSectionThree()
       .makeSectionFour()
       .makeSectionFive()
       .makeSectionSix()
-      .makeSectionSeven()
+      .makeSectionSeven()*/
       .makeSectionRequisite()
       .build();
   }
@@ -395,48 +395,6 @@ export class PrintLaborContractScientificBuilder {
 
   makeSectionRequisite() {
     makeRequisite(this.doc, this.pers);
-
-    /*const table = this.doc.createTable(2, 2);
-    table.Properties.setWidth(WidthType.DXA, 5555);
-    table.getCell(0, 0).addContent(new Paragraph()
-      .center()
-      .addRun(new TextRun(' Работодатель ').bold()));
-    table.getCell(0, 1).addContent(new Paragraph()
-      .center()
-      .addRun(new TextRun(' Работник ').bold()));
-
-    const left = new Paragraph()
-      .center()
-      .addRun(new TextRun('Федеральное государственное автономное').break())
-      .addRun(new TextRun(' образовательное учреждение высшего образования ').break())
-      .addRun(new TextRun('“Санкт-Петербургский государственный').break().bold())
-      .addRun(new TextRun(' университет аэрокосмического приборостроения”').break().bold())
-      .addRun(new TextRun('Адрес:  190000,  Санкт-Петербург,').break())
-      .addRun(new TextRun('ул. Большая Морская, д. 67, лит. А').break())
-      .addRun(new TextRun('ИНН  7812003110/КПП 783801001').break())
-      .addRun(new TextRun(''))
-      .addRun(new TextRun(''))
-
-
-    table.getCell(1, 0).addContent(left)
-      .CellProperties.Borders
-      .addTopBorder(BorderStyle.NONE, 0, 'white')
-      .addBottomBorder(BorderStyle.NONE, 0, "white")
-      .addStartBorder(BorderStyle.NONE, 0, "white")
-      .addEndBorder(BorderStyle.NONE, 0, "#white");
-
-    //
-    table.getCell(1, 1).addContent(right);
-
-;
-    const right = new Paragraph()
-      .center()
-      .addRun(new TextRun('______________________________________________'))
-      .addRun(new TextRun(''))
-    ;*/
-
-
-
     return this
   }
 

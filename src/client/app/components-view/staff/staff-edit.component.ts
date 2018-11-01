@@ -1,11 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
+import {HttpService} from '../../services/http.service';
 
 @Component({
   selector: 'app-staff-edit',
   template: `
   <div class="btn-group" dropdown>
-    <button dropdownToggle type="button" class="btn btn-primary dropdown-toggle">
+    <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
       Меню <span class="navbar-toggler-icon"></span>
     </button>
     <ul class="dropdown-menu" *dropdownMenu>
@@ -47,14 +48,30 @@ import {ActivatedRoute} from "@angular/router";
       </li>
     </ul>
   </div>
+  <div class="btn-group" dropdown>
+    <button dropdownToggle type="button" class="btn btn-sm btn-primary dropdown-toggle">
+      Печать <span class="glyphicon glyphicon-print"></span>
+    </button>
+    <ul class="dropdown-menu" *dropdownMenu>
+      <li class="nav-item">
+        <button class="btn btn-sm btn-warning" (click)="printLaborContract()">Трудовой договор с начным сотрудником</button>
+      </li>
+    </ul>
+  </div>
   <router-outlet></router-outlet>
   `
 })
 export class StaffEditComponent implements OnInit {
   id;
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private httpService: HttpService) {}
 
   ngOnInit() {
     this.id = this.route.snapshot.params.id;
+  }
+
+  printLaborContract(type: string) {
+    this.httpService.post('print/labor-contract-scientific/' + this.id, {}).toPromise().then(() => {
+
+    })
   }
 }

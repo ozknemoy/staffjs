@@ -1,5 +1,5 @@
 {
-  "watch": ["./src/server"],
+  "watch": ["./src/server","./src/shared"],
   "ext": "ts",
   "ignore": ["./src/server/**/*.spec.ts"],
   "exec": "node ./index",

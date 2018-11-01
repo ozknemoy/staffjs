@@ -1,4 +1,4 @@
-import {Controller, Post, Query, Res} from "@nestjs/common";
+import {Body, Controller, Param, Post, Query, Res} from '@nestjs/common';
 import {PrintService} from "./print.service";
 
 
@@ -16,6 +16,12 @@ export class PrintComponent {
       resp.setHeader('content-disposition', 'attachment; filename=somename.pdf');
       return resp.send(data);
     })*/
+  }
+
+  @Post('labor-contract-scientific/:userId')
+  printLaborContract(@Param('userId') userId: number, @Res() resp) {
+    this.printService.printLaborContractScientific(userId);
+    return resp.send({ok: true});
   }
 
 }

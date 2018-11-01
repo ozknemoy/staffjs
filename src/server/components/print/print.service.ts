@@ -33,8 +33,7 @@ export class PrintService {
     return;
   }
   async saveLocalForDevelopmentDocx() {
-    await this.printLaborContractScientificBuilder(1);
-
+    await this.printLaborContractScientific(1);
     /*
     console.log('------------------', file);
     writeFile('doc-dev.docs', file, (e) => {
@@ -65,8 +64,10 @@ export class PrintService {
     });
   }
 
-  async printLaborContractScientificBuilder(userId) {
+  async printLaborContractScientific(userId) {
     const user = await this.personnelService.getOneFull(userId);
+    //console.log('****************************************',user);
+
     const dox = new PrintLaborContractScientificBuilder(user).make();
     return this.createOfficeFile(dox);
   }
@@ -83,7 +84,7 @@ export class PrintService {
   }
 
   _createOfficeFile(doc) {
-    const dir = 'E:/files/';
+    const dir = 'C:/files/';
     const name = 'doc-dev';
     const ext = '.docx';
     (new docx.Packer()).toBuffer(doc).then((b) => {
@@ -113,7 +114,6 @@ export class PrintService {
     });
   }
   async printOffice(doc) {
-    
     return new Promise((res) => {
       doc
         .on('finalize', function (written, ret) {
