@@ -8,6 +8,10 @@ import {INodeXlsxParsed} from "../../interfaces/node-xlsx";
 import {IPersonnel, IPersonnelAdapter} from "../personnel/personnel.interface";
 import {PersonnelService} from "../personnel/personnel.service";
 import Personnel from "../personnel/personnel.model";
+import {ParseXls} from './parse-xls.class';
+import {IPassport} from '../personnel/relations/personnel-passport.interface';
+import Passport from '../personnel/relations/personnel-passport.model';
+import Institution from '../personnel/relations/personnel-institution.model';
 
 @Component()
 export class UploadService {
@@ -42,7 +46,20 @@ export class UploadService {
       })
   }*/
 
+  async fillDBPersonnelByLocalXls() {
+    // создаю юзера потом подсовываю ему данные
+    const {worker, passport, institution} = ParseXls.create();
+    console.log(worker, passport, institution);
 
+    const newWorker = await this.personnelService.createOne(worker);
+    const pId = newWorker.id;
+    passport.personnelId = pId;
+    institution.personnelId = pId;
+    /*return Promise.all([
+      Passport.create(passport),
+      Institution.create(institution),
+    ]).then(() => newWorker);*/
+  }
 }
 
 

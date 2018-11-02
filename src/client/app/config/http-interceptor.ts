@@ -21,7 +21,7 @@ export class MainInterceptor implements HttpInterceptor {
             // Operation failed; error is an HttpErrorResponse
             (err: HttpErrorResponse) => {
               // ошибки валидатора бека
-              if (err.status === 406) {
+              if (err.status === 406 || err.status === 400) {
                 let message = ' ';
                 message += err.error.join('</br>');
                 this.injector.get(ToastsManager).error(

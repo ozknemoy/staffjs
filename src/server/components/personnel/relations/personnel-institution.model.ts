@@ -1,4 +1,4 @@
-import {AutoIncrement, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table, Unique, DefaultScope} from 'sequelize-typescript';
+import {AutoIncrement, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table, Unique, DefaultScope, DataType} from 'sequelize-typescript';
 import {IPersonnel} from "../personnel.interface";
 import Personnel from "../personnel.model";
 import IInstitution from "./personnel-institution.interface";
@@ -30,5 +30,5 @@ export default class Institution extends Model<Institution> implements IInstitut
   @Column docNumber: string;
   @Column qualification: string;
   @Column specialty: string;
-  @Column endDate: Date;
+  @Column({type: DataType.DATE}) endDate: string;
 }

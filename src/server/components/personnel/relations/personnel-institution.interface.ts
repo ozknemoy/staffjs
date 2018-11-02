@@ -8,5 +8,5 @@ export default class IInstitution {
   docNumber: string = null;
   qualification: string = null;
   specialty: string = null;
-  endDate: Date = null;
+  endDate: string = null;
 }

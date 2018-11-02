@@ -11,6 +11,8 @@
   </tr>
   <tr *ngFor="let st of staffList">
     <td>{{st.number}}</td>
-    <td><a [routerLink]="['../staff-edit', st.id]">{{st.name}}</a></td>
+    <td><a [routerLink]="['../staff-edit', st.id]">
+      {{st.surname}} {{st.name}} {{st.middleName}}
+    </a></td>
   </tr>
 </table>

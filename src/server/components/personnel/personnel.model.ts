@@ -1,6 +1,6 @@
 import {
   Table, Column, Model, PrimaryKey, Unique, AutoIncrement, HasMany, HasOne,
-  DefaultScope, Is
+  DefaultScope, Is, DataType
 } from 'sequelize-typescript';
 import {IPersonnel} from "./personnel.interface";
 import Family from "./relations/personnel-family.model";
@@ -26,9 +26,8 @@ import IWorkplace from "./relations/personnel-workplace.interface";
 import WorkExp from './relations/personnel-work-exp.model';
 import IScientificInst from './relations/personnel-scientific-inst.interface';
 import ScientificInst from './relations/personnel-scientific-inst.model';
+import {phoneRegExp, validateINN} from '../../../shared/validators';
 
-export const phoneRegExp = /\d{11,13}/;
-export const innRegExp = /\d{10,10}/;
 
 @Table({
   tableName: 'staff',
@@ -43,11 +42,7 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
 
   @Column number: string;
 
-  @Is('inn', (inn: string) => {
-    if ((!innRegExp.test(inn) || inn.length !== 10) && inn ) {
-      throw new Error(`Вы ввели не валидный ИНН "${inn}". Введите 10 цифр`);
-    }
-  })
+  @Is('inn', validateINN)
   @Column
   inn: string;
   @Column insurance: string;
@@ -59,7 +54,7 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @Column surname: string;
   @Column middleName: string;
   @Column contractNumber: string;
-  @Column contractDate: Date;
+  @Column({type: DataType.DATE}) contractDate: string;
   @Column foreignLanguage: string;
   @Column foreignLanguageGrade: string;
   @Column educationName: string;

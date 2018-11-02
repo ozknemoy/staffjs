@@ -57,8 +57,9 @@ export class HandleData {
   }
 
   // https://blog.theodo.fr/2018/01/tips-tricks-date-handling-moment-js/
+  // -> 2018-09-07T21:00:00.000Z
   static dateToServer(date: string) {
-    return (date && typeof date === 'string') ? moment(date).utc() : null;
+    return (date && typeof date === 'string') ? new Date(date).toJSON()/*moment(date).utc()*/ : null;
   }
 
   static dateFromServer(date: string) {
@@ -194,6 +195,7 @@ export class HandleData {
     return dummyText
   }
 
+  // ['123', '4567', '890'] -> '123 48'
   static getFIO([f, i, o], short = true): string {
     // отчества может не быть
     if (HandleData.isNoValue(f) || HandleData.isNoValue(i)) {
@@ -204,5 +206,29 @@ export class HandleData {
       o = HandleData.isNoValue(o) ? '' : o.charAt(0);
     }
     return `${f} ${i}${short ? '' : ' '}${o}`
+  }
+
+  // '2018-01-01' -> '2017-12-31T21:00:00.000Z'
+  static onlyDayToServer(date: string, formatIn = 'YYYY-MM-DD') {
+    if (!date) {
+      return null;
+    }
+    return new Date(moment(date, formatIn).format()).toJSON()
+  }
+
+  // 2018 -> 2017-12-31T21:00:00.000Z
+  static setYear(year) {
+    if (!year) {
+      return null;
+    }
+    const d = new Date();
+    d.setFullYear(year, 0, 1);
+    d.setHours(0, 0, 0, 0);
+    return HandleData.dateToServer(d.toJSON())
+  }
+
+  // 13.11.2018 -> 2018-11-12T21:00:00.000Z
+  static ruDateToServer(date: string) {
+    return this.onlyDayToServer(date, 'DD-MM-YYYY')
   }
 }

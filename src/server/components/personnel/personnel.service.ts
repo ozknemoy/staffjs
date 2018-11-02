@@ -76,8 +76,8 @@ export class PersonnelService {
       .catch(err => this.errHandler.handlaAll(err))
   }
 
-  createOne(pers: Personnel) {
-    return Personnel.create(pers, { include: [ Family ]})
+  createOne(pers: Partial<IPersonnel>) {
+    return Personnel.create(pers/*, { include: [ Family, Passport ]}*/)
   }
 
   getByParent(_Model, personnelId: number, order?: any[]) {

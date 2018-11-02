@@ -22,7 +22,7 @@ export class IPersonnel {
   surname: string = null;
   middleName: string = null;
   contractNumber: string = null;
-  contractDate: Date = null;
+  contractDate: string = null;
   foreignLanguage: string = null;
   foreignLanguageGrade: string = null;
   educationName: string = null;

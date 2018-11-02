@@ -24,7 +24,8 @@ export class StaffMainInfoComponent implements OnInit {
 
   save() {
     const suffix = this.rel ? `/with-rel/${this.rel}` : '';
-    this.http.put(`personnel/${this.worker.id + suffix}`, this.worker)
+    const worker = HandleData.handleDatesInObjectToServer(this.worker, this.dateProps);
+    this.http.put(`personnel/${this.worker.id + suffix}`, worker)
       .toPromise()
       .then((newWorker) =>
         this.worker = HandleData.handleDatesInObjectFromServer(<any>newWorker, this.dateProps)
