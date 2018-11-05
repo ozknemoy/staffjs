@@ -5,7 +5,8 @@ export const innRegExp = /\d{10,10}/;
 
 
 export function invalidINN(inn: string): boolean {
-  return (!innRegExp.test(inn) || inn.length !== 10) && !!inn;
+  // разрешаю null and ''
+  return (!innRegExp.test(inn) || inn.length !== 10) && (inn !== null || inn !== '');
 }
 
 export function validateINN(inn: string) {

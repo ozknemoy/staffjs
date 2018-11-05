@@ -231,4 +231,16 @@ export class HandleData {
   static ruDateToServer(date: string) {
     return this.onlyDayToServer(date, 'DD-MM-YYYY')
   }
+
+  static isInvalidPrimitive(value) {
+    return value === null || value === undefined || value === '' || (typeof value === 'string' && value.trim() === '')
+  }
+
+
+
+  // метод копия из  DocValidationSrv
+  static isInvalidValue(value) {
+    return this.isInvalidPrimitive(value) || (Array.isArray(value) && !value.length)
+  }
+
 }

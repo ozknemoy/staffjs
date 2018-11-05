@@ -11,7 +11,7 @@ import {HandleData} from "../../../shared/services/handle-data";
 export class StaffMainInfoComponent implements OnInit {
 
   worker = new IPersonnel();
-  private dateProps: (keyof IPersonnel)[] = ['contractDate'];
+  private dateProps: (keyof IPersonnel)[] = ['contractDate', 'workExpDate'];
   // говорю беку не надо сохранять связь
   rel: string;
   constructor(protected http: HttpService, protected route: ActivatedRoute) { }
@@ -19,7 +19,16 @@ export class StaffMainInfoComponent implements OnInit {
   async ngOnInit() {
     const suffix = this.rel ? `?withRel=${this.rel}` : '';
     const worker = await this.http.get(`personnel/${this.route.parent.snapshot.params.id + suffix}`).toPromise();
-    this.worker = HandleData.handleDatesInObjectFromServer(worker, this.dateProps)
+    this.worker = HandleData.handleDatesInObjectFromServer(worker, this.dateProps);
+    this.afterInit();
+  }
+
+  afterInit() {
+
+  }
+
+  afterSave() {
+
   }
 
   save() {
@@ -27,9 +36,10 @@ export class StaffMainInfoComponent implements OnInit {
     const worker = HandleData.handleDatesInObjectToServer(this.worker, this.dateProps);
     this.http.put(`personnel/${this.worker.id + suffix}`, worker)
       .toPromise()
-      .then((newWorker) =>
-        this.worker = HandleData.handleDatesInObjectFromServer(<any>newWorker, this.dateProps)
-      );
+      .then((newWorker) => {
+        this.worker = HandleData.handleDatesInObjectFromServer(<any>newWorker, this.dateProps);
+        this.afterInit();
+      });
   }
 
 }

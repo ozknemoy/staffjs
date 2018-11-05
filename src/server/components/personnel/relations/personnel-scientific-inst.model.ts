@@ -1,7 +1,9 @@
-import {AutoIncrement, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table, Unique, DefaultScope} from 'sequelize-typescript';
+import {
+  AutoIncrement, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table, Unique, DefaultScope,
+  DataType
+} from 'sequelize-typescript';
 import {IPersonnel} from "../personnel.interface";
 import Personnel from "../personnel.model";
-import IInstitution from "./personnel-institution.interface";
 import IScientificInst from './personnel-scientific-inst.interface';
 
 
@@ -26,5 +28,5 @@ export default class ScientificInst extends Model<ScientificInst> implements ISc
   @Column name: string;
   @Column fullInfo: string;
   @Column specialty: string;
-  @Column endDate: Date;
+  @Column({type: DataType.DATE}) endDate: string;
 }

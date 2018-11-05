@@ -30,8 +30,8 @@ export class AppComponent implements OnInit {
     this.pongMessage$ = this.pingService.getPong();
   }
 
-  fillDBPersonnelByLocalXls() {
-    this.httpService.post('upload/fill-db-by-local-xls', {})
+  fillDBPersonnelByLocalXls(refill: boolean) {
+    this.httpService.post('upload/fill-db-by-local-xls', {refill})
       .toPromise()
       .then(() =>
         this.toast.success(`Успешно`, '', {

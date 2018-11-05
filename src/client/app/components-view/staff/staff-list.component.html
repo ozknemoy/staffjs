@@ -4,15 +4,23 @@
                uploaderClass="btn btn-warning btn-sm"
                accept=".xls"></file-uploader>
 
+
+<button (click)="createNewOne()">Создать сотрудника</button>
+
+
 <table class="table table-sm table-responsive-sm table-bordered">
   <tr>
     <th>Номер</th>
     <th>ФИО</th>
+    <th></th>
   </tr>
-  <tr *ngFor="let st of staffList">
+  <tr *ngFor="let st of staffList; let i = index">
     <td>{{st.number}}</td>
     <td><a [routerLink]="['../staff-edit', st.id]">
       {{st.surname}} {{st.name}} {{st.middleName}}
     </a></td>
+    <td>
+      <button (click)="deleteOne(st.id, i)">Удалить сотрудника</button>
+    </td>
   </tr>
 </table>

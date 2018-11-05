@@ -1,4 +1,4 @@
-import {Controller, Post, Req, Headers} from "@nestjs/common";
+import {Controller, Post, Req, Headers, Body} from "@nestjs/common";
 import {UploadService} from "./upload.service";
 import {ErrHandlerService} from "../../services/error-handler.service";
 
@@ -24,9 +24,8 @@ export class UploadController {
   }
 
   @Post('fill-db-by-local-xls')
-  async fillDBPersonnelByLocalXls(@Headers() headers)/*:PromiseLike<IFileUpload>*/ {
-    return this.uploadService.fillDBPersonnelByLocalXls()
-      .catch((e) => this.errHandler.sentToFront(e))
+  async fillDBPersonnelByLocalXls(@Body() body: {refill: boolean}) {
+    return this.uploadService.fillDBPersonnelByLocalXls(body.refill)
   }
 
   @Post('update-db-by-xls')

@@ -33,12 +33,7 @@ export class PrintService {
     return;
   }
   async saveLocalForDevelopmentDocx() {
-    await this.printLaborContractScientific(1);
-    /*
-    console.log('------------------', file);
-    writeFile('doc-dev.docs', file, (e) => {
-      console.log('+++++++saveLocalForDevelopment++++++', e);
-    });*/
+    //await this.printLaborContractScientific(1);
     return;
   }
 
@@ -84,12 +79,15 @@ export class PrintService {
   }
 
   _createOfficeFile(doc) {
-    const dir = 'C:/files/';
+    const dir = `${fs.existsSync('E') ? 'E' : 'C'}:/files/`;
     const name = 'doc-dev';
     const ext = '.docx';
     (new docx.Packer()).toBuffer(doc).then((b) => {
       console.log('-----  ok make  -----');
       // пробую писать
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir)
+      }
       fs.writeFile(dir + name + ext, b, (e) => {
         if (e) {
           console.log('*****    ', e.code, '    *****');

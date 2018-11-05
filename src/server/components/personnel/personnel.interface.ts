@@ -6,6 +6,8 @@ import {IPersonnelNamedThingWithDoc} from "./relations/personnel-named-thing-wit
 import IProfRetraining from "./relations/personnel-prof-retraining.interface";
 import IInstitution from "./relations/personnel-institution.interface";
 import IScientificInst from './relations/personnel-scientific-inst.interface';
+import IWorkplace from "./relations/personnel-workplace.interface";
+import WorkExp from "./relations/personnel-work-exp.model";
 
 
 export class IPersonnel {
@@ -30,6 +32,8 @@ export class IPersonnel {
 
   profession: string = null;
   phone: string = null;
+  // new
+  workExpDate: string = null;
 
   attestations: IAttestation[] = null;
   institutions: IInstitution[] = null;
@@ -39,6 +43,8 @@ export class IPersonnel {
   qualificationImprovements: IQualImprovement[] = null;
   rewards: IPersonnelNamedThingWithDoc[] = null;
   scientificInst: IScientificInst = null;
+  workplaces: IWorkplace[] = null;
+  workExp: WorkExp[] = null;
 }
 
 

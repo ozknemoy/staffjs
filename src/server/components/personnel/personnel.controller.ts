@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Param, Post, Put, Query} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, Query} from '@nestjs/common';
 import {PersonnelService} from "./personnel.service";
 import {IPersonnel} from "./personnel.interface";
 import IQualImprovement from "./relations/personnel-qual-improvement.interface";
@@ -21,8 +21,7 @@ import {IPersonnelNamedThingWithDoc} from './relations/personnel-named-thing-wit
 import {ISocialSecurity} from './relations/personnel-social-security.interface';
 import SocialSecurity from './relations/personnel-social-security.model';
 import IWorkExp from './relations/personnel-work-exp.interface';
-import IScientificInst from './relations/personnel-scientific-inst.interface';
-import ScientificInst from './relations/personnel-scientific-inst.model';
+import WorkExp from "./relations/personnel-work-exp.model";
 
 
 @Controller('personnel')
@@ -32,21 +31,35 @@ export class StaffController {
 
   @Get()
   getStaff() {
-    return this.personnelService.getAll();
+    return this.personnelService.getAllFullData();
   }
 
   @Get(':id')
   getOne(@Param('id') id, @Query('withRel') withRel) {
     let _Model;
     switch (withRel) {
-      case 'institution': {
+      /*case 'institution': {
         _Model = Institution;
+        break;
+      }*/
+      case 'work-exp': {
+        _Model = WorkExp;
         break;
       }
     }
     return !_Model
       ? this.personnelService.getOne(id)
       : this.personnelService.getOneWithInclude(id, _Model);
+  }
+
+  @Post()
+  createNewOne() {
+    return this.personnelService.createNewUserFromAdmin();
+  }
+
+  @Delete(':id')
+  deleteOne(@Param('id') id) {
+    return this.personnelService.deleteOne(id);
   }
 
   @Put(':id')
@@ -154,13 +167,8 @@ export class StaffController {
     return this.personnelService.saveOrCreateSocialSecurity(id, body);
   }
 
-  @Get(':id/work-exp')
-  getWorkExp(@Param('id') personnelId) {
-    return this.personnelService.getOrCreateNGetWorkExp(personnelId);
-  }
-
-  @Put(':id/work-exp')
-  saveOrCreateWorkExp(@Param('id') id, @Body() body: IWorkExp[]) {
-    return this.personnelService.saveOrCreateWorkExp(id, body);
+  @Put(':id/with-rel/work-exp')
+  saveOrCreateWorkExp(@Param('id') id, @Body() pers: IPersonnel) {
+    return this.personnelService.saveOrCreateWorkExp(id, pers);
   }
 }

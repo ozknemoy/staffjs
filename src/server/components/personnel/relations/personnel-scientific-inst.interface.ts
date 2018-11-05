@@ -4,6 +4,6 @@ export default class IScientificInst {
   id: number = null;
   name: string = null;
   fullInfo: string = null;
-  endDate: Date = null;
+  endDate: string = null;
   specialty: string = null;
 }

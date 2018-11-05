@@ -14,14 +14,6 @@
     </select>
   </div>
   <div class="form-group">
-    <label>Послевузовское профессиональное образование</label>
-    <select [(ngModel)]="worker.afterInstEduName" class="form-control w300">
-      <option value="аспирантура">аспирантура</option>
-      <option value="адъюнктура">адъюнктура</option>
-      <option value="докторантура">докторантура</option>
-    </select>
-  </div>
-  <div class="form-group">
     <label class="col-form-label">Иностранный язык</label>
     <div class="row">
       <div class="col-4">
@@ -65,7 +57,15 @@
       <td><button class="btn btn-sm btn-danger" (click)="deleteInst(i)">Удалить</button></td>
     </tr>
   </table>
-
+  <br>
+  <div class="form-group">
+    <label>Послевузовское профессиональное образование</label>
+    <select [(ngModel)]="worker.afterInstEduName" class="form-control w300">
+      <option value="аспирантура">аспирантура</option>
+      <option value="адъюнктура">адъюнктура</option>
+      <option value="докторантура">докторантура</option>
+    </select>
+  </div>
   <table class="table table-sm table-responsive-sm table-bordered">
     <tr>
       <th>Наименование образовательного, научного учреждения</th>

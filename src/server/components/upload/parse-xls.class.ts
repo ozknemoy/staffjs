@@ -4,6 +4,8 @@ import xlsx from 'node-xlsx';
 import {IPersonnel} from '../personnel/personnel.interface';
 import {HandleData} from '../../../client/app/shared/services/handle-data';
 import {invalidINN} from '../../../shared/validators';
+import {HttpException} from "@nestjs/common";
+import {ErrHandlerService} from "../../services/error-handler.service";
 
 export class ParseXls {
 
@@ -13,15 +15,19 @@ export class ParseXls {
   }
 
   static create(excelPath = './staff.xls') {
-    const w = xlsx.parse(fs.readFileSync(excelPath))[0];
-    return  this.parse(w.data[1]);
+    try {
+      const w = xlsx.parse(fs.readFileSync(excelPath))[0];
+      return  this.parse(w.data[1]);
+    } catch (e) {
+      throw ErrHandlerService.throw('Ошибка чтения/разбора файла');
+    }
   }
 
   static splitByN(_str, n, splitter = ' ') {
     const strArr = _str.split(splitter);
     let out = [];
     for (let i = 0; i < strArr.length; i++) {
-      if(strArr[i]) {
+      if (strArr[i]) {
         // пишем лишнее в последний элемент разбивая с помощью splitter
         if (i > n - 1) {
           out[n - 1] = out[n - 1] + splitter + strArr[i]

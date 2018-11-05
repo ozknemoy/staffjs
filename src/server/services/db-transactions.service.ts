@@ -15,6 +15,7 @@ export class DbTransactions {
         return Promise.all(relNewValue.map(rowForSave => {
           // тут привязка на то что у новых элементов нет id
           if (rowForSave.id) {
+            console.log('-----update----');
             return subModelOld.find(oneSubModel => rowForSave.id === oneSubModel.id).update(rowForSave)
           }
           return SubModel.create({...rowForSave, ...{[fk]: id}})

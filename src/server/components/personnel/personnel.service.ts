@@ -43,7 +43,7 @@ export class PersonnelService {
   }
 
   getAll() {
-    return staffJsDB.query(`SELECT id, number, name  FROM staff`).spread((results, metadata) => results);
+    return staffJsDB.query(`SELECT id, number, name, surname, middleName  FROM staff`).spread((results, metadata) => results);
   }
 
   getOne(id) {
@@ -81,6 +81,7 @@ export class PersonnelService {
   }
 
   getByParent(_Model, personnelId: number, order?: any[]) {
+    // this.getByParent(WorkExp, personnelId, [['id', 'ASC']])
     // http://docs.sequelizejs.com/manual/tutorial/querying.html#ordering
     const options = {where: {personnelId}};
     if (order) {
@@ -174,26 +175,23 @@ export class PersonnelService {
       .catch(err => this.errHandler.handlaAll(err))
   }
 
-  getWorkExp(personnelId) {
-    return this.getByParent(WorkExp, personnelId, [['id', 'ASC']]);
+  saveOrCreateWorkExp(personnelId, pers: IPersonnel) {
+    return this.updateOneWithRel(personnelId, pers, WorkExp, 'workExp')
+      .catch(err => this.errHandler.handlaAll(err))
   }
 
-  async getOrCreateNGetWorkExp(personnelId) {
-    const workExp = await this.getWorkExp(personnelId);
-    if (!_.isEmpty(workExp)) {
-      return workExp
-    }
-    // при первом запросе (когда еще нет данных для юзера) надо создать 3 стандартные строчки
+  async createNewUserFromAdmin() {
+    const newWorker = await Personnel.create({name: 'Новый сотрудник'});
+    const personnelId = newWorker.id;
     await Promise.all(
+      // надо создать 3 стандартные строчки WorkExp
       workExpTypesDict.map(row => WorkExp.create({typeId: row.id, personnelId}))
     );
-    return this.getByParent(WorkExp, personnelId);
+    return personnelId
   }
 
-  saveOrCreateWorkExp(personnelId, workExp: IWorkExp[]) {
-    return this.dbTransactions
-      .createOrUpdateManyWithoutRels(WorkExp, 'personnelId', personnelId, workExp)
-      .then(() => this.getWorkExp(personnelId))
-      .catch(err => this.errHandler.handlaAll(err))
+  async deleteOne(id: number) {
+    // при первом запросе (когда еще нет данных для юзера) надо создать 3 стандартные строчки WorkExp
+    return Personnel.destroy({where: {id}});
   }
 }

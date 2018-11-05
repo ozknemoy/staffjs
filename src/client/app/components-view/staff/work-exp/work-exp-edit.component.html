@@ -4,6 +4,10 @@
 </div>
 СТАЖ РАБОТЫ
 <div class="container-fluid">
+  <div class="form-group w-25">
+    <label>Дата подсчета стажа</label>
+    <input type="date" [(ngModel)]="worker.workExpDate" class="form-control">
+  </div>
   <table class="table table-sm table-responsive-sm table-bordered">
     <tr>
       <th></th>
@@ -11,10 +15,12 @@
       <th class="text-center">месяцев</th>
       <th class="text-center">лет</th>
     </tr>
-    <tr *ngFor="let w of workExp; let i = index">
+    <tr *ngFor="let w of worker.workExp; let i = index">
       <td>
         <select [(ngModel)]="w.typeId" class="form-control" disabled>
-          <option [value]="type.id" *ngFor="let type of workExpTypesDict">{{type.name}}</option>
+          <option [value]="type.id" *ngFor="let type of workExpTypesDict">
+            {{type.name}}
+          </option>
         </select>
       </td>
       <td><input type="number" [(ngModel)]="w.amountD" class="form-control"></td>

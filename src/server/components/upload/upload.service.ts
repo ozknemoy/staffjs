@@ -46,19 +46,43 @@ export class UploadService {
       })
   }*/
 
-  async fillDBPersonnelByLocalXls() {
-    // создаю юзера потом подсовываю ему данные
-    const {worker, passport, institution} = ParseXls.create();
-    console.log(worker, passport, institution);
+  async fillDBPersonnelByLocalXls(update: boolean) {
+    return update
+      ? this.updateDBPersonnelByXls(ParseXls.create())
+      : this.createDBPersonnelByXls(ParseXls.create());
+  }
 
+  async updateDBPersonnelByXls({worker, passport, institution}) {
+    console.log(worker, passport, institution);
+    // ищу если есть такой
+    const oldWorker = await Personnel.findOne({where: {
+      surname: worker.surname,
+      name: worker.name,
+      middleName: worker.middleName,
+      }});
+    if (oldWorker) {
+      console.log('-------- update ----------');
+      await oldWorker.update(worker);
+      return this.upsert({worker: oldWorker, passport, institution})
+    } else {
+      return this.createDBPersonnelByXls({worker, passport, institution})
+    }
+  }
+
+  async createDBPersonnelByXls({worker, passport, institution}) {
+    // создаю юзера потом подсовываю ему связанные данные
     const newWorker = await this.personnelService.createOne(worker);
-    const pId = newWorker.id;
+    return this.upsert({worker: newWorker, passport, institution})
+  }
+
+  upsert({worker, passport, institution}) {
+    const pId = worker.id;
     passport.personnelId = pId;
     institution.personnelId = pId;
-    /*return Promise.all([
-      Passport.create(passport),
-      Institution.create(institution),
-    ]).then(() => newWorker);*/
+    return Promise.all([
+      Passport.upsert(passport),
+      Institution.upsert(institution),
+    ]).then(() => worker);
   }
 }
 

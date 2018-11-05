@@ -21,9 +21,13 @@ export class MainInterceptor implements HttpInterceptor {
             // Operation failed; error is an HttpErrorResponse
             (err: HttpErrorResponse) => {
               // ошибки валидатора бека
-              if (err.status === 406 || err.status === 400) {
-                let message = ' ';
+              let message;
+              if (err.status === 406 || err.status === 400 || err.status === 500) {
+                message = ' ';
                 message += err.error.join('</br>');
+              }
+
+              if (message) {
                 this.injector.get(ToastsManager).error(
                   message, 'Ошибка валидации.', {
                     enableHTML: true,
