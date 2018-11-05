@@ -36,34 +36,23 @@ staffJsDB.addModels([
   Personnel, Family, Attestation, Passport, ProfRetraining, QualImprovement,
   Reward, SocialSecurity, Workplace, Army, Vacation, Institution, WorkExp, ScientificInst
 ]);
-// Before you can use your models you have to tell sequelize where they can be found. So either set
-// modelPaths in the sequelize config or add the required models later on by calling
-// sequelize.addModels([Person]) or sequelize.addModels([__dirname + '/models'])
-// prioritiLocal.addModels([User]);
-// Create the tables:
-/*
-User.sync();
-*/
 
 // обязательный порядок
-Personnel.sync();
-
-
-// не обязательный
-Attestation.sync();
-Passport.sync();
-Family.sync();
-ProfRetraining.sync();
-QualImprovement.sync();
-Reward.sync();
-SocialSecurity.sync();
-Army.sync();
-Vacation.sync();
-Institution.sync();
-Workplace.sync();
-WorkExp.sync();
-ScientificInst.sync();
-
+Personnel.sync().then(() => {
+  // не обязательный
+  Attestation.sync();
+  Passport.sync();
+  Family.sync();
+  ProfRetraining.sync();
+  QualImprovement.sync();
+  Reward.sync();
+  SocialSecurity.sync();
+  Army.sync();
+  Vacation.sync();
+  Institution.sync();
+  Workplace.sync();
+  WorkExp.sync();
+  ScientificInst.sync();
 
 //Personnel.upsert({id: 29, name: 'john'});
 //QualImprovement.upsert({id: 1, personnelId: 29, reason: 'tak nado'});
@@ -71,4 +60,4 @@ ScientificInst.sync();
 
 //Institution.upsert({/*"id":1,*/"personnelId":29,"name":"1","docName":"2","docCode":"3","docNumber":"4","qualification":"6","specialty":"7","endDate":5});
 //Institution.upsert({/*"id":2,*/"personnelId":29,"name":"лети","docName":"диплом","docCode":"ВН","docNumber":"475679578","qualification":"инженер","specialty":"программист","endDate":2005});
-
+});
