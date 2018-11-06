@@ -72,6 +72,7 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @Column
   phone: string;
   @Column({type: DataType.DATE}) workExpDate: string;
+  @Column medicalCert: boolean;
 
   // в самом конце анкеты
   @Column extraInfo: string;

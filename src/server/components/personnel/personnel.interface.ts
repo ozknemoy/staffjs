@@ -34,6 +34,7 @@ export class IPersonnel {
   phone: string = null;
   // new
   workExpDate: string = null;
+  medicalCert: boolean = null;
 
   attestations: IAttestation[] = null;
   institutions: IInstitution[] = null;
