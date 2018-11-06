@@ -1,6 +1,6 @@
 import {
   Table, Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, HasOne, BelongsTo,
-  DefaultScope
+  DefaultScope, DataType
 } from 'sequelize-typescript';
 import IQualImprovement from './personnel-qual-improvement.interface';
 import Personnel from "../personnel.model";
@@ -24,13 +24,13 @@ export default class QualImprovement extends Model<QualImprovement> implements I
   @BelongsTo(() => Personnel)
   personnel: IPersonnel;
 
-  @Column startEduDate: Date;
-  @Column endEduDate: Date;
+  @Column({type: DataType.DATE}) startEduDate: string;
+  @Column({type: DataType.DATE}) endEduDate: string;
   @Column type: string;
   @Column institutionName: string;
   @Column reason: string;
   @Column docNumber: string;
   @Column docName: string;
-  @Column docDate: Date;
+  @Column({type: DataType.DATE}) docDate: string;
 
 }

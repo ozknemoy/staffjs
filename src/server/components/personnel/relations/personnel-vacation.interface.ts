@@ -4,10 +4,10 @@ export default class IVacation {
   id: number;
   personnelId: number;
   type: string;
-  workDateFrom: Date;
-  workDateTo: Date;
+  workDateFrom: string;
+  workDateTo: string;
   daysAmount: number;
-  dateFrom: Date;
-  dateTo: Date;
+  dateFrom: string;
+  dateTo: string;
   reason: string;
 }

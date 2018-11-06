@@ -1,4 +1,4 @@
-import {Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, BelongsTo} from 'sequelize-typescript';
+import {Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, BelongsTo, DataType} from 'sequelize-typescript';
 import Personnel from "../personnel.model";
 import {IPersonnel} from "../personnel.interface";
 import {IPersonnelNamedThingWithDoc} from "./personnel-named-thing-with-doc.interface";
@@ -22,5 +22,5 @@ export default class PersonnelNamedThingWithDoc extends Model<PersonnelNamedThin
   @Column name: string;
   @Column docNumber: string;
   @Column docName: string;
-  @Column docDate: Date;
+  @Column({type: DataType.DATE}) docDate: string;
 }

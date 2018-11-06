@@ -11,40 +11,40 @@ import {HttpService} from '../../services/http.service';
     </button>
     <ul class="dropdown-menu" *dropdownMenu>
       <li class="nav-item">
-        <a [routerLink]="['/staff-edit', id]" class="dropdown-item">Основная информация</a>
+        <a [routerLink]="['/staff-edit', id]" class="dropdown-item">1 Основная информация</a>
       </li>
       <li class="nav-item">
-        <a routerLink="passport" class="dropdown-item">Паспорт</a>
+        <a routerLink="passport" class="dropdown-item">2 Паспорт</a>
       </li>
       <li class="nav-item">
-        <a routerLink="education" class="dropdown-item">Образование</a>
+        <a routerLink="education" class="dropdown-item">3 Образование</a>
       </li>
       <li class="nav-item">
-        <a routerLink="qual-improvement" class="dropdown-item">Повышение квалификации</a>
+        <a routerLink="qual-improvement" class="dropdown-item">4 Повышение квалификации</a>
       </li>
       <li class="nav-item">
-        <a routerLink="family" class="dropdown-item">Состав семьи</a>
+        <a routerLink="family" class="dropdown-item">5 Состав семьи</a>
       </li>
       <li class="nav-item">
-        <a routerLink="prof-retrainig" class="dropdown-item">Проф переподготовка</a>
+        <a routerLink="prof-retrainig" class="dropdown-item">6 Проф переподготовка</a>
       </li>
       <li class="nav-item">
-        <a routerLink="attestation" class="dropdown-item">Аттестация</a>
+        <a routerLink="attestation" class="dropdown-item">7 Аттестация</a>
       </li>
       <li class="nav-item">
-        <a routerLink="army" class="dropdown-item">Воинский учет</a>
+        <a routerLink="army" class="dropdown-item">8 Воинский учет</a>
       </li>
       <li class="nav-item">
-        <a routerLink="workplace" class="dropdown-item">Прием на работу</a>
+        <a routerLink="workplace" class="dropdown-item">9 Прием на работу</a>
       </li>
       <li class="nav-item">
-        <a routerLink="reward" class="dropdown-item">Награды</a>
+        <a routerLink="reward" class="dropdown-item">10 Награды</a>
       </li>
       <li class="nav-item">
-        <a routerLink="social-security" class="dropdown-item">Социальные льготы</a>
+        <a routerLink="social-security" class="dropdown-item">11 Социальные льготы</a>
       </li>
       <li class="nav-item">
-        <a routerLink="work-exp" class="dropdown-item">Стаж работы</a>
+        <a routerLink="work-exp" class="dropdown-item">12 Стаж работы</a>
       </li>
     </ul>
   </div>

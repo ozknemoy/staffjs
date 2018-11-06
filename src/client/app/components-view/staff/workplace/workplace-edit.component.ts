@@ -11,7 +11,7 @@ import IInstitution from '../../../../../server/components/personnel/relations/p
 })
 export class WorkplaceComponent implements OnInit {
   id: string;
-  private dateProps: (keyof IWorkplace)[] = ['date'];
+  private dateProps: (keyof IWorkplace)[] = ['date', 'dismissalDate', 'academicCouncilDate'];
   public workplaces: IWorkplace[] = [];
   constructor(private http: HttpService, private route: ActivatedRoute) { }
 

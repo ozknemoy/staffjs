@@ -1,4 +1,7 @@
-import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, BelongsTo} from 'sequelize-typescript';
+import {
+  Table, Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, BelongsTo,
+  DataType
+} from 'sequelize-typescript';
 import {IPersonnel} from "../personnel.interface";
 import IAttestation from './personnel-attestation.interface';
 import Personnel from "../personnel.model";
@@ -20,10 +23,10 @@ export default class Attestation extends Model<Attestation> implements IAttestat
   @BelongsTo(() => Personnel)
   personnel: IPersonnel;
 
-  @Column date: Date;
+  @Column({type: DataType.DATE}) date: string;
   @Column resolution: string;
   @Column reason: string;
   @Column docNumber: string;
   /*dummy*/ docName: string;
-  @Column docDate: Date;
+  @Column({type: DataType.DATE}) docDate: string;
 }

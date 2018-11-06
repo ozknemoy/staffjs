@@ -10,7 +10,16 @@
       <th>Структурное подразделение</th>
       <th>Должность (специальность, профессия), разряд, класс (категория) квалификации</th>
       <th>Тарифная ставка (оклад), надбавка, руб.</th>
-      <th>Основание</th>
+      <th>Основание (приказ, дата, №)</th>
+      <th>Ученый совет</th>
+      <th>Условия привлечения</th>
+      <th>Размер ставки</th>
+      <th>Продолжительность рабочей недели, час.</th>
+      <th>Категория</th>
+      <th>Дата увольнения</th>
+      <th>Основание увольнения (приказ, дата №)</th>
+      <th>Причина увольнения</th>
+      <th>Статья ТК РФ</th>
       <th>
         <button class="btn btn-sm btn-success" (click)="addRow()">Добавить</button>
       </th>
@@ -21,6 +30,15 @@
       <td><input type="text" [(ngModel)]="w.specialty" class="form-control"></td>
       <td><input type="number" [(ngModel)]="w.salary" class="form-control"></td>
       <td><input type="text" [(ngModel)]="w.reason" class="form-control"></td>
+      <td><input type="date" [(ngModel)]="w.academicCouncilDate" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="w.attractionTerms" class="form-control"></td>
+      <td><input type="number" [(ngModel)]="w.rate" class="form-control"></td>
+      <td><input type="number" [(ngModel)]="w.duration" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="w.category" class="form-control"></td>
+      <td><input type="date" [(ngModel)]="w.dismissalDate" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="w.dismissalGround" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="w.dismissalReason" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="w.lawArticle" class="form-control"></td>
       <td><button class="btn btn-sm btn-danger" (click)="deleteRow(i)">Удалить</button></td>
     </tr>
   </table>

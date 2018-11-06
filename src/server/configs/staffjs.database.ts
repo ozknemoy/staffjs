@@ -13,6 +13,7 @@ import Vacation from '../components/personnel/relations/personnel-vacation.model
 import Institution from "../components/personnel/relations/personnel-institution.model";
 import WorkExp from '../components/personnel/relations/personnel-work-exp.model';
 import ScientificInst from '../components/personnel/relations/personnel-scientific-inst.model';
+import LaborContract from "../components/personnel/relations/personnel-labor-contract.interface";
 
 
 export const staffJsDB = new Sequelize({
@@ -34,7 +35,8 @@ export const staffJsDB = new Sequelize({
 
 staffJsDB.addModels([
   Personnel, Family, Attestation, Passport, ProfRetraining, QualImprovement,
-  Reward, SocialSecurity, Workplace, Army, Vacation, Institution, WorkExp, ScientificInst
+  Reward, SocialSecurity, Workplace, Army, Vacation, Institution, WorkExp, ScientificInst,
+  LaborContract,
 ]);
 
 // обязательный порядок
@@ -53,6 +55,7 @@ Personnel.sync().then(() => {
   Workplace.sync();
   WorkExp.sync();
   ScientificInst.sync();
+  LaborContract.sync();
 
 //Personnel.upsert({id: 29, name: 'john'});
 //QualImprovement.upsert({id: 1, personnelId: 29, reason: 'tak nado'});

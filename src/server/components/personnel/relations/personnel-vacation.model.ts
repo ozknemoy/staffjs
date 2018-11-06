@@ -1,4 +1,7 @@
-import {AutoIncrement, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table, Unique} from 'sequelize-typescript';
+import {
+  AutoIncrement, BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table,
+  Unique
+} from 'sequelize-typescript';
 import Personnel from '../personnel.model';
 import {IPersonnel} from '../personnel.interface';
 import IVacation from './personnel-vacation.interface';
@@ -20,10 +23,10 @@ export default class Vacation extends Model<Vacation> implements  IVacation {
   personnel: IPersonnel;
 
   @Column type: string;
-  @Column workDateFrom: Date;
-  @Column workDateTo: Date;
+  @Column({type: DataType.DATE}) workDateFrom: string;
+  @Column({type: DataType.DATE}) workDateTo: string;
   @Column daysAmount: number;
-  @Column dateFrom: Date;
-  @Column dateTo: Date;
+  @Column({type: DataType.DATE}) dateFrom: string;
+  @Column({type: DataType.DATE}) dateTo: string;
   @Column reason: string;
 }
