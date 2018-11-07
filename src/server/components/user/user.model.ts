@@ -2,7 +2,7 @@ import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement} from 'sequelize
 import IUser from './user.interface';
 
 @Table({
-  tableName: 'army'
+  tableName: 'user'
 })
 export default class User extends Model<User> implements IUser {
 

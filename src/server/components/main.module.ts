@@ -30,14 +30,15 @@ import {PassportModule} from "@nestjs/passport";
     }),
   ],
   controllers: [ApiController, StaffController, UploadController, PrintController, UserController],
-  components: [
+  providers: [
     PersonnelService,
     ErrHandlerService,
     UploadService,
     DbTransactions,
     PrintService,
+    AuthService,
+    JwtStrategy
   ],
-  providers: [AuthService, JwtStrategy],
 })
 export class MainModule {
   constructor(private personnelService: PersonnelService) {}
