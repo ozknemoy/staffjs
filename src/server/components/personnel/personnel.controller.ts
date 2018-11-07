@@ -22,6 +22,9 @@ import {ISocialSecurity} from './relations/personnel-social-security.interface';
 import SocialSecurity from './relations/personnel-social-security.model';
 import IWorkExp from './relations/personnel-work-exp.interface';
 import WorkExp from "./relations/personnel-work-exp.model";
+import {LaborContractComponent} from '../../../client/app/components-view/staff/labor-contract/labor-contract-edit.component';
+import LaborContract from './relations/personnel-labor-contract.interface';
+import ILaborContract from './relations/personnel-labor-contract.model';
 
 
 @Controller('personnel')
@@ -170,5 +173,15 @@ export class StaffController {
   @Put(':id/with-rel/work-exp')
   saveOrCreateWorkExp(@Param('id') id, @Body() pers: IPersonnel) {
     return this.personnelService.saveOrCreateWorkExp(id, pers);
+  }
+
+  @Get(':id/labor-contract')
+  getLaborContract(@Param('id') personnelId) {
+    return this.personnelService.getByParent(LaborContract, personnelId);
+  }
+
+  @Put(':id/labor-contract')
+  saveOrCreateLaborContract(@Param('id') id, @Body() body: ILaborContract[]) {
+    return this.personnelService.saveOrCreateLaborContract(id, body);
   }
 }

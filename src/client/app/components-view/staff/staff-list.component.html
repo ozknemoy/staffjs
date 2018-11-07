@@ -20,7 +20,7 @@
       {{st.surname}} {{st.name}} {{st.middleName}}
     </a></td>
     <td>
-      <button (click)="deleteOne(st.id, i)">Удалить сотрудника</button>
+      <button confirmButton (callback)="deleteOne(st.id, i)">Удалить сотрудника</button>
     </td>
   </tr>
 </table>

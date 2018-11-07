@@ -6,11 +6,14 @@ export const innRegExp = /\d{10,10}/;
 
 export function invalidINN(inn: string): boolean {
   // разрешаю null and ''
-  return (!innRegExp.test(inn) || inn.length !== 10) && (inn !== null || inn !== '');
+  if (inn === null || inn === '') {
+    return false
+  }
+  return (!innRegExp.test(inn) || inn.length !== 10);
 }
 
 export function validateINN(inn: string) {
-  if (invalidINN) {
+  if (invalidINN(inn)) {
     throw new Error(`Вы ввели не валидный ИНН "${inn}". Введите 10 цифр`);
   }
 }

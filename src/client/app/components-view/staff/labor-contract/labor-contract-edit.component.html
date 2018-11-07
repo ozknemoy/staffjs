@@ -1,0 +1,29 @@
+
+<div class="float-right">
+  <button class="btn btn-sm btn-success" (click)="save()">Сохранить</button>
+</div>
+ДЕЙСТВУЮЩИЕ ТРУДОВЫЕ ДОГОВОРЫ
+<div class="container-fluid">
+  <table class="table table-sm table-responsive-sm table-bordered">
+    <tr>
+      <th class="text-center">Номер</th>
+      <th class="text-center">Дата</th>
+      <th class="text-center">Дата окончания</th>
+      <th class="text-center">Должность</th>
+      <th class="text-center">Подразделение</th>
+      <th class="text-center">Условия привлечения</th>
+      <th class="text-center">СОУТ дата</th>
+      <th><button class="btn btn-sm btn-success" (click)="addRow()">Добавить</button></th>
+    </tr>
+    <tr *ngFor="let con of contracts; let i = index">
+      <td><input type="text" [(ngModel)]="con.number" class="form-control"></td>
+      <td><input type="date" [(ngModel)]="con.date" class="form-control"></td>
+      <td><input type="date" [(ngModel)]="con.endDate" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="con.specialty" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="con.department" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="con.attractionTerms" class="form-control"></td>
+      <td><input type="date" [(ngModel)]="con.soutDate" class="form-control"></td>
+      <td><button class="btn btn-sm btn-danger" (click)="deleteRow(i)">Удалить</button></td>
+    </tr>
+  </table>
+</div>

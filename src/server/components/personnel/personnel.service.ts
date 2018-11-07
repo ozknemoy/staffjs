@@ -32,6 +32,9 @@ import ScientificInst from './relations/personnel-scientific-inst.model';
 import IScientificInst from './relations/personnel-scientific-inst.interface';
 import {HandleData} from '../../../client/app/shared/services/handle-data';
 import IInstitution from './relations/personnel-institution.interface';
+import {LaborContractComponent} from '../../../client/app/components-view/staff/labor-contract/labor-contract-edit.component';
+import LaborContract from './relations/personnel-labor-contract.interface';
+import ILaborContract from './relations/personnel-labor-contract.model';
 @Component()
 export class PersonnelService {
 
@@ -193,5 +196,12 @@ export class PersonnelService {
   async deleteOne(id: number) {
     // при первом запросе (когда еще нет данных для юзера) надо создать 3 стандартные строчки WorkExp
     return Personnel.destroy({where: {id}});
+  }
+
+  saveOrCreateLaborContract(personnelId, contracts: ILaborContract[]) {
+    return this.dbTransactions
+      .createOrUpdateManyWithoutRels(LaborContract, 'personnelId', personnelId, contracts)
+      .then(() => this.getByParent(LaborContract, personnelId))
+      .catch(err => this.errHandler.handlaAll(err))
   }
 }

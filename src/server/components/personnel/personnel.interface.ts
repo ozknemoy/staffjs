@@ -8,6 +8,8 @@ import IInstitution from "./relations/personnel-institution.interface";
 import IScientificInst from './relations/personnel-scientific-inst.interface';
 import IWorkplace from "./relations/personnel-workplace.interface";
 import WorkExp from "./relations/personnel-work-exp.model";
+import ILaborContract from './relations/personnel-labor-contract.model';
+import IWorkExp from './relations/personnel-work-exp.interface';
 
 
 export class IPersonnel {
@@ -45,7 +47,8 @@ export class IPersonnel {
   rewards: IPersonnelNamedThingWithDoc[] = null;
   scientificInst: IScientificInst = null;
   workplaces: IWorkplace[] = null;
-  workExp: WorkExp[] = null;
+  workExp: IWorkExp[] = null;
+  laborContract: ILaborContract[] = null;
 }
 
 

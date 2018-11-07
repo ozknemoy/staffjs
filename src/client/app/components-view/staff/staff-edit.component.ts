@@ -14,6 +14,9 @@ import {HttpService} from '../../services/http.service';
         <a [routerLink]="['/staff-edit', id]" class="dropdown-item">1 Основная информация</a>
       </li>
       <li class="nav-item">
+        <a [routerLink]="['labor-contract']" class="dropdown-item">1.1 Действующие трудовые договоры</a>
+      </li>
+      <li class="nav-item">
         <a routerLink="passport" class="dropdown-item">2 Паспорт</a>
       </li>
       <li class="nav-item">

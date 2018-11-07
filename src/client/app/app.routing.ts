@@ -13,6 +13,7 @@ import {WorkplaceComponent} from './components-view/staff/workplace/workplace-ed
 import {RewardComponent} from './components-view/staff/reward/reward-edit.component';
 import {SocialSecurityComponent} from './components-view/staff/social-security/social-security.component';
 import {WorkExpComponent} from './components-view/staff/work-exp/work-exp-edit.component';
+import {LaborContractComponent} from './components-view/staff/labor-contract/labor-contract-edit.component';
 
 export const routes = [
   {
@@ -68,6 +69,9 @@ export const routes = [
       }, {
         path: 'work-exp',
         component: WorkExpComponent
+      }, {
+        path: 'labor-contract',
+        component: LaborContractComponent
       }
     ]
   },

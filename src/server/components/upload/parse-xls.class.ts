@@ -42,9 +42,12 @@ export class ParseXls {
   }
 
   static parse(xls: string[]) {
+    xls.forEach((cell, i) => {
+      if (cell === '') {
+        xls[i] = null
+      }
+    });
     const [surname, name, middleName] = this.splitByN(xls[1], 3);
-    console.log(xls[10], xls[12]);
-    //console.log(xls);
 
     const worker: Partial<IPersonnel> = {
       number: xls[0],
@@ -74,15 +77,69 @@ export class ParseXls {
       endDate: HandleData.setYear(xls[16]),
       qualification: xls[17],
       specialty: xls[18],
-      docNumber: xls[19],// T
+      docNumber: xls[19],
     };
-
-
+    const scientificInst: Partial<IPersonnel['scientificInst']> = {
+      name: xls[21],
+      fullInfo: xls[22],
+      endDate: HandleData.setYear(xls[23]),
+      specialty: xls[24],
+    };
+    // Z-AH пока пропустил
+    const attractionTerms = xls[44] === 'Шт' ? 'основная' : (xls[44] === 'С' ? 'по совместительству' : null)
+    const workplaces: Partial<IPersonnel['workplaces'][0]> = {
+      date: HandleData.ruDateToServer(xls[42] || xls[56]),
+      department: xls[34],
+      specialty: xls[35],
+      reason: xls[43] || xls[57],
+      academicCouncilDate: HandleData.ruDateToServer(xls[120]),
+      attractionTerms,
+      rate: +xls[37],
+      duration: +xls[108],
+      category: xls[37],
+      dismissalDate: HandleData.ruDateToServer(xls[74]),
+      dismissalGround: xls[75],
+      dismissalReason: xls[76],
+      lawArticle: xls[77],
+    };
+    const workExp: Partial<IPersonnel['workExp']> = this.getWorkExp(xls, null);
+    const laborContracts: Partial<IPersonnel['laborContract'][0]> = {
+      number: xls[39],
+      date: HandleData.ruDateToServer(xls[40]),
+      endDate: HandleData.ruDateToServer(xls[41]),
+      specialty: xls[35],
+      department: xls[34],
+      attractionTerms,
+    };
     return {
-      worker, passport, institution
+      worker, passport, institution, scientificInst , workplaces, workExp, laborContracts
     }
   }
 
+  static getWorkExp(xls, personnelId): Partial<IPersonnel['workExp']> {
+    return <Partial<IPersonnel['workExp']>>[{
+      id: null,
+      personnelId,
+      typeId: 1,
+      amountY: parseInt(xls[46]),
+      amountM: parseInt(xls[47]),
+      amountD: parseInt(xls[48]),
+    }, {
+      id: null,
+      personnelId,
+      typeId: 2,
+      amountY: parseInt(xls[49]),
+      amountM: parseInt(xls[50]),
+      amountD: parseInt(xls[51]),
+    }, {
+      id: null,
+      personnelId,
+      typeId: 3,
+      amountY: null,
+      amountM: null,
+      amountD: null,
+    }]
+  }
 }
 
 
