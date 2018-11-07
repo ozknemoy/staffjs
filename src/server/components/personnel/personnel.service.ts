@@ -1,6 +1,6 @@
 
 import {IPersonnel} from "./personnel.interface";
-import {Body, Component, Param} from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import {staffJsDB} from "../../configs/staffjs.database";
 import Personnel from "./personnel.model";
 import Family from "./relations/personnel-family.model";
@@ -23,19 +23,16 @@ import {IPersonnelNamedThingWithDoc} from './relations/personnel-named-thing-wit
 import Reward from './relations/personnel-reward.model';
 import {ISocialSecurity} from './relations/personnel-social-security.interface';
 import SocialSecurity from './relations/personnel-social-security.model';
-import IWorkExp from './relations/personnel-work-exp.interface';
 import WorkExp from './relations/personnel-work-exp.model';
 import {workExpTypesDict} from '../../../shared/work-exp-types.dict';
 import * as _ from 'lodash/core';
 import Institution from './relations/personnel-institution.model';
 import ScientificInst from './relations/personnel-scientific-inst.model';
-import IScientificInst from './relations/personnel-scientific-inst.interface';
 import {HandleData} from '../../../client/app/shared/services/handle-data';
-import IInstitution from './relations/personnel-institution.interface';
-import {LaborContractComponent} from '../../../client/app/components-view/staff/labor-contract/labor-contract-edit.component';
 import LaborContract from './relations/personnel-labor-contract.interface';
 import ILaborContract from './relations/personnel-labor-contract.model';
-@Component()
+
+@Injectable()
 export class PersonnelService {
 
   constructor(private dbTransactions: DbTransactions, private errHandler: ErrHandlerService) {}

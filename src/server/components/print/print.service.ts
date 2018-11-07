@@ -1,4 +1,4 @@
-import {Component} from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
 import {PersonnelService} from '../personnel/personnel.service';
 import {PrintT2Builder} from './print-t2.class';
 import {IPdfSchema} from '../../interfaces/pdf-shema.interface';
@@ -20,7 +20,7 @@ const PdfPrinter = require('pdfmake');
 const printer = new PdfPrinter(fontDescriptors);
 
 
-@Component()
+@Injectable()
 export class PrintService {
 
   constructor(private personnelService: PersonnelService) {}

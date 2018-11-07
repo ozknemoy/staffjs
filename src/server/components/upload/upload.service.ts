@@ -1,4 +1,4 @@
-import {Component} from "@nestjs/common";
+import {Injectable} from "@nestjs/common";
 import {MULTER_DIR} from "../../configs/multer.middleware";
 import {IFileUpload} from "../../interfaces/file-upload";
 import {ErrHandlerService} from "../../services/error-handler.service";
@@ -21,7 +21,7 @@ import IScientificInst from '../personnel/relations/personnel-scientific-inst.in
 import IWorkExp from '../personnel/relations/personnel-work-exp.interface';
 import ILaborContract from '../personnel/relations/personnel-labor-contract.model';
 
-@Component()
+@Injectable()
 export class UploadService {
 
   constructor(private errHandler: ErrHandlerService, private personnelService: PersonnelService) {

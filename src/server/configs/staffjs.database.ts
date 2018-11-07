@@ -42,7 +42,7 @@ staffJsDB.addModels([
 // обязательный порядок
 Personnel.sync().then(() => {
   // не обязательный
-  Attestation.sync();
+  /*Attestation.sync();
   Passport.sync();
   Family.sync();
   ProfRetraining.sync();
@@ -55,7 +55,7 @@ Personnel.sync().then(() => {
   Workplace.sync();
   WorkExp.sync();
   ScientificInst.sync();
-  LaborContract.sync();
+  LaborContract.sync();*/
 
 /*
 Personnel.upsert({id: 29, name: 'john'});

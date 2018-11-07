@@ -3,7 +3,7 @@ import {PrintService} from "./print.service";
 
 
 @Controller('print')
-export class PrintComponent {
+export class PrintController {
   constructor(private printService: PrintService) {
 
   }
