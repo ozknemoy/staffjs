@@ -2,13 +2,14 @@ import {Injectable} from "@angular/core";
 import {FileUploader} from "ng2-file-upload";
 import {HttpClient} from "@angular/common/http";
 import {Observable, SubscribableOrPromise} from "rxjs/Observable";
+import {AuthLocalStorage} from './auth-local-storage.service';
 
 @Injectable()
 export class HttpService {
-
+  //public isBrowser = this.authLocalStorage.isBrowser;
   public BASE_URL = '';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient/*, private authLocalStorage: AuthLocalStorage*/) {
 
   }
 
@@ -38,5 +39,18 @@ export class HttpService {
       }]
     });
   }
+
+  /*isAuth(): boolean {
+    return !!this.getToken()
+  }*/
+
+  /*getToken() {
+    if (this.isBrowser) {
+      return this.authLocalStorage.get('hash');
+    } else {
+      return this.authLocalStorage.auth['hash']
+    }
+
+  }*/
 
 }

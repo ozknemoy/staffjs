@@ -25,6 +25,7 @@ import {SocialSecurityComponent} from './components-view/staff/social-security/s
 import {WorkExpComponent} from './components-view/staff/work-exp/work-exp-edit.component';
 import {LaborContractComponent} from './components-view/staff/labor-contract/labor-contract-edit.component';
 import {ConfirmButtonDirective} from './components-stateless/confirm-button.directive';
+import {AuthLocalStorage} from './services/auth-local-storage.service';
 
 
 declare const require;
