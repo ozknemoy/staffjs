@@ -1,7 +1,6 @@
 import {MiddlewareConsumer, Module} from '@nestjs/common';
 import { ApiController } from './api/api.controller';
 import {StaffController} from './personnel/personnel.controller';
-import {MULTER_ROUTES, MulterMiddleware} from '../configs/multer.middleware';
 import {PersonnelService} from "./personnel/personnel.service";
 import {UploadController} from "./upload/upload.controller";
 import {ErrHandlerService} from "../services/error-handler.service";
@@ -43,7 +42,6 @@ import {PassportModule} from "@nestjs/passport";
 export class MainModule {
   constructor(private personnelService: PersonnelService) {}
     public configure(consumer: MiddlewareConsumer): void {
-        // todo consumer.apply(MulterMiddleware).forRoutes(MULTER_ROUTES);
-        new PrintService(this.personnelService).saveLocalForDevelopmentDocx();
+        //new PrintService(this.personnelService).saveLocalForDevelopmentDocx();
     }
 }

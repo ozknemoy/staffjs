@@ -1,10 +1,11 @@
-import { Controller, Get } from '@nestjs/common';
+import {Controller, Get, Req} from '@nestjs/common';
 
 @Controller('api')
 export class ApiController {
 
   @Get('hello')
-  root() {
+  root(@Req() req) {
+    console['log']('______________________', Object.keys(req.headers), req.headers);
 
     return {
       message: 'Hello World!',

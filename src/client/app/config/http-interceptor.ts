@@ -26,6 +26,7 @@ export class MainInterceptor implements HttpInterceptor {
                 message += err.error.join('</br>');
               }
 
+
               if (message) {
                 this.injector.get(ToastrService).error(
                   message, 'Ошибка валидации.', {

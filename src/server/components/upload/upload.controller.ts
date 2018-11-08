@@ -1,4 +1,4 @@
-import {Controller, Post, Req, Headers, Body} from "@nestjs/common";
+import {Controller, Post, Req, Headers, Body, FileInterceptor, UseInterceptors, UploadedFile} from '@nestjs/common';
 import {UploadService} from "./upload.service";
 import {ErrHandlerService} from "../../services/error-handler.service";
 
@@ -10,17 +10,16 @@ export class UploadController {
   }
 
   @Post('personnel')
-  async uploadPersonnel(@Headers() headers, @Req() {files})/*:PromiseLike<IFileUpload>*/ {
-
-    return this.uploadService.readExcelFile(files[0])
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadPersonnel(@Headers() headers, @UploadedFile() file)/*:PromiseLike<IFileUpload>*/ {
+    return this.uploadService.readExcelFile(file)
       /*.catch((e) => this.errHandler.sentToFront(e))*/
   }
 
   @Post('fill-db-by-xls')
-  async fillDBPersonnel(@Headers() headers, @Req() {files})/*:PromiseLike<IFileUpload>*/ {
-
-    return this.uploadService.readExcelFile(files[0])
-      /*.catch((e) => this.errHandler.sentToFront(e))*/
+  async fillDBPersonnelByXls() {
+    return
+    /*.catch((e) => this.errHandler.sentToFront(e))*/
   }
 
   @Post('fill-db-by-local-xls')
@@ -29,9 +28,8 @@ export class UploadController {
   }
 
   @Post('update-db-by-xls')
-  async updateDBPersonnel(@Headers() headers, @Req() {files})/*:PromiseLike<IFileUpload>*/ {
-
-    return this.uploadService.readExcelFile(files[0])
+  async updateDBPersonnel() {
+    return
       /*.catch((e) => this.errHandler.sentToFront(e))*/
   }
 
