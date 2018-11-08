@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
-import { PingService } from './shared/services/ping.services';
 import {FileUploaderComponent} from "./components-stateless/file-uploader/file-uploader.component";
 import {HttpService} from "./services/http.service";
 import {StaffListComponent} from "./components-view/staff/staff-list.component";
@@ -61,7 +60,6 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   ],
   imports: vendorsModules,
   providers: [
-    PingService,
     HttpService,
     {provide: HTTP_INTERCEPTORS, useClass: MainInterceptor, multi: true},
   ],

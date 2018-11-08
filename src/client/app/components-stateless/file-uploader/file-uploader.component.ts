@@ -2,7 +2,7 @@
  * Created by ozknemoy on 16.01.2017.
  */
 import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {ToastsManager} from "ng2-toastr";
+import {ToastrService} from "ngx-toastr";
 import {HttpService} from "../../services/http.service";
 
 /*
@@ -44,7 +44,7 @@ export class FileUploaderComponent {
   uploader: any;
 
   constructor(public httpService: HttpService,
-              private toast: ToastsManager) {
+              private toast: ToastrService) {
 
 
   }
@@ -55,8 +55,8 @@ export class FileUploaderComponent {
     this.uploader.onCompleteItem = (f, i) => {
       this.callback.emit();
       this.toast.success(`Файл загружен`, '', {
-        showCloseButton: true,
-        toastLife: 7e3
+        closeButton: true,
+        timeOut: 7e3
       });
     };
     // при ошибке добавления файла
@@ -64,8 +64,9 @@ export class FileUploaderComponent {
       if (file.size > this.size) {
         // тостик о превышение допустимого размера
         this.toast.error(`Вы превысили макcимально допустимый размер ${Math.floor(this.size / 1024)} Кбайт. Ваш файл ${Math.floor(file.size / 1024)} Кбайт`, 'Ошибка!', {
-          showCloseButton: true,
-          toastLife: 22e3
+          closeButton: true,
+          timeOut: 22e3
+
         });
       }
 

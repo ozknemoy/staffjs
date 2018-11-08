@@ -19,7 +19,7 @@ export const routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'about'
+    redirectTo: 'staff-list'
   }, {
     path: 'about',
     component: AboutComponent

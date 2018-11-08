@@ -1,8 +1,7 @@
 import {Component, OnInit, ViewContainerRef} from '@angular/core';
-import {PingService} from './shared/services/ping.services';
-import {Observable} from 'rxjs/Observable';
-import {ToastsManager} from "ng2-toastr";
 import {HttpService} from './services/http.service';
+import {Observable} from 'rxjs/index';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-root',
@@ -13,21 +12,15 @@ export class AppComponent implements OnInit {
 
   pongMessage$: Observable<any>;
 
-  constructor(private pingService: PingService,
+  constructor(
               private httpService: HttpService,
-              private toast: ToastsManager,
+              private toast: ToastrService,
               vRef: ViewContainerRef) {
     // всегда надо инжектить в корневой компонент
-    toast.setRootViewContainerRef(vRef);
-  }
-
-  ping() {
-    this.pingService.sendPing(new Date());
+    //toast.setRootViewContainerRef(vRef);
   }
 
   ngOnInit() {
-
-    this.pongMessage$ = this.pingService.getPong();
   }
 
   fillDBPersonnelByLocalXls(refill: boolean) {
@@ -35,8 +28,8 @@ export class AppComponent implements OnInit {
       .toPromise()
       .then(() =>
         this.toast.success(`Успешно`, '', {
-          showCloseButton: true,
-          toastLife: 7e3
+          closeButton: true,
+          timeOut: 7e3
         })
     )
   }

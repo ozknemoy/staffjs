@@ -1,4 +1,4 @@
-import {Middleware, NestMiddleware, ExpressMiddleware, RequestMethod} from '@nestjs/common';
+import {Middleware, NestMiddleware, RequestMethod} from '@nestjs/common';
 
 
 export const FRONT_ROUTES: { path: string, method: string, url?: string }[] = <any>[
@@ -8,10 +8,10 @@ export const FRONT_ROUTES: { path: string, method: string, url?: string }[] = <a
 
 @Middleware()
 export class RouterMiddleware implements NestMiddleware {
-  resolve(...args: any[]): ExpressMiddleware {
+  resolve(...args: any[]) {
     return (req, res, next) => {
       const routeObj = FRONT_ROUTES.find(route => route.path === req.route.path);
-      console.log('[[',req.route.path,routeObj.url || req.route.path);
+      console.log('[[', req.route.path, routeObj.url || req.route.path);
       res.render(routeObj.url || req.route.path);
     };
   }

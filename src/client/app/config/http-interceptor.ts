@@ -1,10 +1,9 @@
 
 import {Injectable, Injector} from '@angular/core';
 import {HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse} from '@angular/common/http';
-import {Observable} from "rxjs/Observable";
-import "rxjs/operator/catch";
-import {ToastsManager} from 'ng2-toastr';
+import {ToastrService} from 'ngx-toastr';
 import {finalize, tap} from 'rxjs/operators';
+import {Observable} from 'rxjs/index';
 
 //https://angular.io/guide/http#intercepting-all-requests-or-responses
 @Injectable()
@@ -28,11 +27,11 @@ export class MainInterceptor implements HttpInterceptor {
               }
 
               if (message) {
-                this.injector.get(ToastsManager).error(
+                this.injector.get(ToastrService).error(
                   message, 'Ошибка валидации.', {
-                    enableHTML: true,
-                    showCloseButton: true,
-                    toastLife: 30e3
+                    enableHtml: true,
+                    closeButton: true,
+                    timeOut: 30e3
                   });
               }
               return err
