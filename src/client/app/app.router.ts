@@ -14,12 +14,18 @@ import {RewardComponent} from './components-view/staff/reward/reward-edit.compon
 import {SocialSecurityComponent} from './components-view/staff/social-security/social-security.component';
 import {WorkExpComponent} from './components-view/staff/work-exp/work-exp-edit.component';
 import {LaborContractComponent} from './components-view/staff/labor-contract/labor-contract-edit.component';
+import {LoginComponent} from "./login/login.component";
+import {AuthGuard} from "./services/auth-guard.service";
+import {Route} from "@angular/router";
 
-export const routes = [
+export const routes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
     redirectTo: 'staff-list'
+  }, {
+    path: 'login',
+    component: LoginComponent
   }, {
     path: 'about',
     component: AboutComponent
@@ -28,7 +34,8 @@ export const routes = [
     loadChildren: './contact/contact.module#ContactModule'
   }, {
     path: 'staff-list',
-    component: StaffListComponent
+    component: StaffListComponent,
+    canActivate: [AuthGuard]
   }, {
     path: 'staff-edit/:id',
     component: StaffEditComponent,

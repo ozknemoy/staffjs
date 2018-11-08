@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Query} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards} from '@nestjs/common';
 import {PersonnelService} from "./personnel.service";
 import {IPersonnel} from "./personnel.interface";
 import IQualImprovement from "./relations/personnel-qual-improvement.interface";
@@ -25,6 +25,7 @@ import WorkExp from "./relations/personnel-work-exp.model";
 import {LaborContractComponent} from '../../../client/app/components-view/staff/labor-contract/labor-contract-edit.component';
 import LaborContract from './relations/personnel-labor-contract.interface';
 import ILaborContract from './relations/personnel-labor-contract.model';
+import {AuthGuard} from "@nestjs/passport";
 
 
 @Controller('personnel')
@@ -33,6 +34,7 @@ export class StaffController {
   constructor(private personnelService: PersonnelService) {}
 
   @Get()
+  @UseGuards(AuthGuard())
   getStaff() {
     return this.personnelService.getAllFullData();
   }

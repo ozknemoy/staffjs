@@ -25,6 +25,8 @@ import {WorkExpComponent} from './components-view/staff/work-exp/work-exp-edit.c
 import {LaborContractComponent} from './components-view/staff/labor-contract/labor-contract-edit.component';
 import {ConfirmButtonDirective} from './components-stateless/confirm-button.directive';
 import {TokenInterceptor} from './config/token-interceptor';
+import {LoginComponent} from "./login/login.component";
+import {AuthGuard} from "./services/auth-guard.service";
 
 
 declare const require;
@@ -37,6 +39,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
     AboutComponent,
     ContactComponent,
     StaffListComponent,
@@ -62,8 +65,8 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   imports: vendorsModules,
   providers: [
     HttpService,
-    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true
-    },
+    AuthGuard,
+    {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: MainInterceptor, multi: true},
   ],
   bootstrap: [AppComponent]

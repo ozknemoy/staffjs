@@ -4,6 +4,7 @@ import {HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse}
 import {ToastrService} from 'ngx-toastr';
 import {finalize, tap} from 'rxjs/operators';
 import {Observable} from 'rxjs/index';
+import {Router} from "@angular/router";
 
 //https://angular.io/guide/http#intercepting-all-requests-or-responses
 @Injectable()
@@ -24,6 +25,10 @@ export class MainInterceptor implements HttpInterceptor {
               if (err.status === 406 || err.status === 400 || err.status === 500) {
                 message = ' ';
                 message += err.error.join('</br>');
+              } else if (err.status === 401) {
+                localStorage.removeItem('bearer');
+                message = ' Авторизация устарела';
+                this.injector.get(Router).navigate(['login'])
               }
 
 

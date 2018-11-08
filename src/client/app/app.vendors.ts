@@ -2,7 +2,7 @@ import {TabsModule} from 'ngx-bootstrap/tabs';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
-import {routes} from './app.routing';
+import {routes} from './app.router';
 import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {FileUploadModule} from 'ng2-file-upload';

@@ -10,7 +10,7 @@ import {PrintController} from "./print/print.controller";
 import {PrintService} from "./print/print.service";
 import {UserController} from "./user/user.controller";
 import {JwtStrategy} from "./user/jwt.strategy";
-import {AuthService} from "./user/auth.service";
+import {UserService} from "./user/user.service";
 import {JwtModule} from "@nestjs/jwt";
 import {PassportModule} from "@nestjs/passport";
 
@@ -22,9 +22,9 @@ import {PassportModule} from "@nestjs/passport";
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.register({
-      secretOrPrivateKey: 'secretKey',
+      secretOrPrivateKey: 'auth-in-nest-js-and-angular-463525b6e071',
       signOptions: {
-        expiresIn: 3600,
+        expiresIn: 24 * 60 * 60,
       },
     }),
   ],
@@ -35,7 +35,7 @@ import {PassportModule} from "@nestjs/passport";
     UploadService,
     DbTransactions,
     PrintService,
-    AuthService,
+    UserService,
     JwtStrategy
   ],
 })

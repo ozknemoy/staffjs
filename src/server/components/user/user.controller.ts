@@ -1,12 +1,14 @@
-import {Controller, Get, Post, UseGuards} from "@nestjs/common";
+import {Body, Controller, Get, Post, UseFilters, UseGuards} from "@nestjs/common";
 import {AuthGuard} from "@nestjs/passport";
-import {AuthService} from "./auth.service";
+import {UserService} from "./user.service";
+import {ExceptionFilter} from "../../filters/rpc-exception.filter";
+import {RpcException} from "@nestjs/microservices";
 
 
 @Controller('user')
 export class UserController {
 
-  constructor(private readonly AuthService: AuthService,) {}
+  constructor(private readonly UserService: UserService,) {}
 
   @Get('all')
   @UseGuards(AuthGuard())
@@ -16,8 +18,18 @@ export class UserController {
   }
 
   @Post('/login')
-  signIn() {
-    return this.AuthService.signIn()
+  signIn(@Body() body) {
+    return this.UserService.signIn(body)
+  }
+
+  @Post('/superadmin')
+  //@UseFilters(new ExceptionFilter())
+  createSA(@Body() body) {
+    return this.UserService.createSA(body)
+      .catch(e=> {
+        console.log('00000000000000000000', e);
+        throw new RpcException(e);
+      })
   }
 
 
@@ -26,6 +38,8 @@ export class UserController {
   @Get(':id')
   rootGet() {
     console.log('1');
-    return {}
+    return {oneUser: 1}
   }
+
+
 }

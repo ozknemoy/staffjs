@@ -11,6 +11,7 @@ export default class User extends Model<User> implements IUser {
   @PrimaryKey
   @Column id: number;
 
+  @Unique
   @Column login: string;
   @Column rights: number;
   @Column password: string;
