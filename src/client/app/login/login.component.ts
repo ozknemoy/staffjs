@@ -16,7 +16,8 @@ export class LoginComponent {
   login() {
     this.http.post('user/login', this.info).subscribe((d) => {
       localStorage.setItem('bearer', (<any>d).token);
-      this.router.navigate(['staff-list']);
+      localStorage.setItem('rights', (<any>d).rights);
+      this.router.navigate(['']);
     })
   }
 

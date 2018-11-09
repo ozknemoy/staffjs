@@ -27,6 +27,11 @@ import {ConfirmButtonDirective} from './components-stateless/confirm-button.dire
 import {TokenInterceptor} from './config/token-interceptor';
 import {LoginComponent} from "./login/login.component";
 import {AuthGuard} from "./services/auth-guard.service";
+import {HomeComponent} from './components-view/home/home.component';
+import {NavBarComponent} from './components-stateless/nav-bar/nav-bar.component';
+import {UserRoleDirective} from './components-stateless/user-role.directive';
+import {UserEditorComponent} from './components-view/user-editor/user-editor.component';
+import {SuperAdminGuard} from './services/super-admin-guard.service';
 
 
 declare const require;
@@ -40,8 +45,11 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
   declarations: [
     AppComponent,
     LoginComponent,
+    HomeComponent,
     AboutComponent,
     ContactComponent,
+    UserEditorComponent,
+    // staff
     StaffListComponent,
     StaffEditComponent,
     StaffMainInfoComponent,
@@ -61,11 +69,14 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     FileUploaderComponent,
     PrintButtonComponent,
     ConfirmButtonDirective,
+    NavBarComponent,
+    UserRoleDirective,
   ],
   imports: vendorsModules,
   providers: [
     HttpService,
     AuthGuard,
+    SuperAdminGuard,
     {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: MainInterceptor, multi: true},
   ],

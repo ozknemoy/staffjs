@@ -1,6 +1,9 @@
-import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement} from 'sequelize-typescript';
+import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement, DefaultScope} from 'sequelize-typescript';
 import IUser from './user.interface';
 
+@DefaultScope({
+  attributes: ['id', 'login']
+})
 @Table({
   tableName: 'user'
 })

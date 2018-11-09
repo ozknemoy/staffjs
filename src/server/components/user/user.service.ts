@@ -12,20 +12,21 @@ const bcrypt = require('bcrypt');
 @Injectable()
 export class UserService {
   private round = 10;
-  constructor(private readonly jwtService: JwtService,) {}
 
-  async signIn({login, password}): Promise<{token: string}> {
+  constructor(private readonly jwtService: JwtService) {}
+
+  async signIn({login, password}): Promise<{token: string, rights: number}> {
     // In the real-world app you shouldn't expose this method publicly
     // instead, return a token once you verify user credentials
     const user = await this.validateUser({login});
-    if(!user) {
+    if (!user) {
       this.badCredentials();
     }
     const isValid = await this.checkPassword(password, user.password);
-    if(!isValid) {
+    if (!isValid) {
       this.badCredentials();
     }
-    return {token: this.jwtService.sign({login})}
+    return {token: this.jwtService.sign({login}), rights: user.rights}
   }
 
   badCredentials() {
@@ -33,39 +34,34 @@ export class UserService {
   }
 
   async validateUser({login}): Promise<IUser> {
-    return await User.findOne({where: {login}});
+    return await User.findOne({where: {login}, attributes: ['id', 'login', 'rights', 'password']});
   }
 
-  async createSA({login, password: _password}) {
-    const password = await this.generateHash(_password);
-    if(password) {
-      return User.create({login, password, rights: 1})
+  async createSA({login, password: password, pin}) {
+    if (pin === '15646') {
+      const _password = await this.generateHash(password);
+      if (_password) {
+        return User.create({login, _password, rights: 1})
+      }
     }
-    return HttpErrorResponse
+    ErrHandlerService.throw('чего-то не хватает', 406)
+  }
+
+  async createAdmin({login, password, rights}) {
+    if (rights > 1) {
+      const _password = await this.generateHash(password);
+      if (_password) {
+        return User.create({login, _password, rights})
+      }
+    }
+    ErrHandlerService.throw('Не правильные данные (логин надо латиницей, права выше 10)', 406)
   }
 
   generateHash(password) {
-    return new Promise((res, fail) => {
-      bcrypt.hash(password, this.round/*, (e, hash) => {
-        if(e) {
-          console.error('----------generateHash------------', e);
-          fail('----------generateHash------------')
-        }
-        res(hash);
-      }*/);
-    })
-
+    return bcrypt.hash(password, this.round)
   }
 
   checkPassword(password, hash) {
     return bcrypt.compare(password, hash)
-    /*return new Promise((res, fail) => {
-      bcrypt.compare(password, this.round, (e, r) => {
-        if(e) {
-          fail('----------checkPassword------------')
-        }
-        res(r);
-      });
-    })*/
   }
 }

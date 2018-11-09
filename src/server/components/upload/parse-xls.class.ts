@@ -19,7 +19,7 @@ export class ParseXls {
       const w = xlsx.parse(fs.readFileSync(excelPath))[0];
       return  this.parse(w.data[1]);
     } catch (e) {
-      throw ErrHandlerService.throw('Ошибка чтения/разбора файла');
+      ErrHandlerService.throw('Ошибка чтения/разбора файла');
     }
   }
 

@@ -1,4 +1,8 @@
 
+body {
+  min-height: 100vw;
+}
+
 .w200  {
   width: 200px;
 }

@@ -17,12 +17,16 @@ import {LaborContractComponent} from './components-view/staff/labor-contract/lab
 import {LoginComponent} from "./login/login.component";
 import {AuthGuard} from "./services/auth-guard.service";
 import {Route} from "@angular/router";
+import {HomeComponent} from './components-view/home/home.component';
+import {UserEditorComponent} from './components-view/user-editor/user-editor.component';
+import {SuperAdminGuard} from './services/super-admin-guard.service';
 
 export const routes: Route[] = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'staff-list'
+    component: HomeComponent,
+    canActivate: [AuthGuard]
   }, {
     path: 'login',
     component: LoginComponent
@@ -32,6 +36,10 @@ export const routes: Route[] = [
   }, {
     path: 'contact',
     loadChildren: './contact/contact.module#ContactModule'
+  }, {
+    path: 'user-editor',
+    component: UserEditorComponent,
+    canActivate: [SuperAdminGuard]
   }, {
     path: 'staff-list',
     component: StaffListComponent,

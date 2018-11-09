@@ -5,16 +5,15 @@ import {ActivatedRouteSnapshot, RouterStateSnapshot} from "@angular/router/src/r
 
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class SuperAdminGuard implements CanActivate {
 
   constructor(public router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (!localStorage.getItem('bearer')) {
-      this.router.navigate(['login']);
+    if (localStorage.getItem('rights') !== '1') {
+      this.router.navigate(['']);
       return false
     } else {
-      console.log('canActivatecanActivatecanActivate');
       return true
     }
   }

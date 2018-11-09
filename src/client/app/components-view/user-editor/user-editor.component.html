@@ -1,0 +1,39 @@
+<nav-bar></nav-bar>
+
+СОЗДАНИЕ ПОЛЬЗОВАТЕЛЕЙ
+
+<div class="container-fluid">
+  <table class="table table-sm table-responsive-sm table-bordered">
+    <tr>
+      <th class="text-center">ID</th>
+      <th class="text-center">Пользователь</th>
+      <th></th>
+    </tr>
+    <tr *ngFor="let u of users; let i = index">
+      <td>{{u.id}}</td>
+      <td>{{u.login}}</td>
+      <td><button class="btn btn-sm btn-danger" confirmButton (callback)="deleteUser(i)">Удалить</button></td>
+    </tr>
+  </table>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label>Логин</label>
+        <input type="text" [(ngModel)]="newUser.login" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Пароль</label>
+        <input type="text" [(ngModel)]="newUser.password" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Уровень доступа(кратный 10)</label>
+        <input type="text" [(ngModel)]="newUser.rights" class="form-control">
+      </div>
+      <button class="btn btn-sm btn-success" (click)="createUser()">Добавить</button>
+    </div>
+    <div class="col"></div>
+  </div>
+</div>

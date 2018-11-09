@@ -1,8 +1,8 @@
 
 
 export default class IUser {
-  id: number;
-  login: string;
-  rights: number;
-  password: string;
+  id: number = null;
+  login: string = null;
+  rights: number = null;
+  password: string = null;
 }
