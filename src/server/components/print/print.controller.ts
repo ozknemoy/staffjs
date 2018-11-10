@@ -1,7 +1,10 @@
-import {Body, Controller, Param, Post, Query, Res} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post, Query, Res, UseGuards} from '@nestjs/common';
 import {PrintService} from "./print.service";
+import LaborContractDocx from "./labor-contract-docx.model";
+import {AuthGuard} from "@nestjs/passport";
 
 
+@UseGuards(AuthGuard())
 @Controller('print')
 export class PrintController {
   constructor(private printService: PrintService) {
@@ -23,5 +26,11 @@ export class PrintController {
     this.printService.printLaborContractScientific(userId);
     return resp.send({ok: true});
   }
+
+  @Get('labor-contract/all')
+  getLaborContractDocxAll() {
+    return LaborContractDocx.findAll()
+  }
+
 
 }

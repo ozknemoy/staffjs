@@ -3,7 +3,7 @@
  */
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {ToastrService} from "ngx-toastr";
-import {HttpService} from "../../services/http.service";
+import {HttpService} from "../services/http.service";
 
 /*
  <file-uploader [size]="1000000" uploaderClass="btn btn-warning btn-sm"
@@ -31,9 +31,15 @@ import {HttpService} from "../../services/http.service";
 
 @Component({
   selector: 'file-uploader',
-  templateUrl: './file-uploader-prioriti.html'
+  template: `
+    <label [ngClass]="{'pointer-none':uploader.isUploading}" class="{{uploaderClass}}">
+      <input type="file" style="display:none"
+             ng2FileSelect
+             [uploader]="uploader"
+             accept="{{accept}}">Выбрать файл
+    </label>
+  `
 })
-
 export class FileUploaderComponent {
   @Input() size = 2e6;
   @Input() uploaderClass: string;

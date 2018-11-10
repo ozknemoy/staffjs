@@ -1,8 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import User from "./user.model";
 import {HttpException, HttpStatus, Injectable, UnauthorizedException} from "@nestjs/common";
-import {HttpErrorResponse} from "@angular/common/http";
-import {RpcException} from "@nestjs/microservices";
 import IUser from "./user.interface";
 import {ErrHandlerService} from "../../services/error-handler.service";
 
@@ -13,7 +11,7 @@ const bcrypt = require('bcrypt');
 export class UserService {
   private round = 10;
 
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(private readonly jwtService: JwtService, private errHandler: ErrHandlerService) {}
 
   async signIn({login, password}): Promise<{token: string, rights: number}> {
     // In the real-world app you shouldn't expose this method publicly
@@ -38,7 +36,7 @@ export class UserService {
   }
 
   async createSA({login, password: password, pin}) {
-    if (pin === '15646') {
+    if (pin === '15646' && login && password) {
       const _password = await this.generateHash(password);
       if (_password) {
         return User.create({login, _password, rights: 1})
@@ -48,10 +46,11 @@ export class UserService {
   }
 
   async createAdmin({login, password, rights}) {
-    if (rights > 1) {
+    if (rights > 1 && login && password && rights) {
       const _password = await this.generateHash(password);
       if (_password) {
         return User.create({login, _password, rights})
+          .catch(err => this.errHandler.handlaAll(err, 'user', {login: 'Логин уже занят'}))
       }
     }
     ErrHandlerService.throw('Не правильные данные (логин надо латиницей, права выше 10)', 406)
@@ -63,5 +62,9 @@ export class UserService {
 
   checkPassword(password, hash) {
     return bcrypt.compare(password, hash)
+  }
+
+  getFullUserById(id) {
+    return User.findById(id, {attributes: ['id', 'login', 'rights']})
   }
 }

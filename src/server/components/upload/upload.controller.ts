@@ -1,7 +1,14 @@
-import {Controller, Post, Req, Headers, Body, FileInterceptor, UseInterceptors, UploadedFile} from '@nestjs/common';
+import {
+  Controller, Post, Req, Headers, Body, FileInterceptor, UseInterceptors, UploadedFile,
+  UseGuards, Get, Query
+} from '@nestjs/common';
 import {UploadService} from "./upload.service";
 import {ErrHandlerService} from "../../services/error-handler.service";
+import {AuthGuard} from "@nestjs/passport";
+import LaborContractDocx from "../print/labor-contract-docx.model";
+import {IFileUpload} from "../../interfaces/file-upload";
 
+@UseGuards(AuthGuard())
 @Controller('upload')
 export class UploadController {
 
@@ -13,13 +20,11 @@ export class UploadController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadPersonnel(@Headers() headers, @UploadedFile() file)/*:PromiseLike<IFileUpload>*/ {
     return this.uploadService.readExcelFile(file)
-      /*.catch((e) => this.errHandler.sentToFront(e))*/
   }
 
   @Post('fill-db-by-xls')
   async fillDBPersonnelByXls() {
     return
-    /*.catch((e) => this.errHandler.sentToFront(e))*/
   }
 
   @Post('fill-db-by-local-xls')
@@ -30,9 +35,13 @@ export class UploadController {
   @Post('update-db-by-xls')
   async updateDBPersonnel() {
     return
-      /*.catch((e) => this.errHandler.sentToFront(e))*/
   }
 
+  @Post('labor-contract')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadLaborContractDocx(@UploadedFile() file: IFileUpload, @Query('type') typeId: number) {
+    return this.uploadService.uploadLaborContractDocx(file, typeId)
+  }
 
 
 }

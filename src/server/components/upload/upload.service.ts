@@ -16,9 +16,12 @@ import IInstitution from '../personnel/relations/personnel-institution.interface
 import IScientificInst from '../personnel/relations/personnel-scientific-inst.interface';
 import IWorkExp from '../personnel/relations/personnel-work-exp.interface';
 import ILaborContract from '../personnel/relations/personnel-labor-contract.model';
+import * as fs from "fs";
+import LaborContractDocx from "../print/labor-contract-docx.model";
 
 @Injectable()
 export class UploadService {
+  public dirLaborContractDocx = 'upload/labor-contracts/';
 
   constructor(private errHandler: ErrHandlerService, private personnelService: PersonnelService) {
 
@@ -91,7 +94,19 @@ export class UploadService {
       })
     )).then(() => worker);
   }
+
+  async uploadLaborContractDocx(file: IFileUpload, type) {
+    if(!fs.existsSync(this.dirLaborContractDocx)) {
+      fs.mkdirSync(this.dirLaborContractDocx)
+    }
+    // todo удалять старый если не совпадает имя с новым
+    const newUrl = `${type}-${file.originalname}`;
+    try {
+      fs.writeFileSync(this.dirLaborContractDocx + newUrl, file.buffer)
+    } catch(e) {
+      ErrHandlerService.throw('Что-то сломалось. Попробуйте ещё раз')
+    }
+    const row = await LaborContractDocx.findOne({where: {type}});
+    return row.update({'url': newUrl});
+  }
 }
-
-
-

@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {FileUploader} from "ng2-file-upload";
 import {HttpClient} from "@angular/common/http";
+import {AUTH_HEADER_PROP, GET_AUTH_HEADER_VALUE} from "../config/token-interceptor";
 
 @Injectable()
 export class HttpService {
@@ -24,6 +25,10 @@ export class HttpService {
     return this.http.put<any>(this.BASE_URL + url, data, config)
   }
 
+  delete(url, config?)  {
+    return this.http.delete<any>(this.BASE_URL + url, config)
+  }
+
   uploadFileWithAuth(maxFileSize, url, filename = "file") {
     return new FileUploader({
       url: this.BASE_URL + url,
@@ -32,8 +37,8 @@ export class HttpService {
       maxFileSize,
       // withCredentials: false,
       headers: [{
-        name: 'X-AUTH-TOKEN',
-        value: 'PiU '
+        name: AUTH_HEADER_PROP,
+        value: GET_AUTH_HEADER_VALUE()
       }]
     });
   }

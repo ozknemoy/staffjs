@@ -3,7 +3,7 @@ import {HttpService} from '../services/http.service';
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-about',
+  selector: 'app-login',
   templateUrl: './login.component.html'
 })
 export class LoginComponent {

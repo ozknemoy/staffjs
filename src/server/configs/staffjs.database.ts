@@ -1,4 +1,4 @@
-import {Sequelize} from 'sequelize-typescript';
+import {Model, Sequelize} from 'sequelize-typescript';
 import Personnel from "../components/personnel/personnel.model";
 import Family from "../components/personnel/relations/personnel-family.model";
 import Attestation from "../components/personnel/relations/personnel-attestation.model";
@@ -15,6 +15,8 @@ import WorkExp from '../components/personnel/relations/personnel-work-exp.model'
 import ScientificInst from '../components/personnel/relations/personnel-scientific-inst.model';
 import LaborContract from "../components/personnel/relations/personnel-labor-contract.interface";
 import User from "../components/user/user.model";
+import LaborContractDocx from "../components/print/labor-contract-docx.model";
+import {laborContractDocxDict} from "../../shared/dictionaries/labor-contract-docx.dict";
 
 
 export const staffJsDB = new Sequelize({
@@ -37,7 +39,7 @@ export const staffJsDB = new Sequelize({
 staffJsDB.addModels([
   Personnel, Family, Attestation, Passport, ProfRetraining, QualImprovement,
   Reward, SocialSecurity, Workplace, Army, Vacation, Institution, WorkExp, ScientificInst,
-  LaborContract, User,
+  LaborContract, User, LaborContractDocx
 ]);
 
 // обязательный порядок
@@ -57,6 +59,7 @@ Personnel.sync().then(() => {
   WorkExp.sync();
   ScientificInst.sync();
   LaborContract.sync();*/
+  syncAndFillIfEmptyTable(LaborContractDocx, laborContractDocxDict);
   User.sync();
 
 /*
@@ -69,3 +72,12 @@ Institution.upsert({/!*"id":2,*!/"personnelId":29,"name":"лети","docName":"�
 */
 
 });
+
+// хелпер добавления json в таблицу
+function syncAndFillIfEmptyTable(model, dict) {
+  model.sync().then(() => {
+    model.count().then(n => {
+      if(n === 0) model.bulkCreate(dict)
+    })
+  });
+}

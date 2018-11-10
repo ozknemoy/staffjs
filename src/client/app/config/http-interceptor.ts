@@ -19,28 +19,28 @@ export class MainInterceptor implements HttpInterceptor {
             // Succeeds when there is a response; ignore other events
             event => event,
             // Operation failed; error is an HttpErrorResponse
-            (err: HttpErrorResponse) => {
+            (errBody: HttpErrorResponse) => {
               // ошибки валидатора бека
-              let message;
-              if (err.status === 406 || err.status === 400 || err.status === 500) {
-                message = ' ';
-                message += err.error.join('</br>');
-              } else if (err.status === 401) {
+              let errText;
+              if (errBody.status === 406 || errBody.status === 400 || errBody.status === 500) {
+                errText = ' ';
+                errText += errBody.error.join('</br>');
+              } else if (errBody.status === 401) {
                 localStorage.removeItem('bearer');
-                message = ' Авторизация устарела';
+                errText = ' Авторизация устарела';
                 this.injector.get(Router).navigate(['login'])
               }
 
 
-              if (message) {
+              if (errText) {
                 this.injector.get(ToastrService).error(
-                  message, 'Ошибка валидации.', {
+                  errText, 'Ошибка валидации.', {
                     enableHtml: true,
                     closeButton: true,
                     timeOut: 30e3
                   });
               }
-              return err
+              return errBody
             }
           ),
           // either completes or errors

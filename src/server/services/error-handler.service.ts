@@ -1,4 +1,4 @@
-import {HttpException, HttpStatus} from "@nestjs/common";
+import {ForbiddenException, HttpException, HttpStatus} from "@nestjs/common";
 import {UniqueConstraintError} from "sequelize";
 
 export class ErrHandlerService {
@@ -6,29 +6,38 @@ export class ErrHandlerService {
   public STATUS_FOR_VALID_AND_UNIQUE_ERR = HttpStatus.NOT_ACCEPTABLE;
 
   static throw(err: string, code = HttpStatus.INTERNAL_SERVER_ERROR) {
-    // tclb передавать не массив ошибки а строку то преобразуется в объект
+
     throw new HttpException([err], code);
   }
 
   // пока простое преобразование в массив ошибок  вложенность в errors
-  handle(err: string | string[], code = this.STATUS_FOR_VALID_AND_UNIQUE_ERR) {
-    throw new HttpException(Array.isArray(err) ? err : [err], code);
+  handle(err: any, code = this.STATUS_FOR_VALID_AND_UNIQUE_ERR) {
+    /* если передавать не массив ошибки а строку то преобразуется в объект
+       https://docs.nestjs.com/exception-filters
+       если послать строку то отправится
+    {
+      "statusCode": 403,
+      "message": "string"
+    }
+    если объект то он перезапишет этот объект
+    */
+
+    // сначала пытаюсь выдернуть message из объекта
+    let e = err && typeof err === 'object' && err.message ? err.message : err;
+    // на фронте нужен массив()
+    e = typeof err === 'string' ? [e] : e;
+    throw new HttpException(e, code);
   }
 
   /*is like SequelizeValidationError*/
-  sentToFront(err) {
-    console.log('ErrHandlerService.sentToFront___________________', Object.keys(err), err);
+  handleErrors(err) {
     return this.handle(err.errors.map(e => e.message), this.STATUS_FOR_VALID_AND_UNIQUE_ERR)
   }
 
-  sendForbidden() {
-    return this.handle('Не хватает прав', HttpStatus.FORBIDDEN)
-  }
-
-  handlaAll(e, tableName?, uniqueFields?, status = this.STATUS_FOR_VALID_AND_UNIQUE_ERR) {
+  handlaAll(e, tableName?, uniqueFields?: /*{email:'Email уже существует'}*/Object, status = this.STATUS_FOR_VALID_AND_UNIQUE_ERR) {
+    console.log('ErrHandlerService.handleAll___________________', e.name);
     switch (e.name) {
       case "SequelizeUniqueConstraintError":
-        // отдаю поля uniqueFields={email:'Email уже существует'}
         for (const key in uniqueFields) {
           // сравниваю с tableName + '_email_......'
           if (e.parent.constraint.indexOf(`${tableName}_${key}_`) >= 0) {
@@ -40,12 +49,9 @@ export class ErrHandlerService {
         return this.handle('ошибка БД: ' + (e.parent ? e.parent.toString() : ''), HttpStatus.BAD_REQUEST)
       }
       case 'SequelizeValidationError':
-        return this.sentToFront(e);
+        return this.handleErrors(e);
     }
-    console.log('ErrHandlerService.handleAll___________________', e);
-    return this.handle(e/*.toString()*/, status)
-
+    return this.handle(e, status)
   }
 
 }
-

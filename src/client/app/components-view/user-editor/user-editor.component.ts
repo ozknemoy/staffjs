@@ -5,7 +5,7 @@ import {ToastrService} from 'ngx-toastr';
 import IUser from '../../../../server/components/user/user.interface';
 
 @Component({
-  selector: 'user-editor',
+  selector: 'admin-editor',
   templateUrl: './user-editor.component.html'
 })
 export class UserEditorComponent {
@@ -24,12 +24,16 @@ export class UserEditorComponent {
     this.httpService.get('user/all').subscribe((users) => this.users = users)
   }
 
-  deleteUser(i) {
+  deleteUser(i, id) {
+    this.httpService.delete('user/' + id).subscribe(() => {
+      this.users.splice(i, 1)
+    })
 
-    this.users.splice(i, 1)
   }
 
   createUser() {
-
+    this.httpService.post('user/new', this.newUser).subscribe((user) => {
+      this.users.push(<any>user)
+    })
   }
 }

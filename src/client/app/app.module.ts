@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { AboutComponent } from './about/about.component';
+import { EmploymentContractComponent } from './components-view/employment-contract/employment-contract.component';
 import { ContactComponent } from './contact/contact.component';
-import {FileUploaderComponent} from "./components-stateless/file-uploader/file-uploader.component";
+import {FileUploaderComponent} from "./components-stateless/file-uploader.component";
 import {HttpService} from "./services/http.service";
 import {StaffListComponent} from "./components-view/staff/staff-list.component";
 import {StaffMainInfoComponent} from "./components-view/staff/main-info/main-info-edit.component";
@@ -46,7 +46,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     AppComponent,
     LoginComponent,
     HomeComponent,
-    AboutComponent,
+    EmploymentContractComponent,
     ContactComponent,
     UserEditorComponent,
     // staff

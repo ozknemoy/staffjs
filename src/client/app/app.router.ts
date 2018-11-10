@@ -1,4 +1,4 @@
-import { AboutComponent } from './about/about.component';
+import { EmploymentContractComponent } from './components-view/employment-contract/employment-contract.component';
 import {StaffListComponent} from "./components-view/staff/staff-list.component";
 import {StaffMainInfoComponent} from "./components-view/staff/main-info/main-info-edit.component";
 import {QualImprovementComponent} from "./components-view/staff/qual-improvement/qual-improvement-edit.component";
@@ -31,13 +31,13 @@ export const routes: Route[] = [
     path: 'login',
     component: LoginComponent
   }, {
-    path: 'about',
-    component: AboutComponent
+    path: 'employment-contract',
+    component: EmploymentContractComponent
   }, {
     path: 'contact',
     loadChildren: './contact/contact.module#ContactModule'
   }, {
-    path: 'user-editor',
+    path: 'admin-editor',
     component: UserEditorComponent,
     canActivate: [SuperAdminGuard]
   }, {
