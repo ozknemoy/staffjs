@@ -19,7 +19,7 @@ export class HandleData {
 
 // [{[proOne]:2, [propTwo]: 'изменение'}] -> {[proOneValue]:[propTwoValue]}
   static toKeyProp(obj: any[], proOne = 'id', propTwo = 'name'): ISimpleObj {
-    let o = {};
+    const o = {};
     obj.forEach(row => {
       o[row[proOne].toString()] = row[propTwo];
     });
@@ -28,7 +28,7 @@ export class HandleData {
 
   static constructUrl(mainChunk, params) {
     let chunk = '';
-    for (let prop in params) {
+    for (const prop in params) {
       if (params[prop] !== null && params[prop] !== undefined) {
         const _chunk = prop + '=' + params[prop];
         chunk = chunk === '' ? '?' + _chunk : chunk + '&' + _chunk;
@@ -40,7 +40,7 @@ export class HandleData {
 
   static getMatches(string, regex, index = 1 /*default to the first capturing group*/): any[] {
     if (!string) return [];
-    let matches = [];
+    const matches = [];
     let match;
     while (match = regex.exec(string)) {
       matches.push(match[index]);
@@ -59,7 +59,7 @@ export class HandleData {
   // https://blog.theodo.fr/2018/01/tips-tricks-date-handling-moment-js/
   // -> 2018-09-07T21:00:00.000Z
   static dateToServer(date: string) {
-    return (date && typeof date === 'string') ? new Date(date).toJSON()/*moment(date).utc()*/ : null;
+    return (date && typeof date === 'string') ? new Date(date).toJSON() /*moment(date).utc()*/ : null;
   }
 
   static dateFromServer(date: string) {
