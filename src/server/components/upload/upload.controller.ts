@@ -43,5 +43,11 @@ export class UploadController {
     return this.uploadService.uploadLaborContractDocx(file, typeId)
   }
 
+  @Post('work-history')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadWorkHistoryFile(@UploadedFile() file: IFileUpload, @Query('workerId') workerId: number) {
+    return this.uploadService.uploadWorkHistoryFile(file, workerId)
+  }
+
 
 }

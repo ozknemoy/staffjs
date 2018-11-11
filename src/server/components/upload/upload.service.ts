@@ -17,11 +17,14 @@ import IScientificInst from '../personnel/relations/personnel-scientific-inst.in
 import IWorkExp from '../personnel/relations/personnel-work-exp.interface';
 import ILaborContract from '../personnel/relations/personnel-labor-contract.model';
 import * as fs from "fs";
+import * as fsExt from "fs-extend";
 import LaborContractDocx from "../print/labor-contract-docx.model";
+import {dirWorkHistory} from "../../../shared/constants";
+import * as path from "path";
 
 @Injectable()
 export class UploadService {
-  public dirLaborContractDocx = 'upload/labor-contracts/';
+  public dirLaborContractDocx = 'files/labor-contracts/';
 
   constructor(private errHandler: ErrHandlerService, private personnelService: PersonnelService) {
 
@@ -108,5 +111,20 @@ export class UploadService {
     }
     const row = await LaborContractDocx.findOne({where: {type}});
     return row.update({'url': newUrl});
+  }
+
+  async uploadWorkHistoryFile(file: IFileUpload, workerId) {
+    if(!fs.existsSync(dirWorkHistory)) {
+      fsExt.mkdirSync(dirWorkHistory)
+    }
+    const newUrl = workerId + path.parse(file.originalname).ext;
+    try {
+      fs.writeFileSync(dirWorkHistory + newUrl, file.buffer)
+    } catch(e) {
+      ErrHandlerService.throw('Что-то сломалось. Попробуйте ещё раз')
+    }
+    const worker = await Personnel.findById(workerId);
+    await worker.update({'workHistoryFileUrl': newUrl});
+    return newUrl
   }
 }

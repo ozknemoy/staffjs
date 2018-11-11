@@ -41,7 +41,7 @@ staffJsDB.addModels([
   Reward, SocialSecurity, Workplace, Army, Vacation, Institution, WorkExp, ScientificInst,
   LaborContract, User, LaborContractDocx
 ]);
-
+/*{force: true}*/
 // обязательный порядок
 Personnel.sync().then(() => {
   // не обязательный

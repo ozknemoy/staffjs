@@ -69,9 +69,9 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
       throw new Error(`Вы ввели не валидный телефон "${value}". Введите 11-13 цифр, например 12345678901`);
     }
   })
-  @Column
-  phone: string;
+  @Column phone: string;
   @Column({type: DataType.DATE}) workExpDate: string;
+  @Column workHistoryFileUrl: string;
   @Column medicalCert: boolean;
 
   // в самом конце анкеты

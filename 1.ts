@@ -1,5 +1,6 @@
 import {HandleData} from "./src/client/app/shared/services/handle-data";
 import * as moment from "moment";
+import * as fs from "fs";
 // import * as _ from 'lodash';
 
 const fio = HandleData.fieldsOrNotConcat([1, '', 5, null]);

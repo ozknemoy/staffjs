@@ -3,10 +3,20 @@
   <button class="btn btn-sm btn-success" (click)="save()">Сохранить</button>
 </div>
 СТАЖ РАБОТЫ
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="worker.id">
   <div class="form-group w-25">
     <label>Дата подсчета стажа</label>
     <input type="date" [(ngModel)]="worker.workExpDate" class="form-control">
+  </div>
+  <div class="form-group w-50">
+    <file-uploader [size]="10000000" class="float-right"
+                   url="upload/work-history?workerId={{worker.id}}"
+                   uploaderClass="btn btn-warning btn-sm"
+                   (callback)="worker.workHistoryFileUrl = $event"></file-uploader>
+    <label>Загрузить скан трудовой книжки</label>
+    <div class="form-control">
+      <a href="{{dirWorkHistory + worker.workHistoryFileUrl}}" download>{{worker.workHistoryFileUrl}}</a>
+    </div>
   </div>
   <table class="table table-sm table-responsive-sm table-bordered">
     <tr>

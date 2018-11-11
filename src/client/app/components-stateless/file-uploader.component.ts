@@ -4,6 +4,7 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {ToastrService} from "ngx-toastr";
 import {HttpService} from "../services/http.service";
+import {FileItem} from "ng2-file-upload";
 
 /*
  <file-uploader [size]="1000000" uploaderClass="btn btn-warning btn-sm"
@@ -46,20 +47,17 @@ export class FileUploaderComponent {
   @Input() filename: string;
   @Input() url = 'upload';
   @Input() accept = '.jpeg,.jpg,.png';
-  @Output() callback: EventEmitter<string> = new EventEmitter();
+  @Output() callback: EventEmitter<any> = new EventEmitter();
   uploader: any;
 
   constructor(public httpService: HttpService,
-              private toast: ToastrService) {
-
-
-  }
+              private toast: ToastrService) {}
 
   ngOnInit() {
     this.uploader = this.httpService.uploadFileWithAuth(this.size, this.url, this.filename);
     //после загрузки
-    this.uploader.onCompleteItem = (f, i) => {
-      this.callback.emit();
+    this.uploader.onCompleteItem = (file: FileItem, response) => {
+      this.callback.emit(response);
       this.toast.success(`Файл загружен`, '', {
         closeButton: true,
         timeOut: 7e3
