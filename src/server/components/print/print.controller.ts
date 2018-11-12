@@ -26,7 +26,7 @@ export class PrintController {
   async printLaborContract(@Param('userId') userId: number, @Res() resp) {
     resp.contentType('application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=Windows-1251');
     resp.setHeader('content-disposition', `attachment; filename=${userId}-t2.docx`);
-    const buffer = await this.printService.printLaborContractScientific(userId);
+    const buffer = await this.printService.printLaborContract(userId);
     return resp.send(buffer);
   }
 

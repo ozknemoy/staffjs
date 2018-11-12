@@ -3,10 +3,12 @@ import {PersonnelService} from '../personnel/personnel.service';
 import {PrintT2Builder} from './print-t2.class';
 import {IPdfSchema} from '../../interfaces/pdf-shema.interface';
 import * as fs from 'fs';
-import {PrintLaborContractScientificBuilder} from './print-labor-contract-scientific.class';
+import {PrintLaborContractDynamicBuilder} from './print-labor-contract-scientific.class';
 import * as docx from "docx";
 
 const path = require('path');
+const DocxMerger = require('../../../shared/docx-merger/docx-merger-dist.js');
+
 
 const fontDescriptors = {
   Roboto: {
@@ -34,7 +36,7 @@ export class PrintService {
   }
 
   async saveLocalForDevelopmentDocx() {
-    return this.printLaborContractScientific(1, true);
+    return this.printLaborContract(194, true);
   }
 
   async printT2(userId) {
@@ -59,58 +61,67 @@ export class PrintService {
     });
   }
 
-  async printLaborContractScientific(userId, dev = false) {
+  async printLaborContract(userId, saveLocal = false) {
     const user = await this.personnelService.getOneFull(userId);
-    const dox = new PrintLaborContractScientificBuilder(user).make();
-    return dev
-      ? this.createOfficeFileLocal(dox)
-      : this.createOfficeFileForBrowser(dox);
+    const [part1, part3] = new PrintLaborContractDynamicBuilder(user).make();
+    const part1Uint = await this.createOfficeFileUint8(part1);
+    const part3Uint = await this.createOfficeFileUint8(part3);
+    const merger = new DocxMerger({pageBreak: false},[part1Uint,part3Uint]);
+
+    return new Promise((res, fail) => {
+      merger.save('nodebuffer', (uint) => {
+        res(saveLocal
+          ? this.createOfficeFileLocal(uint)
+          // браузеру нужен именно буффер
+          : Buffer.from(uint)
+        )
+      });
+    });
   }
 
-  async createOfficeFileForBrowser(dox): Promise<Buffer> {
-    return Buffer.from(await <any>this.createOfficeFileBuffer(dox))
+  async createOfficeFileBuffer(dox): Promise<Buffer> {
+    return Buffer.from(await <any>this.createOfficeFileUint8(dox))
   }
 
-  createOfficeFileBuffer(doc): Promise<Uint8Array> {
+  createOfficeFileUint8(doc): Promise<Uint8Array> {
     // якобы возвращает Buffer а на самом деле Uint8Array
     // buffer['buffer'] это будет ArrayBuffer из Uint8Array
     return <any>(new docx.Packer()).toBuffer(doc)
   }
 
-  createOfficeFileLocal(doc) {
+  createOfficeFileLocal(uint8) {
     const dir = `${fs.existsSync('E:/') ? 'E' : 'C'}:/files/`;
     const name = 'doc-dev';
     const ext = '.docx';
-    this.createOfficeFileBuffer(doc).then((b) => {
-      console.log('-----  ok make  -----');
-      // пробую писать
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir)
+    console.log('-----  ok make  -----');
+    // пробую писать
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir)
+    }
+    fs.writeFile(dir + name + ext, uint8, (e) => {
+      if (e) {
+        console.log('*****    ', e.code, '    *****');
+        // при неудаче добавляю номер
+        fs.writeFileSync(`${dir}${name}-${ +new Date}${ext}`, uint8);
+      } else {
+        console.log('-----  ok write  ----');
+        // при удаче удаляю файлы с номерами
+        fs.readdir(dir, (_e, files) => {
+          if (files.length) {
+            files.forEach(fileName => {
+              if (fileName.indexOf(name + '-') > -1) {
+                fs.unlink(dir + fileName, () => {
+                })
+              }
+            })
+          }
+        })
       }
-      fs.writeFile(dir + name + ext, b, (e) => {
-        if (e) {
-          console.log('*****    ', e.code, '    *****');
-          // при неудаче добавляю номер
-          fs.writeFileSync(`${dir}${name}-${ +new Date}${ext}`, b);
-        } else {
-          console.log('-----  ok write  ----');
-          // при удаче удаляю файлы с номерами
-          fs.readdir(dir, (_e, files) => {
-            if (files.length) {
-              files.forEach(fileName => {
-                if (fileName.indexOf(name + '-') > -1) {
-                  fs.unlink(dir + fileName, () => {
-                  })
-                }
-              })
-            }
-          })
-        }
-
-      });
     });
+    return {savedLocally: true};
   }
-  async printOffice(doc) {
+
+  printOffice(doc) {
     return new Promise((res) => {
       doc
         .on('finalize', function (written, ret) {
@@ -120,8 +131,6 @@ export class PrintService {
         .on('error', function (err) {
           console.log(err);
         });
-
-
     });
 
   }

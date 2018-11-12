@@ -19,6 +19,10 @@ export class StaffListComponent implements OnInit {
 
   async ngOnInit() {
     this.staffList = await this.http.get<IPersonnel[]>('/personnel').toPromise();
+    this.afterGetStaff()
+  }
+
+  afterGetStaff() {
     this.amount = this.staffList.length;
     this.amountW = _.sumBy(
       this.staffList,
@@ -28,7 +32,6 @@ export class StaffListComponent implements OnInit {
       this.staffList,
       ({sex}) => Number(sex === 'м')
     );
-
   }
 
   createNewOne() {
@@ -38,6 +41,9 @@ export class StaffListComponent implements OnInit {
 
   deleteOne(id, i) {
     this.http.delete('/personnel/' + id).toPromise()
-      .then(id => this.staffList.splice(i, 1));
+      .then(id => {
+        this.staffList.splice(i, 1);
+        this.afterGetStaff();
+      });
   }
 }

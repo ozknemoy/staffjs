@@ -42,6 +42,6 @@ import {PassportModule} from "@nestjs/passport";
 export class MainModule {
   constructor(private personnelService: PersonnelService) {}
     public configure(consumer: MiddlewareConsumer): void {
-        //new PrintService(this.personnelService).saveLocalForDevelopmentDocx();
+        new PrintService(this.personnelService).saveLocalForDevelopmentDocx();
     }
 }

@@ -6,6 +6,7 @@ import {
 import {IPersonnel} from "../personnel/personnel.interface";
 import {HandleData} from "../../../client/app/shared/services/handle-data";
 import * as _ from 'lodash';
+import {attractionTermsDict} from "../../../shared/dictionaries/attraction-terms.dict";
 
 export function makeCommonHeader(doc: Document, u: IPersonnel) {
   doc.addParagraph(
@@ -75,11 +76,11 @@ export function getOneOneP() {
 
 export function addOneThreeP(doc: Document, worker: IPersonnel) {
   const text1 = new TextRun('по основной работе');
-  if (worker.workType === 'основная') {
+  if (worker.workType === attractionTermsDict[0].name) {
     text1.underline();
   }
   const text2 = new TextRun('по совместительству');
-  if (worker.workType === 'по совместительству') {
+  if (worker.workType === attractionTermsDict[1].name) {
     text2.underline();
   }
   const oneThree = new Paragraph('1.3. Трудовой договор является договором .')
@@ -92,7 +93,7 @@ export function addOneThreeP(doc: Document, worker: IPersonnel) {
 }
 
 export function makeRequisite(doc: Document, worker: IPersonnel) {
-  doc.addParagraph(getTitle('8.Реквизиты и подписи сторон'));
+  doc.addParagraph(getTitle('Реквизиты и подписи сторон'));
 
   const table = doc.createTable(3, 3);
   table.getCell(0, 0).addContent(new Paragraph()
@@ -104,6 +105,7 @@ export function makeRequisite(doc: Document, worker: IPersonnel) {
     .addRun(new TextRun(' Работник ').bold()));
   const line = '______________________________________________';
   const left = new Paragraph()
+    .style('9')
     .center()
     .addRun(new TextRun('Федеральное государственное автономное'))
     .addRun(new TextRun(' образовательное учреждение высшего образования ').break())
@@ -113,18 +115,20 @@ export function makeRequisite(doc: Document, worker: IPersonnel) {
     .addRun(new TextRun('ул. Большая Морская, д. 67, лит. А').break())
     .addRun(new TextRun('ИНН  7812003110/КПП 783801001').break());
 
-  const right = new Paragraph();
+  const right = new Paragraph('Фамилия, Имя, Отчество:')
+    .style('9');
   const FIO = HandleData.getFIO([worker.surname, worker.name, worker.middleName], false);
   const FIO_SHORT = HandleData.getFIO([worker.surname, worker.name, worker.middleName]);
   if (FIO) {
-    right.addRun(new TextRun(FIO))
+    right.addRun(new TextRun(FIO).break())
   } else {
     right
-      .addRun(new TextRun(line))
       .addRun(new TextRun(line).break())
       .addRun(new TextRun(line).break())
-      .addRun(new TextRun('                          (Фамилия, Имя, Отчество)').break());
+      .addRun(new TextRun(line).break());
   }
+
+  right.addRun(new TextRun('Дата и место рождения:').break());
   const birthInfo = HandleData.fieldsOrNotConcat([HandleData.getRuDate(worker.passport.birthDate), worker.passport.birthPlace], ', ');
   const hasPassport = _.get(worker, 'passport');
   if (hasPassport && worker.passport.birthDate && worker.passport.birthPlace) {
@@ -132,14 +136,15 @@ export function makeRequisite(doc: Document, worker: IPersonnel) {
       .addRun(new TextRun(birthInfo).break())
   } else {
     right
-      .addRun(new TextRun(line).break())
-      .addRun(new TextRun('                          (дата и место рождения)').break());
+      .addRun(new TextRun(line).break());
   }
+  right.addRun(new TextRun('Почт. индекс, адрес и телефон:').break());
   if (hasPassport && worker.passport.address) {
     right
       .addRun(new TextRun(HandleData.fieldsOrNotConcat([worker.passport.address, worker.phone], ', ')).break())
   } else {
     right
+      .addRun(new TextRun(line).break())
       .addRun(new TextRun(line).break())
       .addRun(new TextRun(line).break())
       .addRun(new TextRun(line).break())
@@ -157,7 +162,9 @@ export function makeRequisite(doc: Document, worker: IPersonnel) {
     .addRun(new TextRun('_______________/_________________').break());
   const footerR = new Paragraph()
     .addRun(new TextRun(`____________________ (______________________)`).break())
-    .addRun(new TextRun('(подпись Работника)                       ФИО').break());
+    .addRun(new TextRun('(подпись ').break().italic())
+    .addRun(new TextRun('Работника').bold().italic())
+    .addRun(new TextRun(')                       ФИО').italic());
 
   table.getCell(1, 0).addContent(left);
   table.getCell(1, 2).addContent(right);
@@ -173,14 +180,14 @@ export function makeRequisite(doc: Document, worker: IPersonnel) {
   const two = new Paragraph()
     .style('8')
     .right()
-    .addRun(new TextRun(`____________________(${FIO_SHORT || '_____________'})`).break())
-    .addRun(new TextRun(' подпись Работника              ФИО      \t').break())
+    .addRun(new TextRun(`____________________(${FIO_SHORT || '_____________'})`).break().italic())
+    .addRun(new TextRun(' подпись Работника              ФИО      \t').break().italic())
   ;
   doc.addParagraph(two);
   const three = new Paragraph()
     .style('8')
     .addRun(new TextRun(`Экземпляр трудового договора на руки получил: ____________________(${FIO_SHORT || '_____________'})`).break())
-    .addRun(new TextRun('\t\t\t                                         подпись Работника              ФИО').break())
+    .addRun(new TextRun('\t\t\t                                         подпись Работника              ФИО').break().italic())
   ;
   doc.addParagraph(three);
 
