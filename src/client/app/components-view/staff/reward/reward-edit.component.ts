@@ -17,7 +17,6 @@ export class RewardComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.parent.params.id;
     this.http.get(`/personnel/${this.id}/reward`)
-      .toPromise()
       .then((d: IPersonnelNamedThingWithDoc[]) => this.reward = HandleData.handleDatesInArrFromServer(d, this.dateProps))
   }
 
@@ -31,8 +30,7 @@ export class RewardComponent implements OnInit {
 
   save() {
     const tbl = HandleData.handleDatesInArrToServer(this.reward, this.dateProps);
-    this.http.put(`/personnel/${this.id}/reward`, tbl)
-      .toPromise()
+    this.http.putWithToast(`/personnel/${this.id}/reward`, tbl)
       .then((d) => this.reward = HandleData.handleDatesInArrFromServer(<any>d, this.dateProps));
   }
 

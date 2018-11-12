@@ -14,7 +14,7 @@ export class LoginComponent {
   constructor(private http: HttpService, private router: Router) { }
 
   login() {
-    this.http.post('user/login', this.info).subscribe((d) => {
+    this.http.post('user/login', this.info).then((d) => {
       localStorage.setItem('bearer', (<any>d).token);
       localStorage.setItem('rights', (<any>d).rights);
       this.router.navigate(['']);

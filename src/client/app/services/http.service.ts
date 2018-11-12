@@ -2,31 +2,68 @@ import {Injectable} from "@angular/core";
 import {FileUploader} from "ng2-file-upload";
 import {HttpClient} from "@angular/common/http";
 import {AUTH_HEADER_PROP, GET_AUTH_HEADER_VALUE} from "../config/token-interceptor";
+import {ToastrService} from "ngx-toastr";
+import {map} from 'rxjs/operators';
 
 @Injectable()
 export class HttpService {
 
   public BASE_URL = '';
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private toast: ToastrService) {
 
   }
 
-  get<T>(url: string)  {
+  _get<T>(url: string)  {
     return this.http.get<any>(this.BASE_URL + url)
   }
 
-  post(url, data: any, config?)  {
+  get<T>(url: string)  {
+    return this._get<any>(this.BASE_URL + url).toPromise()
+  }
+
+  post(url, data: any, textToast = '', config?)  {
     return this.http.post(this.BASE_URL + url, data, config)
+      .pipe(
+        map(r => {
+          this.checkAndShowToast(textToast);
+          return r
+        })
+      )
+      .toPromise()
+  }
+
+  checkAndShowToast(textToast) {
+    if(textToast !=='') {
+      this.toast.success('', textToast, {
+        closeButton: true,
+        timeOut: 7e3
+      });
+    }
+  }
+
+  postWithToast(url, data: any, textToast = 'Успешно создано', config?) {
+    return this.post(url, data, textToast, config)
   }
 
 
-  put(url, data: any, config?)  {
+  put(url, data: any, textToast = '', config?)  {
     return this.http.put<any>(this.BASE_URL + url, data, config)
+      .pipe(
+        map(r => {
+          this.checkAndShowToast(textToast);
+          return r
+        })
+      )
+      .toPromise()
+  }
+
+  putWithToast(url, data: any, textToast = 'Успешно сохранено', config?) {
+    return this.put(url, data, textToast, config)
   }
 
   delete(url, config?)  {
-    return this.http.delete<any>(this.BASE_URL + url, config)
+    return this.http.delete<any>(this.BASE_URL + url, config).toPromise()
   }
 
   uploadFileWithAuth(maxFileSize, url, filename = "file") {

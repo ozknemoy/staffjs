@@ -8,6 +8,7 @@ import {RouterModule} from '@angular/router';
 import {FileUploadModule} from 'ng2-file-upload';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ToastrModule} from 'ngx-toastr';
+import {NgxPaginationModule} from "ngx-pagination";
 
 
 export const vendorsModules = [
@@ -20,4 +21,5 @@ export const vendorsModules = [
   ToastrModule.forRoot(),
   TabsModule.forRoot(),
   BsDropdownModule.forRoot(),
+  NgxPaginationModule
 ];

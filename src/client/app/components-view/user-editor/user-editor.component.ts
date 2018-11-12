@@ -10,30 +10,26 @@ import IUser from '../../../../server/components/user/user.interface';
 })
 export class UserEditorComponent {
   public users: IUser[];
-  public newUser = new IUser/*{
-    password: null,
-    login: null,
-    rights: null,
-  }*/;
+  public newUser = new IUser();
   constructor(
     private httpService: HttpService,
-    private toast: ToastrService
   ) {}
 
   ngOnInit() {
-    this.httpService.get('user/all').subscribe((users) => this.users = users)
+    this.httpService.get('user/all').then((users) => this.users = users)
   }
 
   deleteUser(i, id) {
-    this.httpService.delete('user/' + id).subscribe(() => {
+    this.httpService.delete('user/' + id).then(() => {
       this.users.splice(i, 1)
     })
 
   }
 
   createUser() {
-    this.httpService.post('user/new', this.newUser).subscribe((user) => {
-      this.users.push(<any>user)
+    this.httpService.postWithToast('user/new', this.newUser).then((user) => {
+      this.users.push(<any>user);
+      this.newUser = new IUser()
     })
   }
 }

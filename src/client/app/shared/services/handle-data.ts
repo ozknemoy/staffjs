@@ -236,11 +236,27 @@ export class HandleData {
     return value === null || value === undefined || value === '' || (typeof value === 'string' && value.trim() === '')
   }
 
-
-
-  // метод копия из  DocValidationSrv
   static isInvalidValue(value) {
     return this.isInvalidPrimitive(value) || (Array.isArray(value) && !value.length)
   }
 
+  static parseNumber(value: any): number {
+    if (this.isInvalidPrimitive(value)) {
+      return null
+    }
+    if (parseFloat(value) == value) {
+      return parseFloat(value)
+    }
+    return null
+  }
+// вернет {}  если returnEmtyObject true
+  static where<T>(arr: T[], attr: keyof T, value, returnEmtyObjectIfNotFound: boolean): {[attr: string]: any} {
+    if (!arr.length || !attr || value  === null || value === undefined) {
+      return returnEmtyObjectIfNotFound ? {[attr]: null} : null;
+    }
+    const ret = arr.find(function (obj) {
+      if (obj[attr] == value) return true
+    });
+    return ret ? ret : (returnEmtyObjectIfNotFound ? {[attr]: null} : null)
+  }
 }

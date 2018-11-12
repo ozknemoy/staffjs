@@ -6,6 +6,7 @@ import {HandleData} from '../../../client/app/shared/services/handle-data';
 import {invalidINN} from '../../../shared/validators';
 import {HttpException} from "@nestjs/common";
 import {ErrHandlerService} from "../../services/error-handler.service";
+import {attractionTermsDict} from "../../../shared/dictionaries/attraction-terms.dict";
 
 export class ParseXls {
 
@@ -14,10 +15,19 @@ export class ParseXls {
     return  this.parse( w.data[1]);
   }
 
-  static create(excelPath = './staff.xls') {
+  static createMass(excelPath = './stafff.xls') {
     try {
-      const w = xlsx.parse(fs.readFileSync(excelPath))[0];
-      return  this.parse(w.data[1]);
+      const firstList = xlsx.parse(fs.readFileSync(excelPath))[0];
+      return  firstList.data.slice(1).map(row => this.parse(row));
+    } catch (e) {
+      ErrHandlerService.throw('Ошибка чтения/разбора файла', e);
+    }
+  }
+
+  static create(excelPath = './stafff.xls') {
+    try {
+      const firstList = xlsx.parse(fs.readFileSync(excelPath))[0];
+      return  this.parse(firstList.data[44]);
     } catch (e) {
       ErrHandlerService.throw('Ошибка чтения/разбора файла');
     }
@@ -48,17 +58,21 @@ export class ParseXls {
       }
     });
     const [surname, name, middleName] = this.splitByN(xls[1], 3);
-
+    const sex = !HandleData.isInvalidPrimitive(middleName)
+      ? middleName.trim().slice(-3) === 'вна'
+        ? 'ж' : 'м'
+      : null;
+    const attractionTerms = HandleData.where(attractionTermsDict, 'shortName', xls[44], true).name;
     const worker: Partial<IPersonnel> = {
       number: xls[0],
       surname,
       name,
       middleName,
+      sex,
       inn: invalidINN(xls[2]) ? null : xls[2],
       insurance: xls[3],
-      /*passport*/
       educationName: xls[13],
-      /*institutions*/
+      workType: attractionTerms
     };
     const passport: Partial<IPersonnel['passport']> = {
       birthDate: HandleData.ruDateToServer(xls[4]),
@@ -86,7 +100,6 @@ export class ParseXls {
       specialty: xls[24],
     };
     // Z-AH пока пропустил
-    const attractionTerms = xls[44] === 'Шт' ? 'основная' : (xls[44] === 'С' ? 'по совместительству' : null)
     const workplaces: Partial<IPersonnel['workplaces'][0]> = {
       date: HandleData.ruDateToServer(xls[42] || xls[56]),
       department: xls[34],
@@ -94,8 +107,8 @@ export class ParseXls {
       reason: xls[43] || xls[57],
       academicCouncilDate: HandleData.ruDateToServer(xls[120]),
       attractionTerms,
-      rate: +xls[37],
-      duration: +xls[108],
+      rate: HandleData.parseNumber(xls[37]),
+      duration: HandleData.parseNumber(xls[108]),
       category: xls[37],
       dismissalDate: HandleData.ruDateToServer(xls[74]),
       dismissalGround: xls[75],
@@ -121,16 +134,16 @@ export class ParseXls {
       id: null,
       personnelId,
       typeId: 1,
-      amountY: parseInt(xls[46]),
-      amountM: parseInt(xls[47]),
-      amountD: parseInt(xls[48]),
+      amountY: HandleData.parseNumber(xls[46]),
+      amountM: HandleData.parseNumber(xls[47]),
+      amountD: HandleData.parseNumber(xls[48]),
     }, {
       id: null,
       personnelId,
       typeId: 2,
-      amountY: parseInt(xls[49]),
-      amountM: parseInt(xls[50]),
-      amountD: parseInt(xls[51]),
+      amountY: HandleData.parseNumber(xls[49]),
+      amountM: HandleData.parseNumber(xls[50]),
+      amountD: HandleData.parseNumber(xls[51]),
     }, {
       id: null,
       personnelId,

@@ -16,20 +16,14 @@ export class UploadController {
 
   }
 
-  @Post('personnel')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadPersonnel(@Headers() headers, @UploadedFile() file)/*:PromiseLike<IFileUpload>*/ {
-    return this.uploadService.readExcelFile(file)
-  }
-
   @Post('fill-db-by-xls')
   async fillDBPersonnelByXls() {
     return
   }
 
   @Post('fill-db-by-local-xls')
-  async fillDBPersonnelByLocalXls(@Body() body: {refill: boolean}) {
-    return this.uploadService.fillDBPersonnelByLocalXls(body.refill)
+  async fillDBPersonnelByLocalXls(@Body() body: {mass: boolean}) {
+    return this.uploadService.fillDBPersonnelByLocalXls(body.mass)
   }
 
   @Post('update-db-by-xls')

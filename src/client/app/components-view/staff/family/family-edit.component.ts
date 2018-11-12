@@ -17,7 +17,6 @@ export class FamilyComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.parent.params.id;
     this.http.get(`/personnel/${this.id}/family`)
-      .toPromise()
       .then((d: IFamily[]) => this.families = d)
   }
 
@@ -30,8 +29,7 @@ export class FamilyComponent implements OnInit {
   }
 
   save() {
-    this.http.put(`/personnel/${this.id}/family`, this.families)
-      .toPromise()
+    this.http.putWithToast(`/personnel/${this.id}/family`, this.families)
       .then((d) => this.families = <any>d);
   }
 

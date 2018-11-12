@@ -17,7 +17,6 @@ export class AttestationComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.parent.params.id;
     this.http.get(`/personnel/${this.id}/attestation`)
-      .toPromise()
       .then((d: IAttestation[]) => this.attestations = HandleData.handleDatesInArrFromServer(d, this.dateProps))
   }
 
@@ -31,8 +30,7 @@ export class AttestationComponent implements OnInit {
 
   save() {
     const tbl = HandleData.handleDatesInArrToServer(this.attestations, this.dateProps);
-    this.http.put(`/personnel/${this.id}/attestation`, tbl)
-      .toPromise()
+    this.http.putWithToast(`/personnel/${this.id}/attestation`, tbl)
       .then((d) => this.attestations = HandleData.handleDatesInArrFromServer(<any>d, this.dateProps));
   }
 

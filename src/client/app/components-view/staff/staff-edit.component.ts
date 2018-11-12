@@ -13,10 +13,4 @@ export class StaffEditComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.params.id;
   }
-
-  printLaborContract(type: string) {
-    this.httpService.post('print/labor-contract-scientific/' + this.id, {}).toPromise().then(() => {
-
-    })
-  }
 }

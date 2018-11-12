@@ -32,9 +32,9 @@ export class PrintService {
     });
     return;
   }
+
   async saveLocalForDevelopmentDocx() {
-    //await this.printLaborContractScientific(1);
-    return;
+    return this.printLaborContractScientific(1, true);
   }
 
   async printT2(userId) {
@@ -59,30 +59,29 @@ export class PrintService {
     });
   }
 
-  async printLaborContractScientific(userId) {
+  async printLaborContractScientific(userId, dev = false) {
     const user = await this.personnelService.getOneFull(userId);
-    //console.log('****************************************',user);
-
     const dox = new PrintLaborContractScientificBuilder(user).make();
-    return this.createOfficeFile(dox);
+    return dev
+      ? this.createOfficeFileLocal(dox)
+      : this.createOfficeFileForBrowser(dox);
   }
 
-  createOfficeFile(doc) {
-    // Used to export the file into a .docx file
-    //console.log('-------------', doc);
-    /*(new docx.Packer()).toBuffer(doc).then((b) => {
-      //console.log(buffer);
-      console.log('-----', b);
-      fs.writeFileSync("doc-dev2.docx", b);
-    });*/
-    this._createOfficeFile(doc)
+  async createOfficeFileForBrowser(dox): Promise<Buffer> {
+    return Buffer.from(await <any>this.createOfficeFileBuffer(dox))
   }
 
-  _createOfficeFile(doc) {
-    const dir = `${fs.existsSync('E') ? 'E' : 'C'}:/files/`;
+  createOfficeFileBuffer(doc): Promise<Uint8Array> {
+    // якобы возвращает Buffer а на самом деле Uint8Array
+    // buffer['buffer'] это будет ArrayBuffer из Uint8Array
+    return <any>(new docx.Packer()).toBuffer(doc)
+  }
+
+  createOfficeFileLocal(doc) {
+    const dir = `${fs.existsSync('E:/') ? 'E' : 'C'}:/files/`;
     const name = 'doc-dev';
     const ext = '.docx';
-    (new docx.Packer()).toBuffer(doc).then((b) => {
+    this.createOfficeFileBuffer(doc).then((b) => {
       console.log('-----  ok make  -----');
       // пробую писать
       if (!fs.existsSync(dir)) {

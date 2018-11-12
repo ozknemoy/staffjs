@@ -31,7 +31,11 @@
       <td><input type="number" [(ngModel)]="w.salary" class="form-control"></td>
       <td><input type="text" [(ngModel)]="w.reason" class="form-control"></td>
       <td><input type="date" [(ngModel)]="w.academicCouncilDate" class="form-control"></td>
-      <td><input type="text" [(ngModel)]="w.attractionTerms" class="form-control"></td>
+      <td>
+        <select [(ngModel)]="w.attractionTerms" class="form-control">
+          <option value="{{row.name}}" *ngFor="let row of attractionTermsDict">{{row.name}}</option>
+        </select>
+      </td>
       <td><input type="number" [(ngModel)]="w.rate" class="form-control"></td>
       <td><input type="number" [(ngModel)]="w.duration" class="form-control"></td>
       <td><input type="text" [(ngModel)]="w.category" class="form-control"></td>

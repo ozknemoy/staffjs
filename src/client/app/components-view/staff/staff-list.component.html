@@ -1,26 +1,44 @@
 <nav-bar></nav-bar>
-<file-uploader [size]="1000000"
-               url="upload/personnel"
-               uploaderClass="btn btn-warning btn-sm"
-               accept=".xls"></file-uploader>
 
+<div class="container">
+  <div class="row">
+    <div class="col-9">
+      <pagination-controls (pageChange)="currentPage=$event"
+                           maxSize="9"
+                           directionLinks="false"
+                           autoHide="true"></pagination-controls>
 
-<button class="btn btn-group-sm btn-warning float-right btn-sm" (click)="createNewOne()">Создать сотрудника</button>
+      <table class="table table-sm table-responsive-sm table-bordered">
+        <tr>
+          <th>Номер</th>
+          <th>ФИО</th>
+          <th></th>
+        </tr>
+        <tr *ngFor="let st of staffList | paginate: { itemsPerPage: 50, currentPage: currentPage}; let i = index">
+          <td>{{st.number}}</td>
+          <td><a [routerLink]="['../staff-edit', st.id]">
+            {{st.surname}} {{st.name}} {{st.middleName}}
+          </a></td>
+          <td>
+            <button confirmButton (callback)="deleteOne(st.id, i)">Удалить сотрудника</button>
+          </td>
+        </tr>
+      </table>
 
+      <pagination-controls (pageChange)="currentPage=$event"
+                           maxSize="9"
+                           directionLinks="false"
+                           autoHide="true"></pagination-controls>
+    </div>
 
-<table class="table table-sm table-responsive-sm table-bordered">
-  <tr>
-    <th>Номер</th>
-    <th>ФИО</th>
-    <th></th>
-  </tr>
-  <tr *ngFor="let st of staffList; let i = index">
-    <td>{{st.number}}</td>
-    <td><a [routerLink]="['../staff-edit', st.id]">
-      {{st.surname}} {{st.name}} {{st.middleName}}
-    </a></td>
-    <td>
-      <button confirmButton (callback)="deleteOne(st.id, i)">Удалить сотрудника</button>
-    </td>
-  </tr>
-</table>
+    <div class="col-3">
+      <button class="btn btn-group-sm btn-warning float-right btn-sm" (click)="createNewOne()">
+        Создать нового сотрудника
+      </button>
+      <div class="clearfix"></div>
+      <p>Всего {{amount}}</p>
+      <p>Женщин {{amountW}}</p>
+      <p>Мужчин {{amountM}}</p>
+    </div>
+  </div>
+</div>

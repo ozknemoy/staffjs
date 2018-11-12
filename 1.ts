@@ -1,6 +1,7 @@
 import {HandleData} from "./src/client/app/shared/services/handle-data";
 import * as moment from "moment";
 import * as fs from "fs";
+import {attractionTermsDict} from "./src/shared/dictionaries/attraction-terms.dict";
 // import * as _ from 'lodash';
 
 const fio = HandleData.fieldsOrNotConcat([1, '', 5, null]);
@@ -29,4 +30,18 @@ const _FIO = HandleData.getFIO([null, '4567', '890']);
 console.assert(_FIO === null, 'HandleData.getFIO', FIO);
 
 console.assert(moment(new Date('2018-09-04 00:00:00.000000 +00:00')).format('DD.MM.YYYY') === '04.09.2018');
+
+
+console.assert(HandleData.parseNumber(undefined) === null, 'HandleData.parseNumber', 1);
+console.assert(HandleData.parseNumber('') === null, 'HandleData.parseNumber', 1);
+console.assert(HandleData.parseNumber('7') === 7, 'HandleData.parseNumber', 1);
+console.assert(HandleData.parseNumber('7.555') === 7.555, 'HandleData.parseNumber', 1);
+console.assert(HandleData.parseNumber('ret') === null, 'HandleData.parseNumber', 1);
+
+
+
+
+
+
+
 

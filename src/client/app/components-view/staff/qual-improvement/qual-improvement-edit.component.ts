@@ -17,7 +17,6 @@ export class QualImprovementComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.parent.params.id;
     this.http.get(`/personnel/${this.id}/qual-improvement`)
-      .toPromise()
       .then((d: IQualImprovement[]) => this.qualImprovement = HandleData.handleDatesInArrFromServer(d, this.dateProps))
   }
 
@@ -32,7 +31,6 @@ export class QualImprovementComponent implements OnInit {
   save() {
     const tbl = HandleData.handleDatesInArrToServer(this.qualImprovement, this.dateProps);
     this.http.put(`/personnel/${this.id}/qual-improvement`, tbl)
-      .toPromise()
       .then((d) => this.qualImprovement = HandleData.handleDatesInArrFromServer(<any>d, this.dateProps));
   }
 

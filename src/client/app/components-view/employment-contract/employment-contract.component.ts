@@ -14,7 +14,7 @@ export class EmploymentContractComponent implements OnInit {
   constructor(private http: HttpService) { }
 
   ngOnInit() {
-    this.http.get('print/labor-contract/all').subscribe((contracts) => {
+    this.http.get('print/labor-contract/all').then((contracts) => {
       this.contracts = HandleData.sortArrById(contracts);
     })
   }

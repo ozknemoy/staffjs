@@ -3,10 +3,10 @@ import {ActivatedRoute} from '@angular/router';
 import {HttpService} from '../../../services/http.service';
 import IInstitution from '../../../../../server/components/personnel/relations/personnel-institution.interface';
 import {IPersonnel} from '../../../../../server/components/personnel/personnel.interface';
-import {IPassport} from '../../../../../server/components/personnel/relations/personnel-passport.interface';
 import {HandleData} from '../../../shared/services/handle-data';
 import IScientificInst from '../../../../../server/components/personnel/relations/personnel-scientific-inst.interface';
 import * as _ from 'lodash/core';
+import {eduTypesDict} from "../../../../../shared/dictionaries/edu-type.dict";
 
 @Component({
   selector: 'staff-education',
@@ -15,6 +15,7 @@ import * as _ from 'lodash/core';
 export class EducationEditComponent implements OnInit {
   id: string;
   worker = new IPersonnel();
+  eduTypesDict = eduTypesDict;
   private datePropsInst: (keyof IInstitution)[] = ['endDate'];
   private datePropsScientificInst: (keyof IScientificInst)[] = ['endDate'];
 
@@ -23,7 +24,7 @@ export class EducationEditComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const worker = await this.http.get(`personnel/${this.route.parent.snapshot.params.id}/edu`).toPromise();
+    const worker = await this.http.get(`personnel/${this.route.parent.snapshot.params.id}/edu`);
     this.handlePersAfterGet(worker);
   }
 
@@ -52,8 +53,7 @@ export class EducationEditComponent implements OnInit {
     if (!_.isEmpty(worker.institutions)) {
       worker.institutions = HandleData.handleDatesInArrToServer(worker.institutions, this.datePropsInst);
     }
-    this.http.put(`personnel/${worker.id}/edu`, worker)
-      .toPromise()
+    this.http.putWithToast(`personnel/${worker.id}/edu`, worker)
       .then((newWorker) => this.handlePersAfterGet(<any>newWorker));
   }
 }

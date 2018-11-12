@@ -8,24 +8,28 @@ import {HandleData} from '../shared/services/handle-data';
 
 @Component({
   selector: 'print-button',
-  template: '<button class="btn btn-info btn-sm">{{text}}</button>'
+  template: `
+    <a href="javascript:">
+      <ng-content></ng-content>
+    </a>
+  `
 })
 
 export class PrintButtonComponent {
   @Input() url: string;
-  @Input() text = 'Печать';
 
   constructor(public httpService: HttpService) {}
 
   @HostListener('click')
   click() {
-    this.httpService.post(this.url, {},
+    this.httpService.post(this.url, {}, undefined,
       {
         responseType: 'blob',
         // to display the full response & as 'body' for type cast
         observe: <'body'>'response',
-      }).toPromise()
+      })
       .then((fullResponse) => {
+        console.log(fullResponse['body']);
         saveAs(fullResponse['body'], HandleData.getFileNameFromHttpResponse(fullResponse));
         // скачивает из json исходника
         // pdfMake.createPdf(fullResponse.body).download(HandleData.getFileNameFromHttpResponse(fullResponse));

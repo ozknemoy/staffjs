@@ -19,7 +19,6 @@ export class PassportComponent implements OnInit {
 
     this.id = this.route.snapshot.parent.params.id;
     this.http.get(`/personnel/${this.id}/passport`)
-      .toPromise()
       .then((passport: IPassport) => {
         // если паспорт уже создан . иначе будет пустая модель
         if (passport) {
@@ -30,8 +29,7 @@ export class PassportComponent implements OnInit {
 
   save() {
     const tbl = HandleData.handleDatesInObjectToServer(this.passport, this.dateProps);
-    this.http.put(`/personnel/${this.id}/passport`, tbl)
-      .toPromise()
+    this.http.putWithToast(`/personnel/${this.id}/passport`, tbl)
       .then((d) => this.passport = HandleData.handleDatesInObjectFromServer(<any>d, this.dateProps));
   }
 

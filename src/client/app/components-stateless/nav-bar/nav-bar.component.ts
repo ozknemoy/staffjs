@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ToastrService} from 'ngx-toastr';
 import {HttpService} from '../../services/http.service';
 
@@ -7,20 +7,16 @@ import {HttpService} from '../../services/http.service';
   templateUrl: './nav-bar.component.html'
 })
 export class NavBarComponent {
-  constructor(
-    private httpService: HttpService,
-    private toast: ToastrService
-  ) {}
+  constructor(private httpService: HttpService) {
+  }
 
-  fillDBPersonnelByLocalXls(refill: boolean) {
-    this.httpService.post('upload/fill-db-by-local-xls', {refill})
-      .toPromise()
-      .then(() =>
-        this.toast.success(`Успешно`, '', {
-          closeButton: true,
-          timeOut: 7e3
-        })
-      )
+  fillDBPersonnelByLocalXls(mass: boolean) {
+    this.httpService.postWithToast(
+      'upload/fill-db-by-local-xls',
+      {mass},
+      'Успешно сохранено. перезагрузите страницу'
+    )
+      .then(() => {})
   }
 
 }

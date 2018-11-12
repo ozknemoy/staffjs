@@ -20,7 +20,11 @@
       <td><input type="date" [(ngModel)]="con.endDate" class="form-control"></td>
       <td><input type="text" [(ngModel)]="con.specialty" class="form-control"></td>
       <td><input type="text" [(ngModel)]="con.department" class="form-control"></td>
-      <td><input type="text" [(ngModel)]="con.attractionTerms" class="form-control"></td>
+      <td>
+        <select [(ngModel)]="con.attractionTerms" class="form-control">
+          <option value="{{row.name}}" *ngFor="let row of attractionTermsDict">{{row.name}}</option>
+        </select>
+      </td>
       <td><input type="date" [(ngModel)]="con.soutDate" class="form-control"></td>
       <td><button class="btn btn-sm btn-danger" (click)="deleteRow(i)">Удалить</button></td>
     </tr>

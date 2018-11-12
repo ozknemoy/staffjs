@@ -17,7 +17,6 @@ export class ArmyComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.parent.params.id;
     this.http.get(`/personnel/${this.id}/army`)
-      .toPromise()
       .then((army: IArmy) => {
         // если паспорт уже создан . иначе будет пустая модель
         if (army) {
@@ -28,8 +27,7 @@ export class ArmyComponent implements OnInit {
 
   save() {
     const tbl = HandleData.handleDatesInObjectToServer(this.army, this.dateProps);
-    this.http.put(`/personnel/${this.id}/army`, tbl)
-      .toPromise()
+    this.http.putWithToast(`/personnel/${this.id}/army`, tbl)
       .then((d) => this.army = HandleData.handleDatesInObjectFromServer(<any>d, this.dateProps));
   }
 

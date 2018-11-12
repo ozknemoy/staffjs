@@ -3,7 +3,7 @@ import {ActivatedRoute} from "@angular/router";
 import {HttpService} from "../../../services/http.service";
 import {HandleData} from '../../../shared/services/handle-data';
 import IWorkplace from '../../../../../server/components/personnel/relations/personnel-workplace.interface';
-import IInstitution from '../../../../../server/components/personnel/relations/personnel-institution.interface';
+import {attractionTermsDict} from "../../../../../shared/dictionaries/attraction-terms.dict";
 
 @Component({
   selector: 'staff-workplace',
@@ -11,6 +11,7 @@ import IInstitution from '../../../../../server/components/personnel/relations/p
 })
 export class WorkplaceComponent implements OnInit {
   id: string;
+  public attractionTermsDict = attractionTermsDict;
   private dateProps: (keyof IWorkplace)[] = ['date', 'dismissalDate', 'academicCouncilDate'];
   public workplaces: IWorkplace[] = [];
   constructor(private http: HttpService, private route: ActivatedRoute) { }
@@ -18,7 +19,6 @@ export class WorkplaceComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.parent.params.id;
     this.http.get(`/personnel/${this.id}/workplace`)
-      .toPromise()
       .then((workplaces: IWorkplace[]) =>
         this.workplaces = HandleData.handleDatesInArrFromServer(workplaces, this.dateProps)
       )
@@ -34,8 +34,7 @@ export class WorkplaceComponent implements OnInit {
 
   save() {
     const tbl = HandleData.handleDatesInArrToServer(this.workplaces, this.dateProps);
-    this.http.put(`/personnel/${this.id}/workplace`, tbl)
-      .toPromise()
+    this.http.putWithToast(`/personnel/${this.id}/workplace`, tbl)
       .then((workplaces) =>
         this.workplaces = HandleData.handleDatesInArrFromServer(<any>workplaces, this.dateProps));
   }

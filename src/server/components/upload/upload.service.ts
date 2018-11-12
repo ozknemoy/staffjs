@@ -26,21 +26,18 @@ import * as path from "path";
 export class UploadService {
   public dirLaborContractDocx = 'files/labor-contracts/';
 
-  constructor(private errHandler: ErrHandlerService, private personnelService: PersonnelService) {
+  constructor(private errHandler: ErrHandlerService,
+              private personnelService: PersonnelService) {
 
   }
 
-  readExcelFile(file: IFileUpload) {
-    return ['ok']
-
-    /*return Promise.all(
-      staff[0].data.map(st => Personnel.create(new IPersonnelAdapter(st)))
-    ).then(d => {
-      return this.personnelService.getAll()
-    });*/
+  async fillDBPersonnelByLocalXls(mass: boolean) {
+    return mass
+      ? this.createMassDBPersonnelByXls(ParseXls.createMass())
+      : this.createDBPersonnelByXls(ParseXls.create());
   }
 
-  async fillDBPersonnelByLocalXls(update: boolean) {
+  async _fillDBPersonnelByLocalXls(update: boolean) {
     return update
       ? this.updateDBPersonnelByXls(ParseXls.create())
       : this.createDBPersonnelByXls(ParseXls.create());
@@ -74,6 +71,10 @@ export class UploadService {
     // создаю юзера потом подсовываю ему связанные данные
     const newWorker = await this.personnelService.createOne(worker);
     return this.upsert({worker: newWorker, passport, institution, scientificInst , workplaces, workExp, laborContracts})
+  }
+  async createMassDBPersonnelByXls(table: any[]) {
+    return table.forEach((row, i) =>
+      setTimeout(() => this.createDBPersonnelByXls(row), i * 200))
   }
 
   upsert({worker, passport, institution, scientificInst , workplaces, workExp, laborContracts}) {

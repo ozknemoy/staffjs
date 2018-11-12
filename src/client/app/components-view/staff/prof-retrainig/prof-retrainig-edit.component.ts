@@ -17,7 +17,6 @@ export class ProfRetrainingComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.parent.params.id;
     this.http.get(`/personnel/${this.id}/prof-retrainig`)
-      .toPromise()
       .then((d: IProfRetraining[]) => this.profRetrainings = HandleData.handleDatesInArrFromServer(d, this.dateProps))
   }
 
@@ -33,7 +32,6 @@ export class ProfRetrainingComponent implements OnInit {
     const tbl = HandleData.handleDatesInArrToServer(this.profRetrainings, this.dateProps);
 
     this.http.put(`/personnel/${this.id}/prof-retrainig`, tbl)
-      .toPromise()
       .then((d) => this.profRetrainings = HandleData.handleDatesInArrFromServer(<any>d, this.dateProps));
   }
 

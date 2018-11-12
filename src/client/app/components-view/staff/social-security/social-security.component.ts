@@ -17,7 +17,6 @@ export class SocialSecurityComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.parent.params.id;
     this.http.get(`/personnel/${this.id}/social-security`)
-      .toPromise()
       .then((d: ISocialSecurity[]) => this.socialSec = HandleData.handleDatesInArrFromServer(d, this.dateProps))
   }
 
@@ -32,7 +31,6 @@ export class SocialSecurityComponent implements OnInit {
   save() {
     const tbl = HandleData.handleDatesInArrToServer(this.socialSec, this.dateProps);
     this.http.put(`/personnel/${this.id}/social-security`, tbl)
-      .toPromise()
       .then((d) => this.socialSec = HandleData.handleDatesInArrFromServer(<any>d, this.dateProps));
   }
 
