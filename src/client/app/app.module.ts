@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { EmploymentContractComponent } from './components-view/employment-contract/employment-contract.component';
-import { ContactComponent } from './contact/contact.component';
 import {FileUploaderComponent} from "./components-stateless/file-uploader.component";
 import {HttpService} from "./services/http.service";
 import {StaffListComponent} from "./components-view/staff/staff-list.component";
@@ -25,7 +24,7 @@ import {WorkExpComponent} from './components-view/staff/work-exp/work-exp-edit.c
 import {LaborContractComponent} from './components-view/staff/labor-contract/labor-contract-edit.component';
 import {ConfirmButtonDirective} from './components-stateless/confirm-button.directive';
 import {TokenInterceptor} from './config/token-interceptor';
-import {LoginComponent} from "./login/login.component";
+import {LoginComponent} from "./components-view/login/login.component";
 import {AuthGuard} from "./services/auth-guard.service";
 import {HomeComponent} from './components-view/home/home.component';
 import {NavBarComponent} from './components-stateless/nav-bar/nav-bar.component';
@@ -47,7 +46,6 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     LoginComponent,
     HomeComponent,
     EmploymentContractComponent,
-    ContactComponent,
     UserEditorComponent,
     // staff
     StaffListComponent,

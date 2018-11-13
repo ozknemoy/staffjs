@@ -14,7 +14,7 @@ import {RewardComponent} from './components-view/staff/reward/reward-edit.compon
 import {SocialSecurityComponent} from './components-view/staff/social-security/social-security.component';
 import {WorkExpComponent} from './components-view/staff/work-exp/work-exp-edit.component';
 import {LaborContractComponent} from './components-view/staff/labor-contract/labor-contract-edit.component';
-import {LoginComponent} from "./login/login.component";
+import {LoginComponent} from "./components-view/login/login.component";
 import {AuthGuard} from "./services/auth-guard.service";
 import {Route} from "@angular/router";
 import {HomeComponent} from './components-view/home/home.component';
@@ -33,9 +33,6 @@ export const routes: Route[] = [
   }, {
     path: 'employment-contract',
     component: EmploymentContractComponent
-  }, {
-    path: 'contact',
-    loadChildren: './contact/contact.module#ContactModule'
   }, {
     path: 'admin-editor',
     component: UserEditorComponent,
