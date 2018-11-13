@@ -9,7 +9,7 @@ import IProfRetraining from './personnel-prof-retraining.interface';
 
 
 @Table({
-  tableName: 'prof-retraining'
+  tableName: 'staff-prof-retraining'
 })
 export default class ProfRetraining extends Model<ProfRetraining> implements IProfRetraining {
 

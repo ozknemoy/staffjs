@@ -1,6 +1,7 @@
 import {HandleData} from "./src/client/app/shared/services/handle-data";
 import * as moment from "moment";
 import * as fs from "fs";
+import * as _ from "lodash";
 import {attractionTermsDict} from "./src/shared/dictionaries/attraction-terms.dict";
 // import * as _ from 'lodash';
 
@@ -39,8 +40,9 @@ console.assert(HandleData.parseNumber('7.555') === 7.555, 'HandleData.parseNumbe
 console.assert(HandleData.parseNumber('ret') === null, 'HandleData.parseNumber', 1);
 
 
-
-
+console.assert(HandleData.onlyEmptyKeys({ret: '', tre: 1}) === false, 'HandleData.onlyEmptyKeys1');
+console.assert(HandleData.onlyEmptyKeys({ret: '', tre: null}) === true, 'HandleData.onlyEmptyKeys2');
+console.assert(HandleData.onlyEmptyKeys(null) === true, 'HandleData.onlyEmptyKeys3');
 
 
 

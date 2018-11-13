@@ -27,8 +27,10 @@ import WorkExp from './relations/personnel-work-exp.model';
 import IScientificInst from './relations/personnel-scientific-inst.interface';
 import ScientificInst from './relations/personnel-scientific-inst.model';
 import {phoneRegExp, validateINN} from '../../../shared/validators';
-import LaborContract from "./relations/personnel-labor-contract.interface";
-import ILaborContract from "./relations/personnel-labor-contract.model";
+import LaborContract from "./relations/personnel-labor-contract.model";
+import ILaborContract from "./relations/personnel-labor-contract.interface";
+import AcademicRank from "./relations/academic-rank.model";
+import IAcademicRank from "./relations/academic-rank.interface";
 
 
 @Table({
@@ -64,15 +66,19 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
 
   @Column profession: string;
 
-  @Is('phone', (value: string) => {
+  /*@Is('phone', (value: string) => {
     if (!phoneRegExp.test(value)) {
       throw new Error(`Вы ввели не валидный телефон "${value}". Введите 11-13 цифр, например 12345678901`);
     }
-  })
+  })*/
   @Column phone: string;
   @Column({type: DataType.DATE}) workExpDate: string;
   @Column workHistoryFileUrl: string;
   @Column medicalCert: boolean;
+  @Column membershipGAN: boolean;
+  @Column({type: DataType.DATE}) membershipGANDate;
+  @Column membershipOAN: boolean;
+  @Column({type: DataType.DATE}) membershipOANDate;
 
   // в самом конце анкеты
   @Column extraInfo: string;
@@ -111,9 +117,12 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @HasMany(() => WorkExp)
   workExp: WorkExp[];
 
-  @HasOne(() => ScientificInst)
-  scientificInst: IScientificInst;
+  @HasMany(() => ScientificInst)
+  scientificInst: IScientificInst[];
 
   @HasMany(() => LaborContract)
   laborContract: ILaborContract[];
+
+  @HasMany(() => AcademicRank)
+  academicRank: IAcademicRank[];
 }

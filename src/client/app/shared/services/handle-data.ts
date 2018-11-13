@@ -259,4 +259,11 @@ export class HandleData {
     });
     return ret ? ret : (returnEmtyObjectIfNotFound ? {[attr]: null} : null)
   }
+
+  static onlyEmptyKeys(obj: Object) {
+    if(HandleData.isNoValue(obj)) {
+      return true
+    }
+    return !_.values(obj).some(v => !HandleData.isNoValue(v))
+  }
 }

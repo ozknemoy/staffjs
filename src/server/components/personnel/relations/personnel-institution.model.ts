@@ -7,7 +7,7 @@ import IInstitution from "./personnel-institution.interface";
   order: [['id', 'ASC']]
 })*/
 @Table({
-  tableName: 'institution'
+  tableName: 'staff-institution'
 })
 export default class Institution extends Model<Institution> implements IInstitution {
 

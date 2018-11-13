@@ -29,8 +29,9 @@ import * as _ from 'lodash/core';
 import Institution from './relations/personnel-institution.model';
 import ScientificInst from './relations/personnel-scientific-inst.model';
 import {HandleData} from '../../../client/app/shared/services/handle-data';
-import LaborContract from './relations/personnel-labor-contract.interface';
-import ILaborContract from './relations/personnel-labor-contract.model';
+import LaborContract from './relations/personnel-labor-contract.model';
+import ILaborContract from './relations/personnel-labor-contract.interface';
+import AcademicRank from "./relations/academic-rank.model";
 
 @Injectable()
 export class PersonnelService {
@@ -95,7 +96,7 @@ export class PersonnelService {
   }
 
   getEdu(id) {
-    return this.getOneWithInclude(id, Institution, ScientificInst).then((pers: IPersonnel) => {
+    return this.getOneWithInclude(id, Institution, ScientificInst, AcademicRank).then((pers: IPersonnel) => {
       if(!_.isEmpty(pers.institutions)) {
         pers.institutions = HandleData.sortArrById(pers.institutions)
       }
@@ -104,13 +105,10 @@ export class PersonnelService {
   }
 
   saveEdu(personnelId, pers: IPersonnel) {
-    // если хоть одно поле заполнено то создаю новую/сохраняю старую строку
-    const scientificInstExist = _.values(pers.scientificInst).some(val => !!val);
     return Promise.all([
       this.updateOneWithRel(personnelId, pers, Institution, 'institutions'),
-      scientificInstExist
-        ? ScientificInst.upsert(Object.assign(pers.scientificInst, {personnelId}))
-        : Promise.resolve(true)
+      this.updateOneWithRel(personnelId, pers, AcademicRank, 'academicRank'),
+      this.updateOneWithRel(personnelId, pers, ScientificInst, 'scientificInst'),
     ]).then(() => this.getEdu(personnelId))
   }
 

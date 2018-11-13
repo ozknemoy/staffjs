@@ -10,17 +10,18 @@ import Institution from '../personnel/relations/personnel-institution.model';
 import ScientificInst from '../personnel/relations/personnel-scientific-inst.model';
 import Workplace from '../personnel/relations/personnel-workplace.model';
 import WorkExp from '../personnel/relations/personnel-work-exp.model';
-import LaborContract from '../personnel/relations/personnel-labor-contract.interface';
+import LaborContract from '../personnel/relations/personnel-labor-contract.model';
 import {IPassport} from '../personnel/relations/personnel-passport.interface';
 import IInstitution from '../personnel/relations/personnel-institution.interface';
 import IScientificInst from '../personnel/relations/personnel-scientific-inst.interface';
 import IWorkExp from '../personnel/relations/personnel-work-exp.interface';
-import ILaborContract from '../personnel/relations/personnel-labor-contract.model';
+import ILaborContract from '../personnel/relations/personnel-labor-contract.interface';
 import * as fs from "fs";
 import * as fsExt from "fs-extend";
 import LaborContractDocx from "../print/labor-contract-docx.model";
 import {dirWorkHistory} from "../../../shared/constants";
 import * as path from "path";
+import {HandleData} from "../../../client/app/shared/services/handle-data";
 
 export const dirLaborContractDocx = 'files/labor-contracts/';
 
@@ -80,23 +81,31 @@ export class UploadService {
   upsert({worker, passport, institution, scientificInst , workplaces, workExp, laborContracts}) {
     const pId = worker.id;
     passport.personnelId = pId;
-    institution.personnelId = pId;
-    scientificInst.personnelId = pId;
-    workplaces.personnelId = pId;
-
-    laborContracts.personnelId = pId;
-    return Promise.all([
-      Passport.upsert(passport),
-      Institution.upsert(institution),
-      ScientificInst.upsert(scientificInst),
-      Workplace.upsert(workplaces),
-      LaborContract.upsert(laborContracts),
-    ].concat(
+    let promises = [Passport.upsert(passport)];
+    // наполняю таблицу только если есть хоть одно значение в связанной сущности
+    if(!HandleData.onlyEmptyKeys(institution)) {
+      institution.personnelId = pId;
+      promises.push(Institution.upsert(institution))
+    }
+    if(!HandleData.onlyEmptyKeys(scientificInst)) {
+      scientificInst.personnelId = pId;
+      promises.push(ScientificInst.upsert(scientificInst))
+    }
+    if(!HandleData.onlyEmptyKeys(workplaces)) {
+      workplaces.personnelId = pId;
+      promises.push(Workplace.upsert(workplaces))
+    }
+    if(!HandleData.onlyEmptyKeys(laborContracts)) {
+      laborContracts.personnelId = pId;
+      promises.push(LaborContract.upsert(laborContracts))
+    }
+    promises = promises.concat(
       workExp.map(workExpRow => {
         workExpRow.personnelId = pId;
         return WorkExp.upsert(workExpRow)
       })
-    )).then(() => worker);
+    );
+    return Promise.all(promises).then(() => ({worker, passport, institution, scientificInst , workplaces, workExp, laborContracts}));
   }
 
   async uploadLaborContractDocx(file: IFileUpload, type) {

@@ -7,6 +7,7 @@ import {HandleData} from '../../../shared/services/handle-data';
 import IScientificInst from '../../../../../server/components/personnel/relations/personnel-scientific-inst.interface';
 import * as _ from 'lodash/core';
 import {eduTypesDict} from "../../../../../shared/dictionaries/edu-type.dict";
+import IAcademicRank from "../../../../../server/components/personnel/relations/academic-rank.interface";
 
 @Component({
   selector: 'staff-education',
@@ -17,10 +18,11 @@ export class EducationEditComponent implements OnInit {
   worker = new IPersonnel();
   eduTypesDict = eduTypesDict;
   private datePropsInst: (keyof IInstitution)[] = ['endDate'];
-  private datePropsScientificInst: (keyof IScientificInst)[] = ['endDate'];
+  private datePropsScientificInst: (keyof IScientificInst)[] = ['endDate', 'statementDate'];
+  private datePropsAcademicRank: (keyof IAcademicRank)[] = ['docDate', 'statementDate'];
 
   constructor(protected http: HttpService, protected route: ActivatedRoute) {
-    this.worker.scientificInst = new IScientificInst(null);
+
   }
 
   async ngOnInit() {
@@ -29,16 +31,18 @@ export class EducationEditComponent implements OnInit {
   }
 
   handlePersAfterGet(worker: IPersonnel) {
-    if (!_.isEmpty(worker.scientificInst)) {
-      worker.scientificInst = HandleData.handleDatesInObjectFromServer(worker.scientificInst, this.datePropsScientificInst);
-    } else {
-      worker.scientificInst = new IScientificInst(null);
-    }
     if (!_.isEmpty(worker.institutions)) {
       worker.institutions = HandleData.handleDatesInArrFromServer(worker.institutions, this.datePropsInst);
     }
+    if (!_.isEmpty(worker.scientificInst)) {
+      worker.scientificInst = HandleData.handleDatesInArrFromServer(worker.scientificInst, this.datePropsScientificInst);
+    }
+    if (!_.isEmpty(worker.academicRank)) {
+      worker.academicRank = HandleData.handleDatesInArrFromServer(worker.academicRank, this.datePropsAcademicRank);
+    }
     this.worker = worker;
   }
+
   addInst() {
     this.worker.institutions.push(new IInstitution(+this.id));
   }
@@ -47,11 +51,32 @@ export class EducationEditComponent implements OnInit {
     this.worker.institutions.splice(i, 1);
   }
 
+  addScientificInst() {
+    this.worker.scientificInst.push(new IScientificInst(+this.id));
+  }
+
+  deleteScientificInst(i) {
+    this.worker.scientificInst.splice(i, 1);
+  }
+
+  addAcademicRank() {
+    this.worker.academicRank.push(new IAcademicRank(+this.id));
+  }
+
+  deleteAcademicRank(i) {
+    this.worker.academicRank.splice(i, 1);
+  }
+
   save() {
     const worker = HandleData.copy(this.worker);
-    worker.scientificInst = HandleData.handleDatesInObjectToServer(worker.scientificInst, this.datePropsScientificInst);
     if (!_.isEmpty(worker.institutions)) {
       worker.institutions = HandleData.handleDatesInArrToServer(worker.institutions, this.datePropsInst);
+    }
+    if (!_.isEmpty(worker.academicRank)) {
+      worker.academicRank = HandleData.handleDatesInArrToServer(worker.academicRank, this.datePropsAcademicRank);
+    }
+    if (!_.isEmpty(worker.scientificInst)) {
+      worker.scientificInst = HandleData.handleDatesInArrToServer(worker.scientificInst, this.datePropsScientificInst);
     }
     this.http.putWithToast(`personnel/${worker.id}/edu`, worker)
       .then((newWorker) => this.handlePersAfterGet(<any>newWorker));

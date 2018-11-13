@@ -3,7 +3,7 @@ import PersonnelNamedThingWithDoc from './personnel-named-thing-with-doc.model';
 import {ISocialSecurity} from "./personnel-social-security.interface";
 
 @Table({
-  tableName: 'social-security'
+  tableName: 'staff-social-security'
 })
 export default class SocialSecurity extends PersonnelNamedThingWithDoc implements  ISocialSecurity {
 

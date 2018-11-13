@@ -8,7 +8,7 @@ import {IPersonnel} from "../personnel.interface";
 
 
 @Table({
-  tableName: 'qual-improvement'
+  tableName: 'staff-qual-improvement'
 })
 export default class QualImprovement extends Model<QualImprovement> implements IQualImprovement {
 

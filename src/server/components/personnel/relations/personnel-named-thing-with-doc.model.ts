@@ -1,4 +1,7 @@
-import {Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, BelongsTo, DataType} from 'sequelize-typescript';
+import {
+  Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, BelongsTo, DataType,
+  NotEmpty
+} from 'sequelize-typescript';
 import Personnel from "../personnel.model";
 import {IPersonnel} from "../personnel.interface";
 import {IPersonnelNamedThingWithDoc} from "./personnel-named-thing-with-doc.interface";
@@ -12,6 +15,7 @@ export default class PersonnelNamedThingWithDoc extends Model<PersonnelNamedThin
   @Column
   id: number;
 
+  @NotEmpty
   @Column
   @ForeignKey(() => Personnel)
   personnelId: number;

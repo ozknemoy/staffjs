@@ -17,18 +17,18 @@ export class PrintT2Builder {
 
   make() {
     return this
-      //.makeHeader()
+      .makeHeader()
       .makeSectionFirstToSixth()
       .makeSectionSeventh()
-      //.makeFamilyTable()
+      .makeFamilyTable()
       .build();
   }
 
   private makeFamilyTable() {
     const f = this.pers.families;
-    if (_.isEmpty(f)) {
+    /*if (_.isEmpty(f)) {
       return this;
-    }
+    }*/
     const body: (string | number)[][] = f.map((row) => [row.relationshipDegree, row.fullName, row.birthYear]);
     const tbl = {
       fontSize: tableFontSize,
@@ -39,7 +39,7 @@ export class PrintT2Builder {
           'Степень родства (ближайшие родственники)',
           'Фамилия, имя, отчество',
           'Год рождения'
-        ], ...PrintHelpers.addEmptyRow(body, 5)]
+        ], ...PrintHelpers.addEmptyRow(body, 5, 3)]
       },
       layout: defaultTableLayout
     };
@@ -196,7 +196,7 @@ export class PrintT2Builder {
           {text: 'Направление или специальность по документу', rowSpan: 2},
         ], [
           '', 'наименование', 'серия', 'номер', '', '', '',
-        ], ...PrintHelpers.addEmptyRow(bodyOne, 2)]
+        ], ...PrintHelpers.addEmptyRow(bodyOne, 2, 7)]
       },
       layout: defaultTableLayout
     };
@@ -209,7 +209,7 @@ export class PrintT2Builder {
         },
       ]
     };
-    const scientificInst: IScientificInst = worker.scientificInst || <IScientificInst>{};
+    const bodyTwo = (worker.scientificInst || []).map((inst) => this.getEduTwoTableRow(inst));
     const eduTableTwo = {
       margin: [0, 20],
       fontSize: tableFontSize,
@@ -219,18 +219,22 @@ export class PrintT2Builder {
           'Документ об образовании, номер, дата выдачи',
           'Год окончания',
           'Направление или специальность по документу',
-        ], [
-          scientificInst.name,
-          scientificInst.fullInfo,
-          HandleData.getRuDateWithoutDays(scientificInst.endDate),
-          scientificInst.specialty
-        ]]
+        ], ...PrintHelpers.addEmptyRow(bodyTwo, 2, 4)]
       },
       layout: defaultTableLayout
     };
     this.pdf = this.pdf.concat([title, undertitle, mainInfo, eduTableOne, afterInstEduName, eduTableTwo]);
 
     return this;
+  }
+
+  private getEduTwoTableRow(scientificInst: IScientificInst) {
+    return [
+      scientificInst.name,
+      scientificInst.fullInfo,
+      HandleData.getRuDateWithoutDays(scientificInst.endDate),
+      scientificInst.specialty
+    ];
   }
 
   private getEduOneTableRow(inst: IInstitution) {

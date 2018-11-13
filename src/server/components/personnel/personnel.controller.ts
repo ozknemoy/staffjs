@@ -23,8 +23,8 @@ import SocialSecurity from './relations/personnel-social-security.model';
 import IWorkExp from './relations/personnel-work-exp.interface';
 import WorkExp from "./relations/personnel-work-exp.model";
 import {LaborContractComponent} from '../../../client/app/components-view/staff/labor-contract/labor-contract-edit.component';
-import LaborContract from './relations/personnel-labor-contract.interface';
-import ILaborContract from './relations/personnel-labor-contract.model';
+import LaborContract from './relations/personnel-labor-contract.model';
+import ILaborContract from './relations/personnel-labor-contract.interface';
 import {AuthGuard} from "@nestjs/passport";
 
 

@@ -1,12 +1,12 @@
 import {Document, Paragraph, TextRun} from 'docx';
 import {getOneOneP, addOneThreeP, makeCommonHeader, makeRequisite} from "./labor-contract-helpers.class";
 import {
-  addUnderlineText, emptyLine, getEmptyLinePlusText, getTitle, multiTab, pageMargins,
+  addUnderlineText, emptyLine, getTitle, multiTab, pageMargins,
   setStandartStyles
 } from "./docx-helpers";
 import {IPersonnel} from "../personnel/personnel.interface";
 import {HandleData} from "../../../client/app/shared/services/handle-data";
-
+import * as _ from 'lodash'
 
 export class PrintLaborContractDynamicBuilder {
   private doc = new Document({
@@ -41,14 +41,19 @@ export class PrintLaborContractDynamicBuilder {
       .addRun(new TextRun(`Трудовой договор №${worker.contractNumber || '____'}`).bold().break());
     this.doc.addParagraph(header);
     makeCommonHeader(this.doc, this.pers);
-    const sciInstSp = worker && worker.scientificInst ? worker.scientificInst.specialty : '___________________________________ _______________________________________';
+    const sciInstSp = !_.isEmpty(worker.scientificInst)
+      ? worker.scientificInst[0].specialty
+      : '___________________________________ _______________________________________';
+    const academicRank = !_.isEmpty(worker.academicRank)
+      ? worker.academicRank.map(ar => ar.rank).filter(ar => !HandleData.isNoValue(ar)).join(', ')
+      : '___________________________________';
     const oneOne = new Paragraph()
       .style('9')
       .addRun(new TextRun('1.1. ').break())
       .addRun(new TextRun('Работодатель').bold())
       .addRun(new TextRun(' обязуется предоставить '))
       .addRun(new TextRun('Работнику').bold())
-      .addRun(new TextRun(', имеющему ученую степень ' + (sciInstSp || '') + ' и (или) ученое звание ___________________________________(заполняется при наличии), работу в должности ______________________________________________________________________________________ ______________________________________________________________________________________________________,'));
+      .addRun(new TextRun(`, имеющему ученую степень ${sciInstSp || ''} и (или) ученое звание ${academicRank}(заполняется при наличии), работу в должности ______________________________________________________________________________________ ______________________________________________________________________________________________________,`));
     this.doc.addParagraph(oneOne);
     this.doc.addParagraph(addUnderlineText(2, 'название структурного подразделения').center());
     this.doc.addParagraph(getOneOneP());

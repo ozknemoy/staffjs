@@ -1,5 +1,5 @@
 import {
-  AutoIncrement, BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table,
+  AutoIncrement, BelongsTo, Column, DataType, ForeignKey, Model, NotEmpty, PrimaryKey, Table,
   Unique
 } from 'sequelize-typescript';
 import Personnel from '../personnel.model';
@@ -7,7 +7,7 @@ import {IPersonnel} from '../personnel.interface';
 import IVacation from './personnel-vacation.interface';
 
 @Table({
-  tableName: 'vacation'
+  tableName: 'staff-vacation'
 })
 export default class Vacation extends Model<Vacation> implements  IVacation {
 
@@ -16,8 +16,9 @@ export default class Vacation extends Model<Vacation> implements  IVacation {
   @PrimaryKey
   @Column id: number;
 
+  @NotEmpty
   @ForeignKey(() => Personnel)
-  personnelId: number;
+  @Column personnelId: number;
 
   @BelongsTo(() => Personnel)
   personnel: IPersonnel;

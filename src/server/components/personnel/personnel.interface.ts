@@ -8,8 +8,9 @@ import IInstitution from "./relations/personnel-institution.interface";
 import IScientificInst from './relations/personnel-scientific-inst.interface';
 import IWorkplace from "./relations/personnel-workplace.interface";
 import WorkExp from "./relations/personnel-work-exp.model";
-import ILaborContract from './relations/personnel-labor-contract.model';
+import ILaborContract from './relations/personnel-labor-contract.interface';
 import IWorkExp from './relations/personnel-work-exp.interface';
+import IAcademicRank from "./relations/academic-rank.interface";
 
 
 export class IPersonnel {
@@ -38,6 +39,10 @@ export class IPersonnel {
   workExpDate: string = null;
   workHistoryFileUrl: string = null;
   medicalCert: boolean = null;
+  membershipGAN: boolean = null;
+  membershipGANDate: string = null;
+  membershipOAN: boolean = null;
+  membershipOANDate: string = null;
 
   attestations: IAttestation[] = null;
   institutions: IInstitution[] = null;
@@ -46,8 +51,9 @@ export class IPersonnel {
   profRetrainings: IProfRetraining[] = null;
   qualificationImprovements: IQualImprovement[] = null;
   rewards: IPersonnelNamedThingWithDoc[] = null;
-  scientificInst: IScientificInst = null;
+  scientificInst: IScientificInst[] = null;
   workplaces: IWorkplace[] = null;
   workExp: IWorkExp[] = null;
   laborContract: ILaborContract[] = null;
+  academicRank: IAcademicRank[] = null;
 }

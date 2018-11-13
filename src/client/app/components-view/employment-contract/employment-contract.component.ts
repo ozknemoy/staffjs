@@ -15,7 +15,7 @@ export class EmploymentContractComponent implements OnInit {
 
   ngOnInit() {
     this.http.get('print/labor-contract/all').then((contracts) => {
-      this.contracts = HandleData.sortArrById(contracts);
+      this.contracts = contracts;
     })
   }
 

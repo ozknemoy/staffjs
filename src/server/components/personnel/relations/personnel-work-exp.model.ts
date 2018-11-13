@@ -1,10 +1,13 @@
-import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, BelongsTo, NotEmpty} from 'sequelize-typescript';
+import {
+  Table, Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, BelongsTo,
+  NotEmpty
+} from 'sequelize-typescript';
 import Personnel from "../personnel.model";
 import {IPersonnel} from "../personnel.interface";
 import IWorkExp from './personnel-work-exp.interface';
 
 @Table({
-  tableName: 'work-exp'
+  tableName: 'staff-work-exp'
 })
 export default class WorkExp extends Model<WorkExp> implements IWorkExp {
 

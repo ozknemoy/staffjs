@@ -93,7 +93,7 @@ export class ParseXls {
       specialty: xls[18],
       docNumber: xls[19],
     };
-    const scientificInst: Partial<IPersonnel['scientificInst']> = {
+    const scientificInst: Partial<IPersonnel['scientificInst'][0]> = {
       name: xls[21],
       fullInfo: xls[22],
       endDate: HandleData.setYear(xls[23]),

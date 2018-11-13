@@ -1,13 +1,13 @@
 import {
   Table, Column, Model, PrimaryKey, AutoIncrement, BelongsTo,
-  ForeignKey, BeforeUpdate, BeforeCreate, Is, IsEmail, Min
+  ForeignKey, BeforeUpdate, BeforeCreate, Is, IsEmail, Min, NotEmpty
 } from 'sequelize-typescript';
 import {IFamily} from "./personnel-family.interface";
 import Personnel from "../personnel.model";
 import {isValidDate, isValidTimeStamp, isValidYear} from "../../../helpers/is-valid-date";
 
 @Table({
-  tableName: 'family'
+  tableName: 'staff-family'
 })
 export default class Family extends Model<Family> implements IFamily {
 
@@ -18,6 +18,7 @@ export default class Family extends Model<Family> implements IFamily {
 
 
   @ForeignKey(() => Personnel)
+  @NotEmpty
   @Column
   personnelId: number;
 

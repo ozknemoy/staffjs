@@ -1,13 +1,13 @@
 import {
   Table, Column, Model, PrimaryKey, AutoIncrement, BelongsTo,
-  ForeignKey, BeforeUpdate, BeforeCreate, Is, IsEmail, Min, NotEmpty, DataType
+  ForeignKey, BeforeUpdate, BeforeCreate, Is, IsEmail, Min, DataType, NotEmpty
 } from 'sequelize-typescript';
 import Personnel from '../personnel.model';
 import {IPassport} from './personnel-passport.interface';
 import {IPersonnel} from '../personnel.interface';
 
 @Table({
-  tableName: 'passport'
+  tableName: 'staff-passport'
 })
 export default class Passport extends Model<Passport> implements IPassport {
 

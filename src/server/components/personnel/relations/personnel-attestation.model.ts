@@ -7,7 +7,7 @@ import IAttestation from './personnel-attestation.interface';
 import Personnel from "../personnel.model";
 
 @Table({
-  tableName: 'attestation'
+  tableName: 'staff-attestation'
 })
 export default class Attestation extends Model<Attestation> implements IAttestation {
 

@@ -40,7 +40,7 @@ export class PrintService {
   }
 
   async saveLocalForDevelopmentDocx() {
-    return this.printLaborContract(194, '1',true);
+    //return this.printLaborContract(194, '1',true);
   }
 
   async printT2(userId) {

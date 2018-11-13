@@ -29,7 +29,7 @@
     <tr>
       <th rowspan="2">Наименование образовательного учреждения</th>
       <th colspan="3">Документ об образовании, о квалификации или наличии специальных знаний</th>
-      <th rowspan="2">Год окончания</th>
+      <th rowspan="2">Месяц и год окончания</th>
       <th rowspan="2">Квалификация по документу об образовании</th>
       <th rowspan="2">Направление или специальность по документу</th>
       <th rowspan="2">
@@ -56,7 +56,7 @@
   </table>
   <br>
   <div class="form-group">
-    <label>Послевузовское профессиональное образование</label>
+    <label>ПОСЛЕВУЗОВСКОЕ ОБРАЗОВАНИЕ</label>
     <select [(ngModel)]="worker.afterInstEduName" class="form-control w300">
       <option value="аспирантура">аспирантура</option>
       <option value="адъюнктура">адъюнктура</option>
@@ -67,15 +67,81 @@
     <tr>
       <th>Наименование образовательного, научного учреждения</th>
       <th>Документ об образовании, номер, дата выдачи</th>
-      <th>Год окончания</th>
+      <th>Месяц и год окончания</th>
       <th>Направление или специальность по документу</th>
+      <th>Присвоенная ученая степень</th>
+      <th>Отрасль науки</th>
+      <th>Дата и номер диплома о присвоении ученой степени</th>
+      <th>Диссертационный совет</th>
+      <th>Дата подачи заявления в ГУАП</th>
+      <th>
+        <button class="btn btn-sm btn-success"
+                (click)="addScientificInst()">Добавить</button>
+      </th>
     </tr>
-    <tr>
-      <td><input type="text" [(ngModel)]="worker.scientificInst.name" class="form-control"></td>
-      <td><textarea [(ngModel)]="worker.scientificInst.fullInfo" class="form-control" rows="3"></textarea></td>
-      <td><input type="date" [(ngModel)]="worker.scientificInst.endDate" class="form-control"></td>
-      <td><input type="text" [(ngModel)]="worker.scientificInst.specialty" class="form-control"></td>
+    <tr *ngFor="let sciIns of worker.scientificInst; let i = index">
+      <td><input type="text" [(ngModel)]="sciIns.name" class="form-control"></td>
+      <td><textarea rows="3" [(ngModel)]="sciIns.fullInfo" class="form-control"></textarea></td>
+      <td><input type="date" [(ngModel)]="sciIns.endDate" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="sciIns.specialty" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="sciIns.academicDegree" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="sciIns.scienceBranch" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="sciIns.dateAndNumber" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="sciIns.dissertationCouncil" class="form-control"></td>
+      <td><input type="date" [(ngModel)]="sciIns.statementDate" class="form-control"></td>
+      <td><button class="btn btn-sm btn-danger" (click)="deleteScientificInst(i)">Удалить</button></td>
     </tr>
   </table>
+
+  <label>УЧЕНЫЕ ЗВАНИЯ</label>
+  <table class="table table-sm table-responsive-sm table-bordered">
+    <tr>
+      <th>Звание</th>
+      <th>Специальность</th>
+      <th>Номер диплома</th>
+      <th>Дата диплома</th>
+      <th>Присвоивший орган</th>
+      <th>Дата подачи заявления в ГУАП</th>
+      <th>
+        <button class="btn btn-sm btn-success"
+                (click)="addAcademicRank()">Добавить</button>
+      </th>
+    </tr>
+    <tr *ngFor="let aRank of worker.academicRank; let i = index">
+      <td><input type="text" [(ngModel)]="aRank.rank" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="aRank.specialty" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="aRank.docNumber" class="form-control"></td>
+      <td><input type="date" [(ngModel)]="aRank.docDate" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="aRank.appointingAuthority" class="form-control"></td>
+      <td><input type="date" [(ngModel)]="aRank.statementDate" class="form-control"></td>
+      <td><button class="btn btn-sm btn-danger" (click)="deleteAcademicRank(i)">Удалить</button></td>
+    </tr>
+  </table>
+
+  <div class="row">
+    <div class="col-6">
+      <div class="input-group mb-5">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <input type="checkbox" [(ngModel)]="worker.membershipGAN" id="membershipGAN">
+          </span>
+          <label for="membershipGAN" class="input-group-text">Членство в ГАН</label>
+        </div>
+        <input type="date" [(ngModel)]="worker.membershipGANDate" class="form-control">
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="input-group mb-5">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <input type="checkbox" [(ngModel)]="worker.membershipOAN" id="membershipOAN">
+          </span>
+          <label for="membershipOAN" class="input-group-text">Членство в ОАН</label>
+        </div>
+        <input type="date" [(ngModel)]="worker.membershipOANDate" class="form-control">
+      </div>
+    </div>
+  </div>
+
 </div>
 

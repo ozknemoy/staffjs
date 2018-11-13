@@ -3,6 +3,6 @@ import PersonnelNamedThingWithDoc from './personnel-named-thing-with-doc.model';
 
 
 @Table({
-  tableName: 'reward'
+  tableName: 'staff-reward'
 })
 export default class Reward extends PersonnelNamedThingWithDoc {}

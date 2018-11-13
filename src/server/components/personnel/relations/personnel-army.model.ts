@@ -1,11 +1,14 @@
-import {Table, Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, BelongsTo} from 'sequelize-typescript';
+import {
+  Table, Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, BelongsTo,
+  NotEmpty
+} from 'sequelize-typescript';
 import IWorkplace from './personnel-workplace.interface';
 import Personnel from "../personnel.model";
 import {IPersonnel} from "../personnel.interface";
 import IArmy from './personnel-army.interface';
 
 @Table({
-  tableName: 'army'
+  tableName: 'staff-army'
 })
 export default class Army extends Model<Army> implements IArmy {
 
@@ -14,9 +17,9 @@ export default class Army extends Model<Army> implements IArmy {
   @PrimaryKey
   @Column id: number;
 
-  @Column
+  @NotEmpty
   @ForeignKey(() => Personnel)
-  personnelId: number;
+  @Column personnelId: number;
 
   @BelongsTo(() => Personnel)
   personnel: IPersonnel;

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {HttpService} from "../../../services/http.service";
 import {HandleData} from '../../../shared/services/handle-data';
-import ILaborContract from '../../../../../server/components/personnel/relations/personnel-labor-contract.model';
+import ILaborContract from '../../../../../server/components/personnel/relations/personnel-labor-contract.interface';
 import {attractionTermsDict} from "../../../../../shared/dictionaries/attraction-terms.dict";
 
 @Component({
