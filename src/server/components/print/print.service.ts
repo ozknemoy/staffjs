@@ -3,8 +3,12 @@ import {PersonnelService} from '../personnel/personnel.service';
 import {PrintT2Builder} from './print-t2.class';
 import {IPdfSchema} from '../../interfaces/pdf-shema.interface';
 import * as fs from 'fs';
-import {PrintLaborContractDynamicBuilder} from './print-labor-contract-scientific.class';
+import {PrintLaborContractDynamicBuilder} from './print-labor-contract.class';
 import * as docx from "docx";
+import {HandleData} from "../../../client/app/shared/services/handle-data";
+import LaborContractDocx from "./labor-contract-docx.model";
+import {ErrHandlerService} from "../../services/error-handler.service";
+import {dirLaborContractDocx} from "../upload/upload.service";
 
 const path = require('path');
 const DocxMerger = require('../../../shared/docx-merger/docx-merger-dist.js');
@@ -36,7 +40,7 @@ export class PrintService {
   }
 
   async saveLocalForDevelopmentDocx() {
-    return this.printLaborContract(194, true);
+    return this.printLaborContract(194, '1',true);
   }
 
   async printT2(userId) {
@@ -61,12 +65,18 @@ export class PrintService {
     });
   }
 
-  async printLaborContract(userId, saveLocal = false) {
+  async printLaborContract(userId, typePart2, saveLocal) {
+    const docx = await LaborContractDocx.findOne({where: {type: +typePart2}});
+    if(!docx || !docx.url) {
+      ErrHandlerService.throw('Сначала загрузите статическую часть договора')
+    }
+    // наличие папки с файлами не проверяю тк если загружен хотя бы один файл то папка существует
+    const part2Uint = fs.readFileSync(dirLaborContractDocx + docx.url);
     const user = await this.personnelService.getOneFull(userId);
     const [part1, part3] = new PrintLaborContractDynamicBuilder(user).make();
     const part1Uint = await this.createOfficeFileUint8(part1);
     const part3Uint = await this.createOfficeFileUint8(part3);
-    const merger = new DocxMerger({pageBreak: false},[part1Uint,part3Uint]);
+    const merger = new DocxMerger({pageBreak: false},[part1Uint, part2Uint, part3Uint]);
 
     return new Promise((res, fail) => {
       merger.save('nodebuffer', (uint) => {
@@ -100,7 +110,7 @@ export class PrintService {
     }
     fs.writeFile(dir + name + ext, uint8, (e) => {
       if (e) {
-        console.log('*****    ', e.code, '    *****');
+        console.log('*****    ', e.code, '  make with timestamp  *****');
         // при неудаче добавляю номер
         fs.writeFileSync(`${dir}${name}-${ +new Date}${ext}`, uint8);
       } else {

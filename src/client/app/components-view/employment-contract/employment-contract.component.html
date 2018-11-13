@@ -8,7 +8,7 @@
 
   <div class="row">
     <div class="col-9">
-      <div class="form-group" *ngFor="let one of contracts; let $index = index">
+      <div class="form-group" *ngFor="let one of contracts">
         <file-uploader [size]="size" class="float-right"
                        url="upload/labor-contract?type={{one.type}}"
                        uploaderClass="btn btn-warning btn-sm"

@@ -9,7 +9,7 @@ import {Router} from "@angular/router";
 //https://angular.io/guide/http#intercepting-all-requests-or-responses
 @Injectable()
 export class MainInterceptor implements HttpInterceptor {
-
+  textStart = ' ';
   constructor(private injector: Injector) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -21,10 +21,19 @@ export class MainInterceptor implements HttpInterceptor {
             // Operation failed; error is an HttpErrorResponse
             (errBody: HttpErrorResponse) => {
               // ошибки валидатора бека
+              console.log('MainInterceptor',errBody);
               let errText;
               if (errBody.status === 406 || errBody.status === 400 || errBody.status === 500) {
-                errText = ' ';
-                errText += errBody.error.join('</br>');
+                errText = this.textStart;
+                // если была скачка файлов
+                if(errBody.error instanceof Blob) {
+                  this.blobToString(errBody.error).then(text => {
+                    errText += JSON.parse(text).join('</br>');
+                    this.showToast(errText)
+                  })
+                } else {
+                  errText += errBody.error.join('</br>');
+                }
               } else if (errBody.status === 401) {
                 localStorage.removeItem('bearer');
                 errText = ' Авторизация устарела';
@@ -32,13 +41,8 @@ export class MainInterceptor implements HttpInterceptor {
               }
 
 
-              if (errText) {
-                this.injector.get(ToastrService).error(
-                  errText, 'Ошибка валидации.', {
-                    enableHtml: true,
-                    closeButton: true,
-                    timeOut: 30e3
-                  });
+              if (errText && errText !== this.textStart) {
+                this.showToast(errText)
               }
               return errBody
             }
@@ -46,5 +50,30 @@ export class MainInterceptor implements HttpInterceptor {
           // either completes or errors
           finalize(() => {})
         );
+  }
+
+  blobToString(blob): Promise<string> {
+    return new Promise((res, fail) => {
+      const reader = new FileReader();
+      // This fires after the blob has been read/loaded.
+      reader.addEventListener('loadend', (e) => {
+        const text = e.srcElement['result'];
+        console.log(text);
+        reader.removeEventListener('loadend', undefined);
+        res(text)
+      });
+
+      // Start reading the blob as text.
+      reader.readAsText(blob);
+    })
+  }
+
+  showToast(errText) {
+    this.injector.get(ToastrService).error(
+      errText, 'Ошибка', {
+        enableHtml: true,
+        closeButton: true,
+        timeOut: 30e3
+      });
   }
 }

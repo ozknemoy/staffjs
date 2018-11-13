@@ -11,13 +11,13 @@ import {HandleData} from "../../../client/app/shared/services/handle-data";
 export class PrintLaborContractDynamicBuilder {
   private doc = new Document({
     creator: "admin",
-    title: "PrintLaborContract",
-    description: "PrintLaborContract",
+    title: "LaborContract",
+    description: "LaborContract",
   }, pageMargins);
   private docRequisite = new Document({
     creator: "admin",
-    title: "PrintLaborContract",
-    description: "PrintLaborContract",
+    title: "LaborContract",
+    description: "LaborContract",
   }, pageMargins);
 
   constructor(private pers: IPersonnel) {

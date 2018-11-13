@@ -38,7 +38,7 @@ export function getEmptyLinePlusText(text: string, line = emptyLine): string {
   return text + line.slice(text.length) + (line === emptyLine ? '__' : '');
 }
 
-export function addEmptyLineWithTextUnderlined(doc, text: string, withComma = false, style = '9', spacing = 0) {
+export function addEmptyLineWithTextUnderlined(doc, text: string, withComma = false, style = '9', spacing = 0, bold = false) {
   const p = new Paragraph()
     .center()
     .thematicBreak();
@@ -46,6 +46,9 @@ export function addEmptyLineWithTextUnderlined(doc, text: string, withComma = fa
     p.spacing({before: spacing});
   }
   const _text = new TextRun(text);
+  if(bold) {
+    _text.bold();
+  }
   p.addRun(_text);
   if (style) {
     p.style(style);

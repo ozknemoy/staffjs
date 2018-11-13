@@ -22,10 +22,10 @@ import LaborContractDocx from "../print/labor-contract-docx.model";
 import {dirWorkHistory} from "../../../shared/constants";
 import * as path from "path";
 
+export const dirLaborContractDocx = 'files/labor-contracts/';
+
 @Injectable()
 export class UploadService {
-  public dirLaborContractDocx = 'files/labor-contracts/';
-
   constructor(private errHandler: ErrHandlerService,
               private personnelService: PersonnelService) {
 
@@ -100,13 +100,13 @@ export class UploadService {
   }
 
   async uploadLaborContractDocx(file: IFileUpload, type) {
-    if(!fs.existsSync(this.dirLaborContractDocx)) {
-      fs.mkdirSync(this.dirLaborContractDocx)
+    if(!fs.existsSync(dirLaborContractDocx)) {
+      fs.mkdirSync(dirLaborContractDocx)
     }
     // todo удалять старый если не совпадает имя с новым
     const newUrl = `${type}-${file.originalname}`;
     try {
-      fs.writeFileSync(this.dirLaborContractDocx + newUrl, file.buffer)
+      fs.writeFileSync(dirLaborContractDocx + newUrl, file.buffer)
     } catch(e) {
       ErrHandlerService.throw('Что-то сломалось. Попробуйте ещё раз')
     }

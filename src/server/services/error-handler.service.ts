@@ -5,8 +5,7 @@ export class ErrHandlerService {
 
   public STATUS_FOR_VALID_AND_UNIQUE_ERR = HttpStatus.NOT_ACCEPTABLE;
 
-  static throw(err: string, code = HttpStatus.INTERNAL_SERVER_ERROR) {
-
+  static throw(err: string, code = HttpStatus.NOT_ACCEPTABLE) {
     throw new HttpException([err], code);
   }
 

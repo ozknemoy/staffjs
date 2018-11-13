@@ -3,7 +3,7 @@
 <div class="btn-group">
   <div class="btn-group" dropdown>
     <button dropdownToggle type="button" class="btn btn-sm btn-outline-success dropdown-toggle">
-      Меню
+      Меню <i class="fa fa-bars"></i>
     </button>
     <div class="dropdown-menu" *dropdownMenu>
       <a [routerLink]="['/staff-edit', id]" class="dropdown-item">1 Основная информация</a>
@@ -27,7 +27,9 @@
     </button>
     <div class="dropdown-menu" *dropdownMenu>
       <print-button class="dropdown-item" url="print/t2?userId={{id}}">T2</print-button>
-      <print-button class="dropdown-item" url="print/labor-contract-scientific/{{id}}">Трудовой договор с начным сотрудником</print-button>
+      <print-button class="dropdown-item"
+                    *ngFor="let contr of contracts"
+                    url="print/labor-contract/{{id}}?type={{contr.type}}">{{contr.name}}</print-button>
     </div>
   </div>
 </div>

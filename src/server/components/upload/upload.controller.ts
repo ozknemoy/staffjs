@@ -1,18 +1,17 @@
 import {
-  Controller, Post, Req, Headers, Body, FileInterceptor, UseInterceptors, UploadedFile,
+  Controller, Post, Body, FileInterceptor, UseInterceptors, UploadedFile,
   UseGuards, Get, Query
 } from '@nestjs/common';
 import {UploadService} from "./upload.service";
 import {ErrHandlerService} from "../../services/error-handler.service";
 import {AuthGuard} from "@nestjs/passport";
-import LaborContractDocx from "../print/labor-contract-docx.model";
 import {IFileUpload} from "../../interfaces/file-upload";
 
 @UseGuards(AuthGuard())
 @Controller('upload')
 export class UploadController {
 
-  constructor(private uploadService: UploadService, private errHandler: ErrHandlerService) {
+  constructor(private uploadService: UploadService) {
 
   }
 

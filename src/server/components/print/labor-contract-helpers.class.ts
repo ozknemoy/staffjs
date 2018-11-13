@@ -42,7 +42,7 @@ export function makeCommonHeader(doc: Document, u: IPersonnel) {
     .addRun(new TextRun('», с одной стороны и ____________________________________'));
   doc.addParagraph(seven);
   const fio = HandleData.fieldsOrNotConcat([u.surname, u.name, u.middleName]);
-  addEmptyLineWithTextUnderlined(doc, fio, true, '10');
+  addEmptyLineWithTextUnderlined(doc, fio, true, '10', undefined, true);
   doc.addParagraph(underFio);
   const eight = new Paragraph()
     .style('9')
@@ -120,7 +120,7 @@ export function makeRequisite(doc: Document, worker: IPersonnel) {
   const FIO = HandleData.getFIO([worker.surname, worker.name, worker.middleName], false);
   const FIO_SHORT = HandleData.getFIO([worker.surname, worker.name, worker.middleName]);
   if (FIO) {
-    right.addRun(new TextRun(FIO).break())
+    right.addRun(new TextRun(FIO).break().bold())
   } else {
     right
       .addRun(new TextRun(line).break())
@@ -133,7 +133,7 @@ export function makeRequisite(doc: Document, worker: IPersonnel) {
   const hasPassport = _.get(worker, 'passport');
   if (hasPassport && worker.passport.birthDate && worker.passport.birthPlace) {
     right
-      .addRun(new TextRun(birthInfo).break())
+      .addRun(new TextRun(birthInfo).break().bold())
   } else {
     right
       .addRun(new TextRun(line).break());
@@ -141,7 +141,7 @@ export function makeRequisite(doc: Document, worker: IPersonnel) {
   right.addRun(new TextRun('Почт. индекс, адрес и телефон:').break());
   if (hasPassport && worker.passport.address) {
     right
-      .addRun(new TextRun(HandleData.fieldsOrNotConcat([worker.passport.address, worker.phone], ', ')).break())
+      .addRun(new TextRun(HandleData.fieldsOrNotConcat([worker.passport.address, worker.phone], ', ')).break().bold())
   } else {
     right
       .addRun(new TextRun(line).break())
@@ -149,14 +149,19 @@ export function makeRequisite(doc: Document, worker: IPersonnel) {
       .addRun(new TextRun(line).break())
       .addRun(new TextRun(line).break())
   }
-  const passportNum = 'паспорт (серия, №): ' + HandleData.getTextOrDummy(_.get(worker, 'passport.number'), line.slice(20 - 1));
-  const passportIssued = 'выдан:  ' + HandleData.getTextOrDummy(_.get(worker, 'passport.passportIssued'), line.slice(8 - 1));
-  const inn = 'ИНН:  ' + HandleData.getTextOrDummy(worker.inn, line.slice(6 - 1));
-  const snils = 'Св-во с/с №:  ' + HandleData.getTextOrDummy(worker.insurance, line.slice(14 - 1));
-  right.addRun(new TextRun(passportNum).break())
-    .addRun(new TextRun(passportIssued).break())
-    .addRun(new TextRun(inn).break())
-    .addRun(new TextRun(snils).break());
+  const passportNum = HandleData.getTextOrDummy(_.get(worker, 'passport.number'), line.slice(20 - 1));
+  const passportIssued = HandleData.getTextOrDummy(_.get(worker, 'passport.passportIssued'), line.slice(7 - 1));
+  const inn = HandleData.getTextOrDummy(worker.inn, line.slice(6 - 1));
+  const snils = HandleData.getTextOrDummy(worker.insurance, line.slice(14 - 1));
+  right
+    .addRun(new TextRun('паспорт (серия, №): ').break())
+    .addRun(new TextRun(passportNum).bold())
+    .addRun(new TextRun('выдан:  ').break())
+    .addRun(new TextRun(passportIssued).bold())
+    .addRun(new TextRun('ИНН:  ').break())
+    .addRun(new TextRun(inn).bold())
+    .addRun(new TextRun('Св-во с/с №:  ').break())
+    .addRun(new TextRun(snils).bold());
   const footerL = new Paragraph()
     .addRun(new TextRun('Ректор (проректор)').break())
     .addRun(new TextRun('_______________/_________________').break());

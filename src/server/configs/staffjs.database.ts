@@ -61,7 +61,6 @@ Personnel.sync().then(() => {
   LaborContract.sync();*/
   syncAndFillIfEmptyTable(LaborContractDocx, laborContractDocxDict);
   User.sync();
-
 /*
 Personnel.upsert({id: 29, name: 'john'});
 QualImprovement.upsert({id: 1, personnelId: 29, reason: 'tak nado'});

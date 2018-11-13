@@ -22,17 +22,17 @@ export class PrintController {
     })
   }
 
-  @Post('labor-contract-scientific/:userId')
-  async printLaborContract(@Param('userId') userId: number, @Res() resp) {
+  @Post('labor-contract/:userId')
+  async prntLaborContract(@Param('userId') userId: number, @Res() resp, @Query('type') type: string) {
     resp.contentType('application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=Windows-1251');
     resp.setHeader('content-disposition', `attachment; filename=${userId}-t2.docx`);
-    const buffer = await this.printService.printLaborContract(userId);
+    const buffer = await this.printService.printLaborContract(userId, type, false);
     return resp.send(buffer);
   }
 
   @Get('labor-contract/all')
   getLaborContractDocxAll() {
-    return LaborContractDocx.findAll()
+    return LaborContractDocx.findAll({order: [['id', 'ASC']]})
   }
 
 
