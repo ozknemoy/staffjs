@@ -6,7 +6,7 @@ export class ErrHandlerService {
   public STATUS_FOR_VALID_AND_UNIQUE_ERR = HttpStatus.NOT_ACCEPTABLE;
 
   static throw(err: string, code = HttpStatus.NOT_ACCEPTABLE) {
-    throw new HttpException([err], code);
+    throw new HttpException(err, code);
   }
 
   // пока простое преобразование в массив ошибок  вложенность в errors
@@ -20,11 +20,10 @@ export class ErrHandlerService {
     }
     если объект то он перезапишет этот объект
     */
-
     // сначала пытаюсь выдернуть message из объекта
     let e = err && typeof err === 'object' && err.message ? err.message : err;
     // на фронте нужен массив()
-    e = typeof err === 'string' ? [e] : e;
+    e = Array.isArray(err) && err.length ? e.split(';') : e;
     throw new HttpException(e, code);
   }
 

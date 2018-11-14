@@ -21,18 +21,18 @@ export class MainInterceptor implements HttpInterceptor {
             // Operation failed; error is an HttpErrorResponse
             (errBody: HttpErrorResponse) => {
               // ошибки валидатора бека
-              console.log('MainInterceptor',errBody);
+              console.log('MainInterceptor', errBody);
               let errText;
               if (errBody.status === 406 || errBody.status === 400 || errBody.status === 500) {
                 errText = this.textStart;
                 // если была скачка файлов
-                if(errBody.error instanceof Blob) {
+                if (errBody.error instanceof Blob) {
                   this.blobToString(errBody.error).then(text => {
-                    errText += JSON.parse(text).join('</br>');
+                    errText += JSON.parse(text).message.replace(/\;/g, '</br>');
                     this.showToast(errText)
                   })
                 } else {
-                  errText += errBody.error.join('</br>');
+                  errText += errBody.error.message.replace(/\;/g, '</br>');
                 }
               } else if (errBody.status === 401) {
                 localStorage.removeItem('bearer');
