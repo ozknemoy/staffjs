@@ -79,6 +79,12 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @Column({type: DataType.DATE}) membershipGANDate;
   @Column membershipOAN: boolean;
   @Column({type: DataType.DATE}) membershipOANDate;
+  @Column({type: DataType.DATE}) medicalCertDate;
+  @Column psychoCert: boolean;
+  @Column({type: DataType.DATE}) psychoCertDate;
+  @Column convictionCert: boolean;
+  @Column disabilityDegree: string;
+  @Column scientificRank: string;
 
   // в самом конце анкеты
   @Column extraInfo: string;

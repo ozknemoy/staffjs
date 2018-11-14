@@ -67,20 +67,48 @@
           <option value="ж">ж</option>
         </select>
       </div>
+      <div class="form-group">
+        <label>Инвалидность, степень</label>
+        <input type="text" [(ngModel)]="worker.disabilityDegree" class="form-control">
+      </div>
+      <div class="form-group">
+        <label>Ученая степень, ученое звание</label>
+        <input type="text" [(ngModel)]="worker.scientificRank" class="form-control">
+      </div>
 
     </div>
   </div>
-    <div class="row">
-      <div class="col">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" [(ngModel)]="worker.medicalCert" id="defaultCheck1">
-          <label class="form-check-label" for="defaultCheck1">
-            Медсправка
-          </label>
+
+  <div class="row">
+    <div class="col-6">
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <input type="checkbox" [(ngModel)]="worker.medicalCert" id="medicalCert">
+          </span>
+          <label for="medicalCert" class="input-group-text">Медсправка</label>
         </div>
+        <input type="date" [(ngModel)]="worker.medicalCertDate" class="form-control">
       </div>
-      <div class="col"></div>
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text">
+            <input type="checkbox" [(ngModel)]="worker.psychoCert" id="psychoCert">
+          </span>
+          <label for="psychoCert" class="input-group-text">Психиатрическое освидетельствование</label>
+        </div>
+        <input type="date" [(ngModel)]="worker.psychoCertDate" class="form-control">
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" [(ngModel)]="worker.convictionCert" id="convictionCert">
+        <label class="form-check-label" for="convictionCert">
+          Справка об отсутствии судимости
+        </label>
+      </div>
+
     </div>
+
+  </div>
 </div>
 
 

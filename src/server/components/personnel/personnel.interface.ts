@@ -43,6 +43,12 @@ export class IPersonnel {
   membershipGANDate: string = null;
   membershipOAN: boolean = null;
   membershipOANDate: string = null;
+  medicalCertDate: string = null;
+  psychoCert: boolean = null;
+  psychoCertDate: string = null;
+  convictionCert: boolean = null;
+  disabilityDegree: string = null;
+  scientificRank: string = null;
 
   attestations: IAttestation[] = null;
   institutions: IInstitution[] = null;
