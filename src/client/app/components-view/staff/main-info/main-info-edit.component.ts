@@ -12,7 +12,7 @@ import {attractionTermsDict} from "../../../../../shared/dictionaries/attraction
 export class StaffMainInfoComponent implements OnInit {
 
   worker = new IPersonnel();
-  private dateProps: (keyof IPersonnel)[] = ['contractDate', 'workExpDate'];
+  private dateProps: (keyof IPersonnel)[] = ['contractDate', 'workExpDate', 'membershipGANDate', 'membershipOANDate', 'medicalCertDate', 'psychoCertDate',];
   // говорю беку не надо сохранять связь
   rel: string;
   public attractionTermsDict = attractionTermsDict;

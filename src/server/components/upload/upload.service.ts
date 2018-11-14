@@ -22,6 +22,10 @@ import LaborContractDocx from "../print/labor-contract-docx.model";
 import {dirWorkHistory} from "../../../shared/constants";
 import * as path from "path";
 import {HandleData} from "../../../client/app/shared/services/handle-data";
+import {IPersonnelNamedThingWithDoc} from "../personnel/relations/personnel-named-thing-with-doc.interface";
+import IAcademicRank from "../personnel/relations/academic-rank.interface";
+import AcademicRank from "../personnel/relations/academic-rank.model";
+import Reward from "../personnel/relations/personnel-reward.model";
 
 export const dirLaborContractDocx = 'files/labor-contracts/';
 
@@ -45,14 +49,16 @@ export class UploadService {
   }
 
   async updateDBPersonnelByXls(
-    {worker, passport, institution, scientificInst , workplaces, workExp, laborContracts}: {
+    {worker, passport, institution, scientificInst , workplace, workExp, laborContract, academicRank, rewards}: {
       worker: Partial<IPersonnel>,
       passport: Partial<IPassport>,
       institution: Partial<IInstitution>,
       scientificInst: Partial<IScientificInst>,
-      workplaces: Partial<IWorkExp>,
+      workplace: Partial<IWorkExp>,
       workExp: Partial<IWorkExp[]>,
-      laborContracts: Partial<ILaborContract>
+      laborContract: Partial<ILaborContract>,
+      academicRank: Partial<IAcademicRank>,
+      rewards: Partial<IPersonnelNamedThingWithDoc[]>,
     }) {
     // ищу если есть такой
     const oldWorker = await Personnel.findOne({where: {
@@ -62,23 +68,23 @@ export class UploadService {
       }});
     if (oldWorker) {
       await oldWorker.update(worker);
-      return this.upsert({worker: oldWorker, passport, institution, scientificInst , workplaces, workExp, laborContracts})
+      return this.upsert({worker: oldWorker, passport, institution, scientificInst , workplace, workExp, laborContract, academicRank, rewards})
     } else {
-      return this.createDBPersonnelByXls({worker, passport, institution, scientificInst , workplaces, workExp, laborContracts})
+      return this.createDBPersonnelByXls({worker, passport, institution, scientificInst , workplace, workExp, laborContract, academicRank, rewards})
     }
   }
 
-  async createDBPersonnelByXls({worker, passport, institution, scientificInst , workplaces, workExp, laborContracts}) {
+  async createDBPersonnelByXls({worker, passport, institution, scientificInst , workplace, workExp, laborContract, academicRank, rewards}) {
     // создаю юзера потом подсовываю ему связанные данные
     const newWorker = await this.personnelService.createOne(worker);
-    return this.upsert({worker: newWorker, passport, institution, scientificInst , workplaces, workExp, laborContracts})
+    return this.upsert({worker: newWorker, passport, institution, scientificInst , workplace, workExp, laborContract, academicRank, rewards})
   }
   async createMassDBPersonnelByXls(table: any[]) {
     return table.forEach((row, i) =>
       setTimeout(() => this.createDBPersonnelByXls(row), i * 200))
   }
 
-  upsert({worker, passport, institution, scientificInst , workplaces, workExp, laborContracts}) {
+  upsert({worker, passport, institution, scientificInst , workplace, workExp, laborContract, academicRank, rewards}) {
     const pId = worker.id;
     passport.personnelId = pId;
     let promises = [Passport.upsert(passport)];
@@ -91,13 +97,25 @@ export class UploadService {
       scientificInst.personnelId = pId;
       promises.push(ScientificInst.upsert(scientificInst))
     }
-    if(!HandleData.onlyEmptyKeys(workplaces)) {
-      workplaces.personnelId = pId;
-      promises.push(Workplace.upsert(workplaces))
+    if(!HandleData.onlyEmptyKeys(workplace)) {
+      workplace.personnelId = pId;
+      promises.push(Workplace.upsert(workplace))
     }
-    if(!HandleData.onlyEmptyKeys(laborContracts)) {
-      laborContracts.personnelId = pId;
-      promises.push(LaborContract.upsert(laborContracts))
+    if(!HandleData.onlyEmptyKeys(laborContract)) {
+      laborContract.personnelId = pId;
+      promises.push(LaborContract.upsert(laborContract))
+    }
+    if(!HandleData.onlyEmptyKeys(academicRank)) {
+      academicRank.personnelId = pId;
+      promises.push(AcademicRank.upsert(academicRank))
+    }
+    if(rewards) {
+      promises = promises.concat(
+        rewards.map(rew => {
+          rew.personnelId = pId;
+          return Reward.upsert(rew)
+        })
+      );
     }
     promises = promises.concat(
       workExp.map(workExpRow => {
@@ -105,7 +123,7 @@ export class UploadService {
         return WorkExp.upsert(workExpRow)
       })
     );
-    return Promise.all(promises).then(() => ({worker, passport, institution, scientificInst , workplaces, workExp, laborContracts}));
+    return Promise.all(promises).then(() => ({worker, passport, institution, scientificInst , workplace, workExp, laborContract, academicRank, rewards}));
   }
 
   async uploadLaborContractDocx(file: IFileUpload, type) {

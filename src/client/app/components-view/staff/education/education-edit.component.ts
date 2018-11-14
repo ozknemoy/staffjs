@@ -20,6 +20,7 @@ export class EducationEditComponent implements OnInit {
   private datePropsInst: (keyof IInstitution)[] = ['endDate'];
   private datePropsScientificInst: (keyof IScientificInst)[] = ['endDate', 'statementDate'];
   private datePropsAcademicRank: (keyof IAcademicRank)[] = ['docDate', 'statementDate'];
+  private dateProps: (keyof IPersonnel)[] = ['contractDate', 'workExpDate', 'membershipGANDate', 'membershipOANDate', 'medicalCertDate', 'psychoCertDate',];
 
   constructor(protected http: HttpService, protected route: ActivatedRoute) {
 
@@ -31,6 +32,7 @@ export class EducationEditComponent implements OnInit {
   }
 
   handlePersAfterGet(worker: IPersonnel) {
+    this.worker = HandleData.handleDatesInObjectFromServer(worker, this.dateProps);
     if (!_.isEmpty(worker.institutions)) {
       worker.institutions = HandleData.handleDatesInArrFromServer(worker.institutions, this.datePropsInst);
     }

@@ -7,6 +7,8 @@ import {invalidINN} from '../../../shared/validators';
 import {HttpException} from "@nestjs/common";
 import {ErrHandlerService} from "../../services/error-handler.service";
 import {attractionTermsDict} from "../../../shared/dictionaries/attraction-terms.dict";
+import {IPersonnelNamedThingWithDoc} from "../personnel/relations/personnel-named-thing-with-doc.interface";
+import IWorkExp from "../personnel/relations/personnel-work-exp.interface";
 
 export class ParseXls {
 
@@ -27,7 +29,7 @@ export class ParseXls {
   static create(excelPath = './staff.xls') {
     try {
       const firstList = xlsx.parse(fs.readFileSync(excelPath))[0];
-      return  this.parse(firstList.data[1]);
+      return  this.parse(firstList.data[15]);
     } catch (e) {
       ErrHandlerService.throw('Ошибка чтения/разбора файла');
     }
@@ -124,7 +126,7 @@ export class ParseXls {
       appointingAuthority: xls[32],
     };
     // Z-AH пока пропустил
-    const workplaces: Partial<IPersonnel['workplaces'][0]> = {
+    const workplace: Partial<IPersonnel['workplaces'][0]> = {
       date: HandleData.ruDateToServer(xls[42] || xls[56]),
       department: xls[34],
       specialty: xls[35],
@@ -139,8 +141,8 @@ export class ParseXls {
       dismissalReason: xls[76],
       lawArticle: xls[77],
     };
-    const workExp: Partial<IPersonnel['workExp']> = this.getWorkExp(xls, null);
-    const laborContracts: Partial<IPersonnel['laborContract'][0]> = {
+    const workExp: Partial<IWorkExp[]> = this.getWorkExp(xls, null);
+    const laborContract: Partial<IPersonnel['laborContract'][0]> = {
       number: xls[39],
       date: HandleData.ruDateToServer(xls[40]),
       endDate: HandleData.ruDateToServer(xls[41]),
@@ -148,10 +150,10 @@ export class ParseXls {
       department: xls[34],
       attractionTerms,
     };
-    const rewards/*: Partial<IPersonnel['rewards']>*/ = this.getRewards(xls);
+    const rewards = <Partial<IPersonnelNamedThingWithDoc>>this.getRewards(xls);
     return {
-      worker, passport, institution, scientificInst , workplaces, workExp,
-      laborContracts, academicRank, rewards
+      worker, passport, institution, scientificInst , workplace, workExp,
+      laborContract, academicRank, rewards
     }
   }
 
@@ -175,7 +177,7 @@ export class ParseXls {
     if (xls[101]) r.push('ПочРабОбО');
     if (xls[110]) r.push('ПочРабНауки');
 
-    return r.map((name) => ({name}))
+    return r.length ? r.map((name) => ({name})) : null
   }
 
   static getWorkExp(xls, personnelId): Partial<IPersonnel['workExp']> {
