@@ -30,6 +30,8 @@ import {NavBarComponent} from './components-stateless/nav-bar/nav-bar.component'
 import {UserRoleDirective} from './components-stateless/user-role.directive';
 import {UserEditorComponent} from './components-view/user-editor/user-editor.component';
 import {SuperAdminGuard} from './services/super-admin-guard.service';
+import {GotFiredStaffListComponent} from "./components-view/staff/got-fired-staff/got-fired-staff-list.component";
+import {PipeModule} from "./pipes";
 
 
 declare const require;
@@ -48,6 +50,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     UserEditorComponent,
     // staff
     StaffListComponent,
+    GotFiredStaffListComponent,
     StaffEditComponent,
     StaffMainInfoComponent,
     QualImprovementComponent,
@@ -68,7 +71,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     NavBarComponent,
     UserRoleDirective,
   ],
-  imports: vendorsModules,
+  imports: [PipeModule, ...vendorsModules],
   providers: [
     HttpService,
     AuthGuard,

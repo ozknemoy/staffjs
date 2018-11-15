@@ -31,8 +31,8 @@ export class StaffController {
 
   @Get()
   @UseGuards(AuthGuard())
-  getStaff() {
-    return this.personnelService.getAllFullData();
+  getStaff(@Query('inactive') inactive) {
+    return this.personnelService.getAllByActivity(!inactive);
   }
 
   @Get(':id')

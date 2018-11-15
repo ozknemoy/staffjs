@@ -19,6 +19,7 @@ import {Route} from "@angular/router";
 import {HomeComponent} from './components-view/home/home.component';
 import {UserEditorComponent} from './components-view/user-editor/user-editor.component';
 import {SuperAdminGuard} from './services/super-admin-guard.service';
+import {GotFiredStaffListComponent} from "./components-view/staff/got-fired-staff/got-fired-staff-list.component";
 
 export const routes: Route[] = [
   {
@@ -40,6 +41,10 @@ export const routes: Route[] = [
     path: 'staff-list',
     component: StaffListComponent,
     canActivate: [AuthGuard]
+  }, {
+    path: 'got-fired-staff-list',
+    component: GotFiredStaffListComponent,
+    canActivate: [SuperAdminGuard]
   }, {
     path: 'staff-edit/:id',
     component: StaffEditComponent,

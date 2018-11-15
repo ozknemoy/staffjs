@@ -1,6 +1,6 @@
 import {
   Table, Column, Model, PrimaryKey, Unique, AutoIncrement, HasMany, HasOne,
-  DefaultScope, Is, DataType
+  DefaultScope, Is, DataType, Default
 } from 'sequelize-typescript';
 import {IPersonnel} from "./personnel.interface";
 import Family from "./relations/personnel-family.model";
@@ -83,6 +83,8 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @Column convictionCert: boolean;
   @Column disabilityDegree: string;
   @Column scientificRank: string;
+  @Default(true)
+  @Column active: boolean = true;
 
   // в самом конце анкеты
   @Column extraInfo: string;

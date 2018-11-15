@@ -45,6 +45,10 @@ export class PersonnelService {
     return staffJsDB.query(`SELECT id, number, name, surname, middleName  FROM staff`).spread((results, metadata) => results);
   }
 
+  getAllByActivity(active: boolean) {
+    return Personnel.findAll({where: {active}});
+  }
+
   getOne(id) {
     return Personnel.findOne({where: {id}})
   }

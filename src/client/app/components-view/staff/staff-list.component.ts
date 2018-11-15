@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import {IPersonnel} from "../../../../server/components/personnel/personnel.interface";
 import {Router} from "@angular/router";
 import * as _ from 'lodash';
+import {HttpService} from "../../services/http.service";
 
 @Component({
   selector: 'app-staff-list',
@@ -10,15 +11,22 @@ import * as _ from 'lodash';
 })
 export class StaffListComponent implements OnInit {
   public currentPage = 1;
-  public amount: number;
-  public amountW: number;
-  public amountM: number;
+  public amount = 0;
+  public amountW = 0;
+  public amountM = 0;
   public staffList: IPersonnel[];
-
-  constructor(private http: HttpClient, private router: Router) { }
+  public isGotFiredState = false;
+  public fltr = {
+    surname: null
+  };
+  constructor(protected http: HttpService, protected router: Router) { }
 
   async ngOnInit() {
-    this.staffList = await this.http.get<IPersonnel[]>('/personnel').toPromise();
+    let url = '/personnel';
+    if(this.isGotFiredState) {
+      url += '?inactive=true'
+    }
+    this.staffList = await this.http.get<IPersonnel[]>(url);
     this.afterGetStaff()
   }
 
@@ -35,15 +43,32 @@ export class StaffListComponent implements OnInit {
   }
 
   createNewOne() {
-    this.http.post('/personnel', {}).toPromise()
+    this.http.post('/personnel', {})
       .then(id => this.router.navigate(['/staff-edit', id]));
   }
 
-  deleteOne(id, i) {
-    this.http.delete('/personnel/' + id).toPromise()
-      .then(id => {
+  deleteOne(id, i, destroy: boolean) {
+    return destroy ? this.destroyOne(id) : this.getFiredOne(id)
+      .then(() => {
         this.staffList.splice(i, 1);
         this.afterGetStaff();
       });
   }
+
+  getFiredOne(id) {
+    return this.http.put('/personnel/' + id, {active: false})
+  }
+
+  restoreOne(id, i) {
+    return this.http.put('/personnel/' + id, {active: true})
+      .then(() => {
+        this.staffList.splice(i, 1);
+        this.afterGetStaff();
+      });
+  }
+
+  destroyOne(id) {
+    return this.http.delete('/personnel/' + id)
+  }
+
 }

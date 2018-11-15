@@ -1,14 +1,19 @@
 
 <ul class="nav justify-content-end">
-  <li class="nav-item">
+  <li class="nav-item" routerLinkActive="active">
     <a routerLink="/staff-list" class="nav-link">Сотрудники <i class="fa fa-users"></i></a>
   </li>
-  <li class="nav-item" userRole rights="1">
+  <li class="nav-item" userRole rights="1" routerLinkActive="active">
     <a routerLink="/employment-contract" class="nav-link">
       Загрузка трудовых договоров <i class="fa fa-upload"></i>
     </a>
   </li>
-  <li class="nav-item" userRole rights="1">
+  <li class="nav-item" userRole rights="1" routerLinkActive="active">
+    <a routerLink="/got-fired-staff-list" class="nav-link">
+      Уволенные сотрудники <i class="fa fa-user-times"></i>
+    </a>
+  </li>
+  <li class="nav-item" userRole rights="1" routerLinkActive="active">
     <a routerLink="/admin-editor" class="nav-link">
       Создание пользователей <i class="fa fa-user-o"></i>
     </a>
