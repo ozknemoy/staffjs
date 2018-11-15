@@ -4,11 +4,25 @@ import xlsx from 'node-xlsx';
 import {IPersonnel} from '../personnel/personnel.interface';
 import {HandleData} from '../../../client/app/shared/services/handle-data';
 import {invalidINN} from '../../../shared/validators';
-import {HttpException} from "@nestjs/common";
-import {ErrHandlerService} from "../../services/error-handler.service";
+import {ErrHandler} from "../../services/error-handler.service";
 import {attractionTermsDict} from "../../../shared/dictionaries/attraction-terms.dict";
 import {IPersonnelNamedThingWithDoc} from "../personnel/relations/personnel-named-thing-with-doc.interface";
 import IWorkExp from "../personnel/relations/personnel-work-exp.interface";
+import IScientificInst from '../personnel/relations/personnel-scientific-inst.interface';
+import {IPassport} from '../personnel/relations/personnel-passport.interface';
+import IInstitution from '../personnel/relations/personnel-institution.interface';
+import IAcademicRank from '../personnel/relations/academic-rank.interface';
+
+export interface IBuildedFromXlsWorker {
+  worker: Partial<IPersonnel>,
+  passport: Partial<IPassport>,
+  institution: Partial<IInstitution>,
+  scientificInst: Partial<IScientificInst>,
+  workplace: Partial<IWorkExp>,
+  workExp: Partial<IWorkExp[]>,
+  academicRank: Partial<IAcademicRank>,
+  rewards: Partial<IPersonnelNamedThingWithDoc[]>,
+}
 
 export class ParseXls {
 
@@ -17,21 +31,22 @@ export class ParseXls {
     return  this.parse( w.data[1]);
   }
 
-  static createMass(excelPath = './staff.xls') {
+  static createMass(excelPath = './staff.xls'): IBuildedFromXlsWorker[] {
     try {
       const firstList = xlsx.parse(fs.readFileSync(excelPath))[0];
       return  firstList.data.slice(1).map(row => this.parse(row));
     } catch (e) {
-      ErrHandlerService.throw('Ошибка чтения/разбора файла', e);
+      ErrHandler.throw('Ошибка чтения/разбора файла', e);
     }
   }
 
   static create(excelPath = './staff.xls') {
     try {
       const firstList = xlsx.parse(fs.readFileSync(excelPath))[0];
-      return  this.parse(firstList.data[15]);
+      return  this.parse(firstList.data[1]);
     } catch (e) {
-      ErrHandlerService.throw('Ошибка чтения/разбора файла');
+      ErrHandler.catchPropagate('Ошибка чтения/разбора файла', e);
+      //throw;
     }
   }
 
@@ -59,6 +74,11 @@ export class ParseXls {
         xls[i] = null
       }
     });
+    try {
+      this.splitByN(xls[1], 3)
+    } catch (e) {
+      ErrHandler.propogate('Ошибка разбора файла. Строка содержит пустую ячейку с ФИО. Вероятно excel содержит пустые строки', e);
+    }
     const [surname, name, middleName] = this.splitByN(xls[1], 3);
     const sex = !HandleData.isInvalidPrimitive(middleName)
       ? middleName.trim().slice(-3) === 'вна'
@@ -138,22 +158,14 @@ export class ParseXls {
       category: xls[37],
       dismissalDate: HandleData.ruDateToServer(xls[74]),
       dismissalGround: xls[75],
-      dismissalReason: xls[76],
       lawArticle: xls[77],
+      active: true,
     };
     const workExp: Partial<IWorkExp[]> = this.getWorkExp(xls, null);
-    const laborContract: Partial<IPersonnel['laborContract'][0]> = {
-      number: xls[39],
-      date: HandleData.ruDateToServer(xls[40]),
-      endDate: HandleData.ruDateToServer(xls[41]),
-      specialty: xls[35],
-      department: xls[34],
-      attractionTerms,
-    };
     const rewards = <Partial<IPersonnelNamedThingWithDoc>>this.getRewards(xls);
     return {
       worker, passport, institution, scientificInst , workplace, workExp,
-      laborContract, academicRank, rewards
+      academicRank, rewards
     }
   }
 

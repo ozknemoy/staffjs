@@ -12,7 +12,9 @@ import {attractionTermsDict} from "../../../../../shared/dictionaries/attraction
 export class WorkplaceComponent implements OnInit {
   id: string;
   public attractionTermsDict = attractionTermsDict;
-  private dateProps: (keyof IWorkplace)[] = ['date', 'dismissalDate', 'academicCouncilDate'];
+  private dateProps: (keyof IWorkplace)[] =
+    ['date', 'dismissalDate', 'academicCouncilDate', 'dismissalDate', 'contractDate',
+      'contractEndDate', 'soutDate'];
   public workplaces: IWorkplace[] = [];
   constructor(private http: HttpService, private route: ActivatedRoute) { }
 

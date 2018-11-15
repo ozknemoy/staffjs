@@ -1,7 +1,7 @@
 import {ForbiddenException, HttpException, HttpStatus} from "@nestjs/common";
 import {UniqueConstraintError} from "sequelize";
 
-export class ErrHandlerService {
+export class ErrHandler {
 
   public STATUS_FOR_VALID_AND_UNIQUE_ERR = HttpStatus.NOT_ACCEPTABLE;
 
@@ -9,6 +9,17 @@ export class ErrHandlerService {
     throw new HttpException(err, code);
   }
 
+  static propogate(message, e: Error) {
+    console.log(e);
+    throw {message, propagate: true}
+  }
+
+  static catchPropagate(message, e: Error) {
+    if (!e['propagate']) {
+      console.log(e);
+    }
+    ErrHandler.throw(e['propagate'] ? e.message : message)
+  }
   // пока простое преобразование в массив ошибок  вложенность в errors
   handle(err: any, code = this.STATUS_FOR_VALID_AND_UNIQUE_ERR) {
     /* если передавать не массив ошибки а строку то преобразуется в объект
@@ -33,7 +44,7 @@ export class ErrHandlerService {
   }
 
   handlaAll(e, tableName?, uniqueFields?: /*{email:'Email уже существует'}*/Object, status = this.STATUS_FOR_VALID_AND_UNIQUE_ERR) {
-    console.log('ErrHandlerService.handleAll___________________', e.name);
+    console.log('ErrHandler.handleAll___________________', e.name);
     switch (e.name) {
       case "SequelizeUniqueConstraintError":
         for (const key in uniqueFields) {

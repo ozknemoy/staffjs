@@ -20,11 +20,7 @@ import Reward from './relations/personnel-reward.model';
 import {IPersonnelNamedThingWithDoc} from './relations/personnel-named-thing-with-doc.interface';
 import {ISocialSecurity} from './relations/personnel-social-security.interface';
 import SocialSecurity from './relations/personnel-social-security.model';
-import IWorkExp from './relations/personnel-work-exp.interface';
 import WorkExp from "./relations/personnel-work-exp.model";
-import {LaborContractComponent} from '../../../client/app/components-view/staff/labor-contract/labor-contract-edit.component';
-import LaborContract from './relations/personnel-labor-contract.model';
-import ILaborContract from './relations/personnel-labor-contract.interface';
 import {AuthGuard} from "@nestjs/passport";
 
 
@@ -143,8 +139,10 @@ export class StaffController {
   }
 
   @Get(':id/workplace')
-  getWorkplace(@Param('id') personnelId) {
-    return this.personnelService.getByParent(Workplace, personnelId);
+  getWorkplace(@Param('id') personnelId, @Query('onlyActive') onlyActive) {
+    return onlyActive
+      ? Workplace.findAll({where: {personnelId, active: true}})
+      : this.personnelService.getByParent(Workplace, personnelId);
   }
 
   @Put(':id/workplace')
@@ -175,15 +173,5 @@ export class StaffController {
   @Put(':id/with-rel/work-exp')
   saveOrCreateWorkExp(@Param('id') id, @Body() pers: IPersonnel) {
     return this.personnelService.saveOrCreateWorkExp(id, pers);
-  }
-
-  @Get(':id/labor-contract')
-  getLaborContract(@Param('id') personnelId) {
-    return this.personnelService.getByParent(LaborContract, personnelId);
-  }
-
-  @Put(':id/labor-contract')
-  saveOrCreateLaborContract(@Param('id') id, @Body() body: ILaborContract[]) {
-    return this.personnelService.saveOrCreateLaborContract(id, body);
   }
 }

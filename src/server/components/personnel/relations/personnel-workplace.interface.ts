@@ -14,7 +14,12 @@ export default class IWorkplace {
   category: string;
   dismissalDate: string;
   dismissalGround: string;
-  dismissalReason: string;
   lawArticle: string;
-
+  contractNumber: string;
+  contractDate: string;
+  contractEndDate: string;
+  soutDate: string;
+  soutClass: string;
+  terminationReason: string;
+  active: boolean;
 }

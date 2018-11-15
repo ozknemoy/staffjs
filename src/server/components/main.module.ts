@@ -3,7 +3,7 @@ import { ApiController } from './api/api.controller';
 import {StaffController} from './personnel/personnel.controller';
 import {PersonnelService} from "./personnel/personnel.service";
 import {UploadController} from "./upload/upload.controller";
-import {ErrHandlerService} from "../services/error-handler.service";
+import {ErrHandler} from "../services/error-handler.service";
 import {UploadService} from "./upload/upload.service";
 import {DbTransactions} from "../services/db-transactions.service";
 import {PrintController} from "./print/print.controller";
@@ -31,7 +31,7 @@ import {PassportModule} from "@nestjs/passport";
   controllers: [ApiController, StaffController, UploadController, PrintController, UserController],
   providers: [
     PersonnelService,
-    ErrHandlerService,
+    ErrHandler,
     UploadService,
     DbTransactions,
     PrintService,
@@ -42,6 +42,6 @@ import {PassportModule} from "@nestjs/passport";
 export class MainModule {
   constructor(private personnelService: PersonnelService) {}
     public configure(consumer: MiddlewareConsumer): void {
-        new PrintService(this.personnelService).saveLocalForDevelopmentDocx();
+        //new PrintService(this.personnelService).saveLocalForDevelopmentDocx();
     }
 }

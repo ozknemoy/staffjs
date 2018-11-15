@@ -21,7 +21,6 @@ import {MainInterceptor} from './config/http-interceptor';
 import {RewardComponent} from './components-view/staff/reward/reward-edit.component';
 import {SocialSecurityComponent} from './components-view/staff/social-security/social-security.component';
 import {WorkExpComponent} from './components-view/staff/work-exp/work-exp-edit.component';
-import {LaborContractComponent} from './components-view/staff/labor-contract/labor-contract-edit.component';
 import {ConfirmButtonDirective} from './components-stateless/confirm-button.directive';
 import {TokenInterceptor} from './config/token-interceptor';
 import {LoginComponent} from "./components-view/login/login.component";
@@ -62,7 +61,6 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     RewardComponent,
     SocialSecurityComponent,
     WorkExpComponent,
-    LaborContractComponent,
 
     FileUploaderComponent,
     PrintButtonComponent,

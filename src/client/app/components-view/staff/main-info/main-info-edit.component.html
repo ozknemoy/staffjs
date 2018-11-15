@@ -109,6 +109,29 @@
     </div>
 
   </div>
+
+  <h5>Действующие трудовые договоры</h5>
+  <div *ngIf="workPlaces && !workPlaces.length" class="alert alert-danger">
+    Необходимо сделать активным хотя бы один договор в таблице приема на работу
+  </div>
+  <table *ngIf="workPlaces.length" class="table table-sm table-responsive-sm table-bordered">
+    <tr>
+      <th>Номер трудового договора</th>
+      <th>Дата трудового договора</th>
+      <th>Дата окончания трудового договора</th>
+      <th>Должность (специальность, профессия), разряд, класс (категория) квалификации</th>
+      <th>Структурное подразделение</th>
+      <th>Условия привлечения</th>
+    </tr>
+    <tr *ngFor="let w of workPlaces">
+      <td>{{w.contractNumber}}</td>
+      <td>{{w.contractDate | date}}</td>
+      <td>{{w.contractEndDate | date}}</td>
+      <td>{{w.specialty}}</td>
+      <td>{{w.department}}</td>
+      <td>{{w.attractionTerms}}</td>
+    </tr>
+  </table>
 </div>
 
 

@@ -27,8 +27,6 @@ import WorkExp from './relations/personnel-work-exp.model';
 import IScientificInst from './relations/personnel-scientific-inst.interface';
 import ScientificInst from './relations/personnel-scientific-inst.model';
 import {phoneRegExp, validateINN} from '../../../shared/validators';
-import LaborContract from "./relations/personnel-labor-contract.model";
-import ILaborContract from "./relations/personnel-labor-contract.interface";
 import AcademicRank from "./relations/academic-rank.model";
 import IAcademicRank from "./relations/academic-rank.interface";
 
@@ -125,9 +123,6 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
 
   @HasMany(() => ScientificInst)
   scientificInst: IScientificInst[];
-
-  @HasMany(() => LaborContract)
-  laborContract: ILaborContract[];
 
   @HasMany(() => AcademicRank)
   academicRank: IAcademicRank[];

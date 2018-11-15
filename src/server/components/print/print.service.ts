@@ -2,12 +2,11 @@ import {Injectable} from '@nestjs/common';
 import {PersonnelService} from '../personnel/personnel.service';
 import {PrintT2Builder} from './print-t2.class';
 import {IPdfSchema} from '../../interfaces/pdf-shema.interface';
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 import {PrintLaborContractDynamicBuilder} from './print-labor-contract.class';
 import * as docx from "docx";
-import {HandleData} from "../../../client/app/shared/services/handle-data";
 import LaborContractDocx from "./labor-contract-docx.model";
-import {ErrHandlerService} from "../../services/error-handler.service";
+import {ErrHandler} from "../../services/error-handler.service";
 import {dirLaborContractDocx} from "../upload/upload.service";
 
 const path = require('path');
@@ -40,13 +39,12 @@ export class PrintService {
   }
 
   async saveLocalForDevelopmentDocx() {
-    //return this.printLaborContract(194, '1',true);
+    return this.printLaborContract(194, '1', true);
   }
 
   async printT2(userId) {
     const user = await this.personnelService.getOneFull(userId);
     const pdfSchema: IPdfSchema.Root = new PrintT2Builder(user).make();
-    // console.log('***', pdfSchema.content);
     return this.printPdf(printer.createPdfKitDocument(pdfSchema));
   }
 
@@ -67,8 +65,8 @@ export class PrintService {
 
   async printLaborContract(userId, typePart2, saveLocal) {
     const docx = await LaborContractDocx.findOne({where: {type: +typePart2}});
-    if(!docx || !docx.url) {
-      ErrHandlerService.throw('Сначала загрузите статическую часть договора')
+    if (!docx || !docx.url) {
+      ErrHandler.throw('Сначала загрузите статическую часть договора')
     }
     // наличие папки с файлами не проверяю тк если загружен хотя бы один файл то папка существует
     const part2Uint = fs.readFileSync(dirLaborContractDocx + docx.url);
@@ -76,7 +74,7 @@ export class PrintService {
     const [part1, part3] = new PrintLaborContractDynamicBuilder(user).make();
     const part1Uint = await this.createOfficeFileUint8(part1);
     const part3Uint = await this.createOfficeFileUint8(part3);
-    const merger = new DocxMerger({pageBreak: false},[part1Uint, part2Uint, part3Uint]);
+    const merger = new DocxMerger({pageBreak: false}, [part1Uint, part2Uint, part3Uint]);
 
     return new Promise((res, fail) => {
       merger.save('nodebuffer', (uint) => {
@@ -105,9 +103,7 @@ export class PrintService {
     const ext = '.docx';
     console.log('-----  ok make  -----');
     // пробую писать
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir)
-    }
+    fs.ensureDirSync(dir);
     fs.writeFile(dir + name + ext, uint8, (e) => {
       if (e) {
         console.log('*****    ', e.code, '  make with timestamp  *****');

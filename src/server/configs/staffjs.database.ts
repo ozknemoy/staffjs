@@ -13,7 +13,6 @@ import Vacation from '../components/personnel/relations/personnel-vacation.model
 import Institution from "../components/personnel/relations/personnel-institution.model";
 import WorkExp from '../components/personnel/relations/personnel-work-exp.model';
 import ScientificInst from '../components/personnel/relations/personnel-scientific-inst.model';
-import LaborContract from "../components/personnel/relations/personnel-labor-contract.model";
 import User from "../components/user/user.model";
 import LaborContractDocx from "../components/print/labor-contract-docx.model";
 import {laborContractDocxDict} from "../../shared/dictionaries/labor-contract-docx.dict";
@@ -40,7 +39,7 @@ export const staffJsDB = new Sequelize({
 staffJsDB.addModels([
   Personnel, Family, Attestation, Passport, ProfRetraining, QualImprovement,
   Reward, SocialSecurity, Workplace, Army, Vacation, Institution, WorkExp, ScientificInst,
-  LaborContract, User, LaborContractDocx, AcademicRank
+  User, LaborContractDocx, AcademicRank
 ]);
 /*{force: true}*/
 // обязательный порядок
@@ -59,7 +58,6 @@ Personnel.sync().then(() => {
   Workplace.sync();
   WorkExp.sync();
   ScientificInst.sync();
-  LaborContract.sync();
   syncAndFillIfEmptyTable(LaborContractDocx, laborContractDocxDict);
   User.sync();
   AcademicRank.sync();

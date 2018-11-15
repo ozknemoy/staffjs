@@ -7,22 +7,18 @@ import IProfRetraining from "./relations/personnel-prof-retraining.interface";
 import IInstitution from "./relations/personnel-institution.interface";
 import IScientificInst from './relations/personnel-scientific-inst.interface';
 import IWorkplace from "./relations/personnel-workplace.interface";
-import WorkExp from "./relations/personnel-work-exp.model";
-import ILaborContract from './relations/personnel-labor-contract.interface';
 import IWorkExp from './relations/personnel-work-exp.interface';
 import IAcademicRank from "./relations/academic-rank.interface";
 
 
 export class IPersonnel {
   id: number;
-
   number: string = null;
   inn: string = null;
   insurance: string = null;
   workNature: string = null;
   workType: string = null;
   sex: string = null;
-
   name: string = null;
   surname: string = null;
   middleName: string = null;
@@ -32,7 +28,6 @@ export class IPersonnel {
   foreignLanguageGrade: string = null;
   educationName: string = null;
   afterInstEduName: string = null;
-
   profession: string = null;
   phone: string = null;
   // new
@@ -60,6 +55,5 @@ export class IPersonnel {
   scientificInst: IScientificInst[] = null;
   workplaces: IWorkplace[] = null;
   workExp: IWorkExp[] = null;
-  laborContract: ILaborContract[] = null;
   academicRank: IAcademicRank[] = null;
 }

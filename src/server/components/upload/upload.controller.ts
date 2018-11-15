@@ -3,7 +3,7 @@ import {
   UseGuards, Get, Query
 } from '@nestjs/common';
 import {UploadService} from "./upload.service";
-import {ErrHandlerService} from "../../services/error-handler.service";
+import {ErrHandler} from "../../services/error-handler.service";
 import {AuthGuard} from "@nestjs/passport";
 import {IFileUpload} from "../../interfaces/file-upload";
 

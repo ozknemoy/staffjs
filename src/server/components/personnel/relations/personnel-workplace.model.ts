@@ -35,7 +35,12 @@ export default class Workplace extends Model<Workplace> implements IWorkplace {
   @Column category: string;
   @Column({type: DataType.DATE}) dismissalDate: string;
   @Column dismissalGround: string;
-  @Column dismissalReason: string;
   @Column lawArticle: string;
-
+  @Column  contractNumber: string;
+  @Column({type: DataType.DATE}) contractDate: string;
+  @Column({type: DataType.DATE}) contractEndDate: string;
+  @Column  terminationReason: string;
+  @Column({type: DataType.DATE}) soutDate: string;
+  @Column soutClass: string;
+  @Column  active: boolean;
 }

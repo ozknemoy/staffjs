@@ -5,7 +5,7 @@ import {staffJsDB} from "../../configs/staffjs.database";
 import Personnel from "./personnel.model";
 import Family from "./relations/personnel-family.model";
 import {DbTransactions} from "../../services/db-transactions.service";
-import {ErrHandlerService} from "../../services/error-handler.service";
+import {ErrHandler} from "../../services/error-handler.service";
 import QualImprovement from "./relations/personnel-qual-improvement.model";
 import IQualImprovement from "./relations/personnel-qual-improvement.interface";
 import {IFamily} from "./relations/personnel-family.interface";
@@ -29,14 +29,12 @@ import * as _ from 'lodash/core';
 import Institution from './relations/personnel-institution.model';
 import ScientificInst from './relations/personnel-scientific-inst.model';
 import {HandleData} from '../../../client/app/shared/services/handle-data';
-import LaborContract from './relations/personnel-labor-contract.model';
-import ILaborContract from './relations/personnel-labor-contract.interface';
 import AcademicRank from "./relations/academic-rank.model";
 
 @Injectable()
 export class PersonnelService {
 
-  constructor(private dbTransactions: DbTransactions, private errHandler: ErrHandlerService) {}
+  constructor(private dbTransactions: DbTransactions, private errHandler: ErrHandler) {}
 
   getAllFullData() {
     return staffJsDB.query(`SELECT * FROM Staff`).spread((results, metadata) => results);
@@ -191,12 +189,5 @@ export class PersonnelService {
   async deleteOne(id: number) {
     // при первом запросе (когда еще нет данных для юзера) надо создать 3 стандартные строчки WorkExp
     return Personnel.destroy({where: {id}});
-  }
-
-  saveOrCreateLaborContract(personnelId, contracts: ILaborContract[]) {
-    return this.dbTransactions
-      .createOrUpdateManyWithoutRels(LaborContract, 'personnelId', personnelId, contracts)
-      .then(() => this.getByParent(LaborContract, personnelId))
-      .catch(err => this.errHandler.handlaAll(err))
   }
 }

@@ -12,6 +12,7 @@ import {attractionTermsDict} from "../../../../../shared/dictionaries/attraction
 export class StaffMainInfoComponent implements OnInit {
 
   worker = new IPersonnel();
+  workPlaces;
   private dateProps: (keyof IPersonnel)[] = ['contractDate', 'workExpDate', 'membershipGANDate', 'membershipOANDate', 'medicalCertDate', 'psychoCertDate',];
   // говорю беку не надо сохранять связь
   rel: string;
@@ -26,7 +27,8 @@ export class StaffMainInfoComponent implements OnInit {
   }
 
   afterInit() {
-
+    this.http.get(`personnel/${this.route.parent.snapshot.params.id}/workplace?onlyActive=true`)
+      .then((workPlaces) => this.workPlaces = workPlaces);
   }
 
   afterSave() {

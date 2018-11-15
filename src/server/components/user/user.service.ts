@@ -2,7 +2,7 @@ import { JwtService } from '@nestjs/jwt';
 import User from "./user.model";
 import {HttpException, HttpStatus, Injectable, UnauthorizedException} from "@nestjs/common";
 import IUser from "./user.interface";
-import {ErrHandlerService} from "../../services/error-handler.service";
+import {ErrHandler} from "../../services/error-handler.service";
 
 const bcrypt = require('bcrypt');
 
@@ -11,7 +11,7 @@ const bcrypt = require('bcrypt');
 export class UserService {
   private round = 10;
 
-  constructor(private readonly jwtService: JwtService, private errHandler: ErrHandlerService) {}
+  constructor(private readonly jwtService: JwtService, private errHandler: ErrHandler) {}
 
   async signIn({login, password}): Promise<{token: string, rights: number}> {
     // In the real-world app you shouldn't expose this method publicly
@@ -28,7 +28,7 @@ export class UserService {
   }
 
   badCredentials() {
-    ErrHandlerService.throw('Пара пароль/логин не валидна', HttpStatus.NOT_ACCEPTABLE);
+    ErrHandler.throw('Пара пароль/логин не валидна', HttpStatus.NOT_ACCEPTABLE);
   }
 
   async validateUser({login}): Promise<IUser> {
@@ -42,7 +42,7 @@ export class UserService {
         return User.create({login, _password, rights: 1})
       }
     }
-    ErrHandlerService.throw('чего-то не хватает', 406)
+    ErrHandler.throw('чего-то не хватает', 406)
   }
 
   async createAdmin({login, password, rights}) {
@@ -53,7 +53,7 @@ export class UserService {
           .catch(err => this.errHandler.handlaAll(err, 'user', {login: 'Логин уже занят'}))
       }
     }
-    ErrHandlerService.throw('Не правильные данные (логин надо латиницей, права выше 10)', 406)
+    ErrHandler.throw('Не правильные данные (логин надо латиницей, права выше 10)', 406)
   }
 
   generateHash(password) {
