@@ -35,11 +35,16 @@ export class UserService {
     return await User.findOne({where: {login}, attributes: ['id', 'login', 'rights', 'password']});
   }
 
-  async createSA({login, password: password, pin}) {
+  async createSA({login, password, pin}) {
     if (pin === '15646' && login && password) {
+      const sAdmin = await User.findOne({where: {login}});
+      if (sAdmin) {
+        ErrHandler.throw('логин занят', 406)
+      }
       const _password = await this.generateHash(password);
+      console.log(login, password, _password);
       if (_password) {
-        return User.create({login, _password, rights: 1})
+        return User.create({login, password: _password, rights: 1})
       }
     }
     ErrHandler.throw('чего-то не хватает', 406)
