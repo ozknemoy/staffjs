@@ -1,6 +1,6 @@
 import {
   Table, Column, Model, PrimaryKey, Unique, AutoIncrement, HasMany, HasOne,
-  DefaultScope, Is, DataType, Default
+  DefaultScope, Is, DataType, Default, NotEmpty
 } from 'sequelize-typescript';
 import {IPersonnel} from "./personnel.interface";
 import Family from "./relations/personnel-family.model";
@@ -52,7 +52,9 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @Column workType: string;
   @Column sex: string;
 
+  @NotEmpty({msg: 'Не допускается пустое имя'})
   @Column name: string;
+  @NotEmpty({msg: 'Не допускается пустая фамилия'})
   @Column surname: string;
   @Column middleName: string;
   @Column contractNumber: string;

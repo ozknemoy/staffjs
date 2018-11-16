@@ -114,7 +114,7 @@
   <div *ngIf="workPlaces && !workPlaces.length" class="alert alert-danger">
     Необходимо сделать активным хотя бы один договор в таблице приема на работу
   </div>
-  <table *ngIf="workPlaces.length" class="table table-sm table-responsive-sm table-bordered">
+  <table *ngIf="workPlaces?.length" class="table table-sm table-responsive-sm table-bordered">
     <tr>
       <th>Номер трудового договора</th>
       <th>Дата трудового договора</th>

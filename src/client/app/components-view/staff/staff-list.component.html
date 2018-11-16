@@ -25,8 +25,8 @@
           <td userRole rights="1">
             <button confirmButton (callback)="deleteOne(st.id, i, true)"
                     *ngIf="!isGotFiredState">Удалить сотрудника</button>
-            <button confirmButton="Уволить?" (callback)="deleteOne(st.id, i, false)"
-                    *ngIf="!isGotFiredState">Уволить сотрудника</button>
+            <button confirmButton="В архив?" (callback)="deleteOne(st.id, i, false)"
+                    *ngIf="!isGotFiredState">В архив</button>
             <button confirmButton="Восстановить?" (callback)="restoreOne(st.id, i, false)"
                     *ngIf="isGotFiredState">Восстановить сотрудника</button>
           </td>

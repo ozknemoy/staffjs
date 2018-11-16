@@ -32,19 +32,19 @@ export class ErrHandler {
     если объект то он перезапишет этот объект
     */
     // сначала пытаюсь выдернуть message из объекта
+
     let e = err && typeof err === 'object' && err.message ? err.message : err;
+    console.log(e);
     // на фронте нужен массив()
     e = Array.isArray(err) && err.length ? e.split(';') : e;
+    e = e
+      .replace(/(,)/g, ';')
+      .replace(/(Validation error:)/g, '');
     throw new HttpException(e, code);
   }
 
-  /*is like SequelizeValidationError*/
-  handleErrors(err) {
-    return this.handle(err.errors.map(e => e.message), this.STATUS_FOR_VALID_AND_UNIQUE_ERR)
-  }
-
   handlaAll(e, tableName?, uniqueFields?: /*{email:'Email уже существует'}*/Object, status = this.STATUS_FOR_VALID_AND_UNIQUE_ERR) {
-    console.log('ErrHandler.handleAll___________________', e.name);
+    console.log('handleAllErr___________________', e.name);
     switch (e.name) {
       case "SequelizeUniqueConstraintError":
         for (const key in uniqueFields) {
@@ -58,7 +58,7 @@ export class ErrHandler {
         return this.handle('ошибка БД: ' + (e.parent ? e.parent.toString() : ''), HttpStatus.BAD_REQUEST)
       }
       case 'SequelizeValidationError':
-        return this.handleErrors(e);
+        return this.handle(e, status);
     }
     return this.handle(e, status)
   }

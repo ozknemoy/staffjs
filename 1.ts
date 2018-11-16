@@ -44,6 +44,7 @@ console.assert(HandleData.onlyEmptyKeys({ret: '', tre: 1}) === false, 'HandleDat
 console.assert(HandleData.onlyEmptyKeys({ret: '', tre: null}) === true, 'HandleData.onlyEmptyKeys2');
 console.assert(HandleData.onlyEmptyKeys(null) === true, 'HandleData.onlyEmptyKeys3');
 
-
+import { join } from 'path';
+console.log( join(process.cwd(), 'work-history/'));
 
 

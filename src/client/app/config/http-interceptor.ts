@@ -28,18 +28,17 @@ export class MainInterceptor implements HttpInterceptor {
                 // если была скачка файлов
                 if (errBody.error instanceof Blob) {
                   this.blobToString(errBody.error).then(text => {
-                    errText += JSON.parse(text).message.replace(/\;/g, '</br>');
+                    errText += JSON.parse(text).message.replace(/\;/g, '<div></div>');
                     this.showToast(errText)
                   })
                 } else {
-                  errText += errBody.error.message.replace(/\;/g, '</br>');
+                  errText += errBody.error.message.replace(/\;/g, '<div></div>');
                 }
               } else if (errBody.status === 401) {
                 localStorage.removeItem('bearer');
                 errText = ' Авторизация устарела';
                 this.injector.get(Router).navigate(['login'])
               }
-
 
               if (errText && errText !== this.textStart) {
                 this.showToast(errText)
@@ -66,6 +65,10 @@ export class MainInterceptor implements HttpInterceptor {
       // Start reading the blob as text.
       reader.readAsText(blob);
     })
+  }
+
+  showFewToasts() {
+
   }
 
   showToast(errText) {
