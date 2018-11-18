@@ -30,7 +30,7 @@ export default class Workplace extends Model<Workplace> implements IWorkplace {
   @Column reason: string;
   @Column({type: DataType.DATE}) academicCouncilDate: string;
   @Column attractionTerms: string;
-  @Column rate: number;
+  @Column({type: DataType.DECIMAL}) rate: number;
   @Column duration: number;
   @Column category: string;
   @Column({type: DataType.DATE}) dismissalDate: string;

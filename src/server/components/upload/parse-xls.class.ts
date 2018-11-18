@@ -155,7 +155,7 @@ export class ParseXls {
       attractionTerms,
       rate: HandleData.parseNumber(xls[37]),
       duration: HandleData.parseNumber(xls[108]),
-      category: xls[37],
+      category: xls[38],
       dismissalDate: HandleData.ruDateToServer(xls[74]),
       dismissalGround: xls[75],
       lawArticle: xls[77],

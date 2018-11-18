@@ -5,6 +5,7 @@ import {HandleData} from '../../../shared/services/handle-data';
 import IWorkplace from '../../../../../server/components/personnel/relations/personnel-workplace.interface';
 import {attractionTermsDict} from "../../../../../shared/dictionaries/attraction-terms.dict";
 import * as _ from 'lodash';
+import {staffCategoriesDict} from "../../../../../shared/dictionaries/staff-categories.dict";
 @Component({
   selector: 'staff-workplace',
   templateUrl: './workplace-edit.component.html'
@@ -12,6 +13,7 @@ import * as _ from 'lodash';
 export class WorkplaceComponent implements OnInit {
   id: string;
   public attractionTermsDict = attractionTermsDict;
+  public staffCategoriesDict = staffCategoriesDict;
   private dateProps: (keyof IWorkplace)[] =
     ['date', 'dismissalDate', 'academicCouncilDate', 'dismissalDate', 'contractDate',
       'contractEndDate', 'soutDate'];

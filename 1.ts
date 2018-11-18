@@ -36,13 +36,21 @@ console.assert(moment(new Date('2018-09-04 00:00:00.000000 +00:00')).format('DD.
 console.assert(HandleData.parseNumber(undefined) === null, 'HandleData.parseNumber', 1);
 console.assert(HandleData.parseNumber('') === null, 'HandleData.parseNumber', 1);
 console.assert(HandleData.parseNumber('7') === 7, 'HandleData.parseNumber', 1);
-console.assert(HandleData.parseNumber('7.555') === 7.555, 'HandleData.parseNumber', 1);
+console.assert(HandleData.parseNumber('7,555 ') === 7.555, 'HandleData.parseNumber', 1);
 console.assert(HandleData.parseNumber('ret') === null, 'HandleData.parseNumber', 1);
+console.assert(HandleData.parseNumber(0.5) === 0.5, 'HandleData.parseNumber', 1);
 
 
 console.assert(HandleData.onlyEmptyKeys({ret: '', tre: 1}) === false, 'HandleData.onlyEmptyKeys1');
 console.assert(HandleData.onlyEmptyKeys({ret: '', tre: null}) === true, 'HandleData.onlyEmptyKeys2');
 console.assert(HandleData.onlyEmptyKeys(null) === true, 'HandleData.onlyEmptyKeys3');
+
+console.log(new Date().toJSON());
+console.log(moment().format('YYYY-MM-DD'));
+console.log(moment(undefined).format('YYYY-MM-DD'));
+console.log(moment().subtract(1, 'year').format('YYYY-MM-DD'));
+const someDate = HandleData.dateSubtractNServer(1, [2018, 10, 18, 0, 0, 0, 0]);
+console.assert(someDate === '2017-11-17T21:00:00.000Z', 'HandleData.dateSubtractNServer', someDate);
 
 
 

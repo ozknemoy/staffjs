@@ -33,6 +33,7 @@ import AcademicRank from "./relations/academic-rank.model";
 import {IServerFilter} from "../../../shared/interfaces/server-filter.interface";
 import {Sequelize} from "sequelize-typescript";
 import {WhereOptions} from "sequelize";
+import * as moment from "moment";
 
 @Injectable()
 export class PersonnelService {
@@ -49,7 +50,7 @@ export class PersonnelService {
   }
 
   getAllByActivity(active: boolean) {
-    return Personnel.findAll({where: {active}});
+    return Personnel.findAll({where: {active}, order: [['surname', 'ASC']]});
   }
 
   getOne(id) {
@@ -210,26 +211,54 @@ export class PersonnelService {
     // только активные
     //return this.getActiveWorkplace(fltr.specialty)
 
-    let where = {};
+    const defFilter = new IServerFilter();
     let include = [];
-    let workplaceWhere: Partial<{specialty: WhereOptions<Workplace>, active: Workplace['active'], department: WhereOptions<Workplace>}> = {};
+    let workplaceWhere: Partial<{
+      specialty: WhereOptions<Workplace>,
+      active: Workplace['active'],
+      department: WhereOptions<Workplace>,
+      category: WhereOptions<Workplace>,
+    }> = {};
+    let workerWhere: Partial<{
+      active: Personnel['active'],
+    }> = {active: true};
+    let passportWhere: Partial<{
+      birthDate: WhereOptions<Passport>,
+    }> = {};
+
     if(!HandleData.isNoValuePrimitive(fltr.specialty)) {
-      console.log('specialty');
       workplaceWhere.specialty = {[Sequelize.Op.iLike]: '%' + fltr.specialty + '%'};
     }
     if(!HandleData.isNoValuePrimitive(fltr.department)) {
-      console.log('department');
       workplaceWhere.department = {[Sequelize.Op.iLike]: '%' + fltr.department + '%'}
     }
+    if(!HandleData.isNoValuePrimitive(fltr.category)) {
+      workplaceWhere.category = {[Sequelize.Op.like]: fltr.category}
+    }
     if(!HandleData.onlyEmptyKeys(workplaceWhere)) {
-      console.log('****************',workplaceWhere);
       workplaceWhere.active = true;
       include.push({model: Workplace, where: workplaceWhere})
+    }
+    if(fltr.birthDateMin !== defFilter.birthDateMin || fltr.birthDateMax !== defFilter.birthDateMax) {
+
+      const from = moment()
+        .subtract(fltr.birthDateMax, 'year')
+        .subtract(1, 'day')
+        .format('YYYY-MM-DD');
+      const to = moment()
+        .subtract(fltr.birthDateMin, 'year')
+        .add(1, 'day')
+        .format('YYYY-MM-DD');
+      console.log('jjjjjjjjjjjj',from, to);
+      passportWhere.birthDate = {[Sequelize.Op.between]: [from, to]}
+    }
+    if(!HandleData.onlyEmptyKeys(passportWhere)) {
+      include.push({model: Passport, where: passportWhere})
     }
 
     // если простой не нужен то находим сначала всех
     return !HandleData.onlyEmptyKeys(fltr)
-      ? await Personnel.findAll({where, include})
+      ? await Personnel.findAll({where: workerWhere, include})
       : await this.getAllByActivity(true);
 
   }

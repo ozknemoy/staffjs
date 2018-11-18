@@ -9,6 +9,7 @@ import {FileUploadModule} from 'ng2-file-upload';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {ToastrModule} from 'ngx-toastr';
 import {NgxPaginationModule} from "ngx-pagination";
+import {Ng5SliderModule} from 'ng5-slider';
 
 
 export const vendorsModules = [
@@ -21,5 +22,6 @@ export const vendorsModules = [
   ToastrModule.forRoot(),
   TabsModule.forRoot(),
   BsDropdownModule.forRoot(),
-  NgxPaginationModule
+  NgxPaginationModule,
+  Ng5SliderModule,
 ];

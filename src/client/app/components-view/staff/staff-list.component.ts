@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import * as _ from 'lodash';
 import {HttpService} from "../../services/http.service";
 import {IServerFilter} from "../../../../shared/interfaces/server-filter.interface";
+import {staffCategoriesDict} from "../../../../shared/dictionaries/staff-categories.dict";
 
 class IFltr  {
   surname: null
@@ -23,10 +24,15 @@ export class StaffListComponent implements OnInit {
   public isGotFiredState = false;
   public fltr = new IFltr();
   public fltrServer = new IServerFilter();
+  public staffCategoriesDict = staffCategoriesDict;
+  public sliderOptions = {
+    floor: 10,
+    ceil: 100,
+    step: 1
+  };
   constructor(protected http: HttpService, protected router: Router) { }
 
   async ngOnInit() {
-    this.fltrServer.specialty = 'доц';
     let url = '/personnel';
     if(this.isGotFiredState) {
       url += '?inactive=true'

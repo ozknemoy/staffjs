@@ -59,15 +59,20 @@ export class HandleData {
   // https://blog.theodo.fr/2018/01/tips-tricks-date-handling-moment-js/
   // -> 2018-09-07T21:00:00.000Z
   static dateToServer(date: string) {
-    return (date && typeof date === 'string') ? new Date(date).toJSON()/*moment(date).utc()*/ : null;
+    return (date && typeof date === 'string') ? new Date(date).toJSON() : null;
+  }
+
+  // -> 2018-09-07
+  static dateSubtractNServer(n: number, date: any, unit = 'year') {
+    return /*this.dateToServer*/(moment(date).subtract(<any>n, unit).format('YYYY-MM-DD'))
   }
 
   static dateFromServer(date: string) {
     return date ? moment(date).format('YYYY-MM-DD') : date;
   }
 
-  static copy<T>(arr: T): T {
-    return JSON.parse(JSON.stringify(arr))
+  static copy<T>(a: T): T {
+    return JSON.parse(JSON.stringify(a))
   }
 
   static handleDatesInObjectToServer<T>(obj: T, stringsArr: (keyof T)[]) {
@@ -243,6 +248,11 @@ export class HandleData {
   static parseNumber(value: any): number {
     if (this.isInvalidPrimitive(value)) {
       return null
+    }
+    if (typeof value === 'number') {
+      return value;
+    } else if (typeof value === 'string') {
+      value = value.replace(',', '.');
     }
     if (parseFloat(value) == value) {
       return parseFloat(value)

@@ -56,9 +56,7 @@
 
     <div class="col-sm-3 col-md-4">
       <div class="clearfix"></div>
-      <p>Всего {{amount}}</p>
-      <p>Женщин {{amountW}}</p>
-      <p>Мужчин {{amountM}}</p>
+      <p>Всего {{amount}} (Женщин {{amountW}}, Мужчин {{amountM}})</p>
 
       <div class="border rounded p-2">
         <button class="btn btn-outline-info float-right btn-sm dib"
@@ -69,6 +67,13 @@
           <input type="text" [(ngModel)]="fltrServer.specialty" class="form-control">
           <label>Подразделение</label>
           <input type="text" [(ngModel)]="fltrServer.department" class="form-control">
+          <label>Категория</label>
+          <select [(ngModel)]="fltrServer.category" class="form-control">
+            <option [ngValue]="null"></option>
+            <option value="{{val}}" *ngFor="let val of staffCategoriesDict">{{val}}</option>
+          </select>
+          <label>Возраст</label>
+          <ng5-slider [(value)]="fltrServer.birthDateMin" [(highValue)]="fltrServer.birthDateMax" [options]="sliderOptions"></ng5-slider>
         </div>
       </div>
 

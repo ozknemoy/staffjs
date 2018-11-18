@@ -56,13 +56,7 @@
       <td>
         <select [(ngModel)]="w.category" class="form-control">
           <option [ngValue]="null"></option>
-          <option value="ППС">ППС</option>
-          <option value="РП">РП</option>
-          <option value="НП">НП</option>
-          <option value="ИТП">ИТП</option>
-          <option value="АУП">АУП</option>
-          <option value="УВП">УВП</option>
-          <option value="ОП">ОП</option>
+          <option value="{{val}}" *ngFor="let val of staffCategoriesDict">{{val}}</option>
         </select>
       </td>
       <td><input type="text" [(ngModel)]="w.terminationReason" class="form-control"></td>
