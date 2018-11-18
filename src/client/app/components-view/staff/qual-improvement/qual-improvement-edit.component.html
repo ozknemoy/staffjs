@@ -23,8 +23,8 @@
     <tr *ngFor="let q of qualImprovement; let i = index">
       <td><input type="date" [(ngModel)]="q.startEduDate" class="form-control"></td>
       <td><input type="date" [(ngModel)]="q.endEduDate" class="form-control"></td>
-      <td><input type="text" [(ngModel)]="q.type" class="form-control"></td>
-      <td><input type="text" [(ngModel)]="q.institutionName" class="form-control"></td>
+      <td><textarea rows="2" [(ngModel)]="q.type" class="form-control"></textarea></td>
+      <td><textarea rows="2" [(ngModel)]="q.institutionName" class="form-control"></textarea></td>
       <td><input type="text" [(ngModel)]="q.docName" class="form-control"></td>
       <td><input type="text" [(ngModel)]="q.docNumber" class="form-control"></td>
       <td><input type="date" [(ngModel)]="q.docDate" class="form-control"></td>

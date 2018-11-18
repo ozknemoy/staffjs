@@ -1,6 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const distDir = path.join(__dirname, 'dist');
+const sourceDir = path.join(__dirname, 'src');
 
 module.exports = {
   entry: {  server: './src/server/main.ts' },
@@ -10,7 +13,7 @@ module.exports = {
   externals: [/(node_modules|main\..*\.js)/, nodeExternals()],
   // externals: [/(node_modules|main\..*\.js)/],
   output: {
-    path: path.join(__dirname, 'dist'),
+    path: distDir,
     filename: '[name].js'
   },
   module: {
@@ -23,13 +26,16 @@ module.exports = {
     // for "WARNING Critical dependency: the request of a dependency is an expression"
     new webpack.ContextReplacementPlugin(
       /(.+)?angular(\\|\/)core(.+)?/,
-      path.join(__dirname, 'src'), // location of your src
+      sourceDir, // location of your src
       {} // a map of your routes
     ),
     new webpack.ContextReplacementPlugin(
       /(.+)?express(\\|\/)(.+)?/,
-      path.join(__dirname, 'src'),
+      sourceDir,
       {}
-    )
+    ),
+    new CopyWebpackPlugin([
+      {from: path.join(sourceDir, 'server/assets'), to: path.join(distDir, 'server/assets')}
+    ]/*, options*/)
   ]
 };

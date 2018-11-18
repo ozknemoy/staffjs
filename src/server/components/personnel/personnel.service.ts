@@ -30,6 +30,9 @@ import Institution from './relations/personnel-institution.model';
 import ScientificInst from './relations/personnel-scientific-inst.model';
 import {HandleData} from '../../../client/app/shared/services/handle-data';
 import AcademicRank from "./relations/academic-rank.model";
+import {IServerFilter} from "../../../shared/interfaces/server-filter.interface";
+import {Sequelize} from "sequelize-typescript";
+import {WhereOptions} from "sequelize";
 
 @Injectable()
 export class PersonnelService {
@@ -193,5 +196,41 @@ export class PersonnelService {
   async deleteOne(id: number) {
     // при первом запросе (когда еще нет данных для юзера) надо создать 3 стандартные строчки WorkExp
     return Personnel.destroy({where: {id}});
+  }
+
+  getActiveWorkplaceById(personnelId: number) {
+    return Workplace.findAll({where: {personnelId, active: true}})
+  }
+
+  getActiveWorkplace(subStr) {
+    return Workplace.findAll({where: {active: true, specialty: {[Sequelize.Op.iLike]: '%' + subStr + '%'}}})
+  }
+
+  async filter(fltr: IServerFilter) {
+    // только активные
+    //return this.getActiveWorkplace(fltr.specialty)
+
+    let where = {};
+    let include = [];
+    let workplaceWhere: Partial<{specialty: WhereOptions<Workplace>, active: Workplace['active'], department: WhereOptions<Workplace>}> = {};
+    if(!HandleData.isNoValuePrimitive(fltr.specialty)) {
+      console.log('specialty');
+      workplaceWhere.specialty = {[Sequelize.Op.iLike]: '%' + fltr.specialty + '%'};
+    }
+    if(!HandleData.isNoValuePrimitive(fltr.department)) {
+      console.log('department');
+      workplaceWhere.department = {[Sequelize.Op.iLike]: '%' + fltr.department + '%'}
+    }
+    if(!HandleData.onlyEmptyKeys(workplaceWhere)) {
+      console.log('****************',workplaceWhere);
+      workplaceWhere.active = true;
+      include.push({model: Workplace, where: workplaceWhere})
+    }
+
+    // если простой не нужен то находим сначала всех
+    return !HandleData.onlyEmptyKeys(fltr)
+      ? await Personnel.findAll({where, include})
+      : await this.getAllByActivity(true);
+
   }
 }

@@ -1,24 +1,25 @@
 import {Injectable} from '@nestjs/common';
 import {PersonnelService} from '../personnel/personnel.service';
 import {PrintT2Builder} from './print-t2.class';
-import {IPdfSchema} from '../../interfaces/pdf-shema.interface';
+import {IPdfSchema} from '../../../shared/interfaces/pdf-shema.interface';
 import * as fs from 'fs-extra';
 import {PrintLaborContractDynamicBuilder} from './print-labor-contract.class';
 import * as docx from "docx";
 import LaborContractDocx from "./labor-contract-docx.model";
 import {ErrHandler} from "../../services/error-handler.service";
 import {dirLaborContractDocx} from "../upload/upload.service";
+import {FOLDER_SERVER, WORKING_DIRECTORY} from "../../../shared/constants";
 
 const path = require('path');
 const DocxMerger = require('../../../shared/docx-merger/docx-merger-dist.js');
 
-
+const fontsDir = path.join(WORKING_DIRECTORY, FOLDER_SERVER, 'assets/fonts');
 const fontDescriptors = {
   Roboto: {
-    normal: path.join(__dirname, '../../fonts/Roboto-Regular.ttf'),
-    bold: path.join(__dirname, '../../fonts/Roboto-Medium.ttf'),
-    italics: path.join(__dirname, '../../fonts/Roboto-Italic.ttf'),
-    bolditalics: path.join(__dirname, '../../fonts/Roboto-MediumItalic.ttf')
+    normal: path.resolve(fontsDir + '/Roboto-Regular.ttf'),
+    bold: path.resolve(fontsDir + '/Roboto-Medium.ttf'),
+    italics: path.resolve(fontsDir + '/Roboto-Italic.ttf'),
+    bolditalics: path.resolve(fontsDir + '/Roboto-MediumItalic.ttf')
   }
 };
 const PdfPrinter = require('pdfmake');

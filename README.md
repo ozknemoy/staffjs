@@ -1,14 +1,5 @@
-# Angular NestJS Universal ( Server Rendering )
+# Angular + NestJS 
 
-- src/client <-- Angular 5+
-- src/server <-- NestJS
-- src/shared <-- Shared between apps
-  
-### Install
-
-```bash
-npm install
-```
 
 ### Development
 
@@ -20,19 +11,18 @@ npm install
 npm start
 ```
 
-Don't forget to Lint and Prettify your code from time to time:
-
-```bash
-
-npm run client:lint
-npm run server:lint
-
-npm run prettify
-
-```
-
-
 ### Production
 
 * Production port is specified in .env ( default to 5400 )
 
+```bash
+npm run build:universal
+```
+
+after build:
+copy .env
+run make-symlink.bat
+
+```bash
+node dist/server.js
+```

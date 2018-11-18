@@ -3,7 +3,7 @@ import * as moment from "moment";
 import * as fs from "fs";
 import * as _ from "lodash";
 import {attractionTermsDict} from "./src/shared/dictionaries/attraction-terms.dict";
-// import * as _ from 'lodash';
+
 
 const fio = HandleData.fieldsOrNotConcat([1, '', 5, null]);
 
@@ -44,7 +44,5 @@ console.assert(HandleData.onlyEmptyKeys({ret: '', tre: 1}) === false, 'HandleDat
 console.assert(HandleData.onlyEmptyKeys({ret: '', tre: null}) === true, 'HandleData.onlyEmptyKeys2');
 console.assert(HandleData.onlyEmptyKeys(null) === true, 'HandleData.onlyEmptyKeys3');
 
-import { join } from 'path';
-console.log( join(process.cwd(), 'work-history/'));
 
 

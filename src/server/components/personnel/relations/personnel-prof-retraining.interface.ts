@@ -1,4 +1,4 @@
-import IDoc from '../../../interfaces/doc.interface';
+import IDoc from '../../../../shared/interfaces/doc.interface';
 
 export default class IProfRetraining extends IDoc {
   id: number;

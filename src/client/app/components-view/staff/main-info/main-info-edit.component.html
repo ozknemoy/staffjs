@@ -57,12 +57,14 @@
       <div class="form-group">
         <label>Вид работы / Условия привлечения</label>
         <select [(ngModel)]="worker.workType" class="form-control">
+          <option [ngValue]="null"></option>
           <option value="{{row.name}}" *ngFor="let row of attractionTermsDict">{{row.name}}</option>
         </select>
       </div>
       <div class="form-group">
         <label>Пол</label>
         <select [(ngModel)]="worker.sex" class="form-control">
+          <option [ngValue]="null"></option>
           <option value="м">м</option>
           <option value="ж">ж</option>
         </select>

@@ -3,7 +3,7 @@ import Personnel from '../personnel/personnel.model';
 import {INSTITUTIONS_NAME} from '../../../shared/constants';
 import {HandleData} from '../../../client/app/shared/services/handle-data';
 import * as moment from 'moment';
-import {IPdfSchema} from '../../interfaces/pdf-shema.interface';
+import {IPdfSchema} from '../../../shared/interfaces/pdf-shema.interface';
 import {defaultFontSize, defaultTableLayout, tableFontSize} from './print.constants';
 import IInstitution from '../personnel/relations/personnel-institution.interface';
 import {PrintHelpers} from './print-helpers.class';

@@ -1,6 +1,6 @@
 
 import * as fs from 'fs';
-import {IFileUpload} from '../../interfaces/file-upload';
+import {IFileUpload} from '../../../shared/interfaces/file-upload';
 
 const multer = require('multer');
 export const MULTER_PARENT_DIR_LOCAL = '/upload';

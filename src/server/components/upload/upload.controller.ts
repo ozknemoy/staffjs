@@ -5,7 +5,7 @@ import {
 import {UploadService} from "./upload.service";
 import {ErrHandler} from "../../services/error-handler.service";
 import {AuthGuard} from "@nestjs/passport";
-import {IFileUpload} from "../../interfaces/file-upload";
+import {IFileUpload} from "../../../shared/interfaces/file-upload";
 
 @UseGuards(AuthGuard())
 @Controller('upload')

@@ -1,8 +1,8 @@
 <nav-bar></nav-bar>
 
-<div class="container">
+<div class="container-fluid">
   <div class="row">
-    <div class="col-9">
+    <div class="col-sm-9 col-md-8">
       <pagination-controls (pageChange)="currentPage=$event"
                            maxSize="9"
                            directionLinks="false"
@@ -12,22 +12,37 @@
         <tr>
           <th>Номер</th>
           <th>
-            ФИО
-            <input type="text" [(ngModel)]="fltr.surname">
+            <input type="text" [(ngModel)]="fltr.surname" placeholder="поиск по фамилии" class="form-control form-control-sm">
           </th>
-          <th userRole rights="1"></th>
+          <th>
+            <button class="btn btn-group-sm btn-outline-warning  btn-sm"
+                    *ngIf="!isGotFiredState"
+                    (click)="createNewOne()">
+              Создать нового сотрудника <i class="fa fa-user-plus"></i>
+            </button>
+          </th>
         </tr>
-        <tr *ngFor="let st of staffList | filter : fltr | paginate: { itemsPerPage: 50, currentPage: currentPage}; let i = index">
+        <tr *ngFor="let st of staffList
+                    | filter : fltr
+                    | paginate: { itemsPerPage: 50, currentPage: currentPage};
+                    trackBy:trackByFn; let i = index">
           <td>{{st.number}}</td>
           <td><a [routerLink]="['../staff-edit', st.id]">
             {{st.surname}} {{st.name}} {{st.middleName}}
           </a></td>
-          <td userRole rights="1">
-            <button confirmButton (callback)="deleteOne(st.id, i, true)"
+          <td>
+            <button class="btn btn-danger btn-outline-danger btn-sm"
+                    confirmButton
+                    (callback)="deleteOne(st.id, i, true)"
+                    userRole rights="1"
                     *ngIf="!isGotFiredState">Удалить сотрудника</button>
-            <button confirmButton="В архив?" (callback)="deleteOne(st.id, i, false)"
+            <button class="btn btn-danger btn-outline-danger btn-sm ml-1"
+                    confirmButton="В архив?"
+                    (callback)="deleteOne(st.id, i, false)"
                     *ngIf="!isGotFiredState">В архив</button>
-            <button confirmButton="Восстановить?" (callback)="restoreOne(st.id, i, false)"
+            <button class="btn btn-danger btn-outline-danger btn-sm"
+                    confirmButton="Восстановить?"
+                    (callback)="restoreOne(st.id, i, false)"
                     *ngIf="isGotFiredState">Восстановить сотрудника</button>
           </td>
         </tr>
@@ -39,16 +54,24 @@
                            autoHide="true"></pagination-controls>
     </div>
 
-    <div class="col-3">
-      <button class="btn btn-group-sm btn-warning float-right btn-sm"
-              *ngIf="!isGotFiredState"
-              (click)="createNewOne()">
-        Создать нового сотрудника <i class="fa fa-user-plus"></i>
-      </button>
+    <div class="col-sm-3 col-md-4">
       <div class="clearfix"></div>
       <p>Всего {{amount}}</p>
       <p>Женщин {{amountW}}</p>
       <p>Мужчин {{amountM}}</p>
+
+      <div class="border rounded p-2">
+        <button class="btn btn-outline-info float-right btn-sm dib"
+                (click)="filterServer()">Искать</button>
+        <p>ФИЛЬТР</p>
+        <div class="form-group">
+          <label>Должность</label>
+          <input type="text" [(ngModel)]="fltrServer.specialty" class="form-control">
+          <label>Подразделение</label>
+          <input type="text" [(ngModel)]="fltrServer.department" class="form-control">
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

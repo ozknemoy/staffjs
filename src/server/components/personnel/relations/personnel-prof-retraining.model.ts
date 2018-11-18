@@ -1,4 +1,4 @@
-import IDoc from '../../../interfaces/doc.interface';
+import IDoc from '../../../../shared/interfaces/doc.interface';
 import {
   AutoIncrement, BelongsTo, Column, DataType, DefaultScope, ForeignKey, HasOne, Model, PrimaryKey, Table,
   Unique

@@ -5,6 +5,9 @@ export const FOLDER_CLIENT = 'client';
 export const FOLDER_SERVER = 'server';
 export const FILES_FOLDER_SERVER = 'files';
 
+export const WORKING_DIRECTORY = process.env.NODE_ENV === 'production'
+  ? FOLDER_DIST
+  : join(process.cwd(), 'src');
 
 export const INSTITUTIONS_NAME = 'ГУАП';
 

@@ -4,9 +4,9 @@
 </div>
 ПРИЕМ НА РАБОТУ И ПЕРЕВОДЫ НА ДРУГУЮ РАБОТУ
 <div class="container-fluid">
-  <table class="table table-sm table-responsive-sm table-bordered">
+  <table class="table table-sm table-responsive-sm table-bordered squeeze-date">
     <tr>
-      <th rowspan="2">Действующий</th>
+      <th rowspan="2">Акти- вный</th>
       <th rowspan="2">Дата</th>
       <th rowspan="2">Структурное подразделение</th>
       <th rowspan="2">Должность (специальность, профессия), разряд, класс (категория) квалификации</th>
@@ -18,7 +18,7 @@
       <th rowspan="2">Ученый совет</th>
       <th rowspan="2">Условия привлечения</th>
       <th rowspan="2">Размер ставки</th>
-      <th rowspan="2">Продолжительность рабочей недели, час.</th>
+      <th rowspan="2">Продо- лжитель- ность рабочей недели, час.</th>
       <th rowspan="2">Категория</th>
       <th colspan="4">Прекращение трудовых отношений</th>
       <th colspan="2">СОУТ</th>
@@ -37,7 +37,7 @@
     <tr *ngFor="let w of workplaces; let i = index">
       <td><input type="checkbox" [(ngModel)]="w.active" class="form-control"></td>
       <td><input type="date" [(ngModel)]="w.date" class="form-control"></td>
-      <td><input type="text" [(ngModel)]="w.department" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="w.department" class="form-control w200"></td>
       <td><input type="text" [(ngModel)]="w.specialty" class="form-control"></td>
       <td><input type="text" [(ngModel)]="w.contractNumber" class="form-control"></td>
       <td><input type="date" [(ngModel)]="w.contractDate" class="form-control"></td>
@@ -47,12 +47,24 @@
       <td><input type="date" [(ngModel)]="w.academicCouncilDate" class="form-control"></td>
       <td>
         <select [(ngModel)]="w.attractionTerms" class="form-control">
+          <option [ngValue]="null"></option>
           <option value="{{row.name}}" *ngFor="let row of attractionTermsDict">{{row.name}}</option>
         </select>
       </td>
-      <td><input type="number" [(ngModel)]="w.rate" class="form-control"></td>
+      <td><input type="number" [(ngModel)]="w.rate" class="form-control w70"></td>
       <td><input type="number" [(ngModel)]="w.duration" class="form-control"></td>
-      <td><input type="text" [(ngModel)]="w.category" class="form-control"></td>
+      <td>
+        <select [(ngModel)]="w.category" class="form-control">
+          <option [ngValue]="null"></option>
+          <option value="ППС">ППС</option>
+          <option value="РП">РП</option>
+          <option value="НП">НП</option>
+          <option value="ИТП">ИТП</option>
+          <option value="АУП">АУП</option>
+          <option value="УВП">УВП</option>
+          <option value="ОП">ОП</option>
+        </select>
+      </td>
       <td><input type="text" [(ngModel)]="w.terminationReason" class="form-control"></td>
       <td><input type="date" [(ngModel)]="w.dismissalDate" class="form-control"></td>
       <td><input type="text" [(ngModel)]="w.dismissalGround" class="form-control"></td>

@@ -47,7 +47,11 @@
       </div>
       <div class="form-group">
         <label>Состояние в браке</label>
-        <input type="text" [(ngModel)]="passport.maritalStatus" class="form-control">
+        <select [(ngModel)]="passport.maritalStatus" class="form-control">
+          <option [ngValue]="null"></option>
+          <option value="Холост/не замужем">Холост/не замужем</option>
+          <option value="Женат/замужем">Женат/замужем</option>
+        </select>
       </div>
     </div>
   </div>

@@ -4,7 +4,7 @@ import {HttpService} from "../../../services/http.service";
 import {HandleData} from '../../../shared/services/handle-data';
 import IWorkplace from '../../../../../server/components/personnel/relations/personnel-workplace.interface';
 import {attractionTermsDict} from "../../../../../shared/dictionaries/attraction-terms.dict";
-
+import * as _ from 'lodash';
 @Component({
   selector: 'staff-workplace',
   templateUrl: './workplace-edit.component.html'
@@ -21,13 +21,19 @@ export class WorkplaceComponent implements OnInit {
   ngOnInit() {
     this.id = this.route.snapshot.parent.params.id;
     this.http.get(`/personnel/${this.id}/workplace`)
-      .then((workplaces: IWorkplace[]) =>
-        this.workplaces = HandleData.handleDatesInArrFromServer(workplaces, this.dateProps)
-      )
+      .then((workplaces: IWorkplace[]) => this.afterRetrieving(workplaces))
+  }
+
+  afterRetrieving(workplaces) {
+    this.workplaces = _.orderBy(
+      HandleData.handleDatesInArrFromServer(workplaces, this.dateProps),
+      ['id'],
+      ['desc']
+    )
   }
 
   addRow() {
-    this.workplaces.push(new IWorkplace(null))
+    this.workplaces.unshift(new IWorkplace(null))
   }
 
   deleteRow(i) {
@@ -37,8 +43,7 @@ export class WorkplaceComponent implements OnInit {
   save() {
     const tbl = HandleData.handleDatesInArrToServer(this.workplaces, this.dateProps);
     this.http.putWithToast(`/personnel/${this.id}/workplace`, tbl)
-      .then((workplaces) =>
-        this.workplaces = HandleData.handleDatesInArrFromServer(<any>workplaces, this.dateProps));
+      .then((workplaces: IWorkplace[]) => this.afterRetrieving(<any>workplaces))
   }
 
 }

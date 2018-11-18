@@ -1,5 +1,5 @@
 import {Injectable} from "@nestjs/common";
-import {IFileUpload} from "../../interfaces/file-upload";
+import {IFileUpload} from "../../../shared/interfaces/file-upload";
 import {ErrHandler} from "../../services/error-handler.service";
 import {PersonnelService} from "../personnel/personnel.service";
 import Personnel from "../personnel/personnel.model";

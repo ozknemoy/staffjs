@@ -4,6 +4,11 @@ import {IPersonnel} from "../../../../server/components/personnel/personnel.inte
 import {Router} from "@angular/router";
 import * as _ from 'lodash';
 import {HttpService} from "../../services/http.service";
+import {IServerFilter} from "../../../../shared/interfaces/server-filter.interface";
+
+class IFltr  {
+  surname: null
+}
 
 @Component({
   selector: 'app-staff-list',
@@ -16,12 +21,12 @@ export class StaffListComponent implements OnInit {
   public amountM = 0;
   public staffList: IPersonnel[];
   public isGotFiredState = false;
-  public fltr = {
-    surname: null
-  };
+  public fltr = new IFltr();
+  public fltrServer = new IServerFilter();
   constructor(protected http: HttpService, protected router: Router) { }
 
   async ngOnInit() {
+    this.fltrServer.specialty = 'доц';
     let url = '/personnel';
     if(this.isGotFiredState) {
       url += '?inactive=true'
@@ -71,4 +76,15 @@ export class StaffListComponent implements OnInit {
     return this.http.delete('/personnel/' + id)
   }
 
+  filterServer() {
+    this.http.post('/personnel/filter', this.fltrServer).then((staffList) => {
+      this.staffList = staffList;
+      this.fltr = new IFltr();
+      this.afterGetStaff();
+    });
+  }
+
+  trackByFn(index, item) {
+    return item.id
+  }
 }

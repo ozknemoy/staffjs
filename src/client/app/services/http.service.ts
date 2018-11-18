@@ -23,7 +23,7 @@ export class HttpService {
   }
 
   post(url, data: any, textToast = '', config?)  {
-    return this.http.post(this.BASE_URL + url, data, config)
+    return <any>this.http.post(this.BASE_URL + url, data, config)
       .pipe(
         map(r => {
           this.checkAndShowToast(textToast);
@@ -58,8 +58,8 @@ export class HttpService {
       .toPromise()
   }
 
-  putWithToast(url, data: any, textToast = 'Успешно сохранено', config?) {
-    return this.put(url, data, textToast, config)
+  putWithToast<T>(url, data: any, textToast = 'Успешно сохранено', config?): Promise<T> {
+    return <any>this.put(url, data, textToast, config)
   }
 
   delete(url, config?)  {

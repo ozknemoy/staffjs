@@ -30,7 +30,7 @@ export class QualImprovementComponent implements OnInit {
 
   save() {
     const tbl = HandleData.handleDatesInArrToServer(this.qualImprovement, this.dateProps);
-    this.http.put(`/personnel/${this.id}/qual-improvement`, tbl)
+    this.http.putWithToast(`/personnel/${this.id}/qual-improvement`, tbl)
       .then((d) => this.qualImprovement = HandleData.handleDatesInArrFromServer(<any>d, this.dateProps));
   }
 

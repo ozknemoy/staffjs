@@ -22,6 +22,7 @@ import {ISocialSecurity} from './relations/personnel-social-security.interface';
 import SocialSecurity from './relations/personnel-social-security.model';
 import WorkExp from "./relations/personnel-work-exp.model";
 import {AuthGuard} from "@nestjs/passport";
+import {IServerFilter} from "../../../shared/interfaces/server-filter.interface";
 
 
 @Controller('personnel')
@@ -141,7 +142,7 @@ export class StaffController {
   @Get(':id/workplace')
   getWorkplace(@Param('id') personnelId, @Query('onlyActive') onlyActive) {
     return onlyActive
-      ? Workplace.findAll({where: {personnelId, active: true}})
+      ? this.personnelService.getActiveWorkplaceById(personnelId)
       : this.personnelService.getByParent(Workplace, personnelId);
   }
 
@@ -173,5 +174,10 @@ export class StaffController {
   @Put(':id/with-rel/work-exp')
   saveOrCreateWorkExp(@Param('id') id, @Body() pers: IPersonnel) {
     return this.personnelService.saveOrCreateWorkExp(id, pers);
+  }
+
+  @Post('filter')
+  filter(@Param('id') id, @Body() filter: IServerFilter) {
+    return this.personnelService.filter(filter);
   }
 }
