@@ -86,7 +86,7 @@ export class ParseXls {
       : null;
     const attractionTerms = HandleData.where(attractionTermsDict, 'shortName', xls[44], true).name;
     const worker: Partial<IPersonnel> = {
-      number: xls[0],
+      number: xls[83],
       surname,
       name,
       middleName,

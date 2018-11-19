@@ -43,6 +43,7 @@ staffJsDB.addModels([
 ]);
 /*{force: true}*/
 //Personnel.destroy({where: {}});
+
 // обязательный порядок
 Personnel.sync().then(() => {
   // не обязательный
@@ -62,14 +63,6 @@ Personnel.sync().then(() => {
   syncAndFillIfEmptyTable(LaborContractDocx, laborContractDocxDict);
   User.sync();
   AcademicRank.sync();
-/*
-Personnel.upsert({id: 29, name: 'john'});
-QualImprovement.upsert({id: 1, personnelId: 29, reason: 'tak nado'});
-Family.upsert({"id":1,"personnelId":29,"relationshipDegree":"1","fullName":"2","birthYear":2222});
-
-Institution.upsert({/!*"id":1,*!/"personnelId":29,"name":"1","docName":"2","docCode":"3","docNumber":"4","qualification":"6","specialty":"7","endDate":5});
-Institution.upsert({/!*"id":2,*!/"personnelId":29,"name":"лети","docName":"диплом","docCode":"ВН","docNumber":"475679578","qualification":"инженер","specialty":"программист","endDate":2005});
-*/
 
 });
 
@@ -77,7 +70,7 @@ Institution.upsert({/!*"id":2,*!/"personnelId":29,"name":"лети","docName":"�
 function syncAndFillIfEmptyTable(model, dict) {
   model.sync().then(() => {
     model.count().then(n => {
-      if(n === 0) model.bulkCreate(dict)
+      if (n === 0) {model.bulkCreate(dict)}
     })
   });
 }

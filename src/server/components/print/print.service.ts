@@ -13,7 +13,7 @@ import {FOLDER_SERVER, WORKING_DIRECTORY} from "../../../shared/constants";
 const path = require('path');
 const DocxMerger = require('../../../shared/docx-merger/docx-merger-dist.js');
 
-const fontsDir = path.join(WORKING_DIRECTORY, FOLDER_SERVER, 'assets/fonts');
+const fontsDir = path.join(WORKING_DIRECTORY, 'dist' , FOLDER_SERVER, 'assets/fonts');
 const fontDescriptors = {
   Roboto: {
     normal: path.resolve(fontsDir + '/Roboto-Regular.ttf'),
