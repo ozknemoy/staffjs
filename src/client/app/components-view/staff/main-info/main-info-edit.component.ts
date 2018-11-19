@@ -13,7 +13,7 @@ export class StaffMainInfoComponent implements OnInit {
 
   worker = new IPersonnel();
   workPlaces;
-  private dateProps: (keyof IPersonnel)[] = ['contractDate', 'workExpDate', 'membershipGANDate', 'membershipOANDate', 'medicalCertDate', 'psychoCertDate',];
+  private dateProps: (keyof IPersonnel)[] = ['workExpDate', 'membershipGANDate', 'membershipOANDate', 'medicalCertDate', 'psychoCertDate',];
   // говорю беку не надо сохранять связь
   rel: string;
   public attractionTermsDict = attractionTermsDict;

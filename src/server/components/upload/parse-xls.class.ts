@@ -96,9 +96,8 @@ export class ParseXls {
       insurance: xls[3],
       educationName: xls[13],
       workType: attractionTerms,
-      workExpDate: xls[56],
+      workExpDate: HandleData.ruDateToServer(xls[56]),
       profession: xls[54],
-      contractNumber: xls[39],
       membershipGAN: !!xls[58],
       membershipGANDate: HandleData.ruDateToServer(xls[59]),
       membershipOAN: !!xls[60],
@@ -162,6 +161,7 @@ export class ParseXls {
       lawArticle: xls[77],
       active: true,
       contractNumber: xls[39],
+      contractEndDate: HandleData.ruDateToServer(xls[41]),
     };
     const workExp: Partial<IWorkExp[]> = this.getWorkExp(xls, null);
     const rewards = <Partial<IPersonnelNamedThingWithDoc>>this.getRewards(xls);

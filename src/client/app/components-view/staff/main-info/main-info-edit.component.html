@@ -5,6 +5,9 @@
 
 ОБЩИЕ СВЕДЕНИЯ
 <div class="container-fluid">
+  <div *ngIf="workPlaces && !workPlaces.length" class="alert alert-danger">
+    Необходимо сделать активным хотя бы один договор в таблице приема на работу
+  </div>
   <div class="row">
     <div class="col">
       <div class="form-group">
@@ -22,14 +25,6 @@
       <div class="form-group">
         <label>Отчество</label>
         <input type="text" [(ngModel)]="worker.middleName" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>Номер трудового договора</label>
-        <input type="text" [(ngModel)]="worker.contractNumber" class="form-control">
-      </div>
-      <div class="form-group">
-        <label>Дата  трудового договора</label>
-        <input type="date" [(ngModel)]="worker.contractDate" class="form-control">
       </div>
       <div class="form-group">
         <label>Профессия</label>
@@ -112,28 +107,28 @@
 
   </div>
 
-  <h5>Действующие трудовые договоры</h5>
-  <div *ngIf="workPlaces && !workPlaces.length" class="alert alert-danger">
-    Необходимо сделать активным хотя бы один договор в таблице приема на работу
+  <div *ngIf="workPlaces?.length">
+    <h5>Действующие трудовые договоры</h5>
+    <table class="table table-sm table-responsive-sm table-bordered">
+      <tr>
+        <th>Номер трудового договора</th>
+        <th>Дата трудового договора</th>
+        <th>Дата окончания трудового договора</th>
+        <th>Должность (специальность, профессия), разряд, класс (категория) квалификации</th>
+        <th>Структурное подразделение</th>
+        <th>Условия привлечения</th>
+      </tr>
+      <tr *ngFor="let w of workPlaces">
+        <td>{{w.contractNumber}}</td>
+        <td>{{w.contractDate | date}}</td>
+        <td>{{w.contractEndDate | date}}</td>
+        <td>{{w.specialty}}</td>
+        <td>{{w.department}}</td>
+        <td>{{w.attractionTerms}}</td>
+      </tr>
+    </table>
   </div>
-  <table *ngIf="workPlaces?.length" class="table table-sm table-responsive-sm table-bordered">
-    <tr>
-      <th>Номер трудового договора</th>
-      <th>Дата трудового договора</th>
-      <th>Дата окончания трудового договора</th>
-      <th>Должность (специальность, профессия), разряд, класс (категория) квалификации</th>
-      <th>Структурное подразделение</th>
-      <th>Условия привлечения</th>
-    </tr>
-    <tr *ngFor="let w of workPlaces">
-      <td>{{w.contractNumber}}</td>
-      <td>{{w.contractDate | date}}</td>
-      <td>{{w.contractEndDate | date}}</td>
-      <td>{{w.specialty}}</td>
-      <td>{{w.department}}</td>
-      <td>{{w.attractionTerms}}</td>
-    </tr>
-  </table>
+
 </div>
 
 

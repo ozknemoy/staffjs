@@ -42,7 +42,6 @@ staffJsDB.addModels([
   User, LaborContractDocx, AcademicRank
 ]);
 /*{force: true}*/
-//Personnel.destroy({where: {}});
 
 // обязательный порядок
 Personnel.sync().then(() => {
@@ -65,6 +64,7 @@ Personnel.sync().then(() => {
   AcademicRank.sync();
 
 });
+//Personnel.destroy({where: {}});
 
 // хелпер добавления json в таблицу
 function syncAndFillIfEmptyTable(model, dict) {

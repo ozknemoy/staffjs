@@ -35,10 +35,11 @@ export class PrintLaborContractDynamicBuilder {
 
   private makeHeaderAndSectionOne() {
     const worker = this.pers;
+    const contractNumber =  HandleData.where(worker.workplaces, 'active', true, true).contractNumber;
     const header = new Paragraph()
       .center()
       .style('10')
-      .addRun(new TextRun(`Трудовой договор №${worker.contractNumber || '____'}`).bold().break());
+      .addRun(new TextRun(`Трудовой договор №${contractNumber || '____'}`).bold().break());
     this.doc.addParagraph(header);
     makeCommonHeader(this.doc, this.pers);
     const sciInstSp = !_.isEmpty(worker.scientificInst)
@@ -68,9 +69,10 @@ export class PrintLaborContractDynamicBuilder {
       .style('9');
     this.doc.addParagraph(oneFour);
     this.doc.addParagraph(addUnderlineText(720 * 4));
+    const contractDate =  HandleData.where(worker.workplaces, 'active', true, true).contractDate;
     const oneFourEnd = new Paragraph()
       .style('9')
-      .addRun(new TextRun(`Дата начала работы: ${HandleData.getFullDate(worker.contractDate)};`))
+      .addRun(new TextRun(`Дата начала работы: ${HandleData.getFullDate(contractDate)};`))
       .addRun(new TextRun(`срок действия трудового договора: до  ${HandleData.getFullDate()}`).break());
     this.doc.addParagraph(oneFourEnd);
     const oneFive = new Paragraph()

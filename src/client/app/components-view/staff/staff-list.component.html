@@ -38,11 +38,11 @@
                     *ngIf="!isGotFiredState">Удалить сотрудника</button>
             <button class="btn btn-danger btn-outline-danger btn-sm ml-1"
                     confirmButton="В архив?"
-                    (callback)="deleteOne(st.id, i, false)"
+                    (callback)="deleteOne(st.id, false)"
                     *ngIf="!isGotFiredState">В архив</button>
             <button class="btn btn-danger btn-outline-danger btn-sm"
                     confirmButton="Восстановить?"
-                    (callback)="restoreOne(st.id, i, false)"
+                    (callback)="restoreOne(st.id, false)"
                     *ngIf="isGotFiredState">Восстановить сотрудника</button>
           </td>
         </tr>
@@ -59,8 +59,10 @@
       <p>Всего {{amount}} (Женщин {{amountW}}, Мужчин {{amountM}})</p>
 
       <div class="border rounded p-2" *ngIf="!isGotFiredState">
-        <button class="btn btn-outline-info float-right btn-sm dib"
+        <button class="btn btn-info float-right btn-sm dib"
                 (click)="filterServer()">Искать</button>
+        <button class="btn btn-outline-info float-right btn-sm dib"
+                (click)="clearFilter()">Очистить</button>
         <p>ФИЛЬТР</p>
         <div class="form-group">
           <label>Должность</label>
@@ -72,8 +74,15 @@
             <option [ngValue]="null"></option>
             <option value="{{val}}" *ngFor="let val of staffCategoriesDict">{{val}}</option>
           </select>
+          <label>Вид работы / Условия привлечения</label>
+          <select [(ngModel)]="fltrServer.workType" class="form-control">
+            <option [ngValue]="null"></option>
+            <option value="{{row.name}}" *ngFor="let row of attractionTermsDict">{{row.name}}</option>
+          </select>
+          <label>Период окончания трудового договора, недель</label>
+          <ng5-slider [(value)]="fltrServer.contractEndDateMin" [(highValue)]="fltrServer.contractEndDateMax" [options]="sliderOptionsContractEnd"></ng5-slider>
           <label>Возраст</label>
-          <ng5-slider [(value)]="fltrServer.birthDateMin" [(highValue)]="fltrServer.birthDateMax" [options]="sliderOptions"></ng5-slider>
+          <ng5-slider [(value)]="fltrServer.birthDateMin" [(highValue)]="fltrServer.birthDateMax" [options]="sliderOptionsBirth"></ng5-slider>
         </div>
       </div>
 

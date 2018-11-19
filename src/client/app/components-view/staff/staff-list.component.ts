@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import {HttpService} from "../../services/http.service";
 import {IServerFilter} from "../../../../shared/interfaces/server-filter.interface";
 import {staffCategoriesDict} from "../../../../shared/dictionaries/staff-categories.dict";
+import {attractionTermsDict} from "../../../../shared/dictionaries/attraction-terms.dict";
 
 class IFltr  {
   surname: null
@@ -25,11 +26,18 @@ export class StaffListComponent implements OnInit {
   public fltr = new IFltr();
   public fltrServer = new IServerFilter();
   public staffCategoriesDict = staffCategoriesDict;
-  public sliderOptions = {
-    floor: 10,
-    ceil: 100,
+  public defaultServerFilter = new IServerFilter();
+  public sliderOptionsBirth = {
+    floor: this.defaultServerFilter.birthDateMin,
+    ceil: this.defaultServerFilter.birthDateMax,
     step: 1
   };
+  public sliderOptionsContractEnd = {
+    floor: this.defaultServerFilter.contractEndDateMin,
+    ceil: this.defaultServerFilter.contractEndDateMax,
+    step: 1
+  };
+  public attractionTermsDict = attractionTermsDict;
   constructor(protected http: HttpService, protected router: Router) { }
 
   async ngOnInit() {
@@ -53,15 +61,19 @@ export class StaffListComponent implements OnInit {
     );
   }
 
+  clearFilter() {
+    this.fltrServer = new IServerFilter();
+  }
+
   createNewOne() {
     this.http.post('/personnel', {})
       .then(id => this.router.navigate(['/staff-edit', id]));
   }
 
-  deleteOne(id, i, destroy: boolean) {
-    return destroy ? this.destroyOne(id) : this.getFiredOne(id)
+  deleteOne(id, destroy: boolean) {
+    return (destroy ? this.destroyOne(id) : this.getFiredOne(id))
       .then(() => {
-        this.staffList.splice(i, 1);
+        this.staffList = this.staffList.filter(worker => worker.id !== id);
         this.afterGetStaff();
       });
   }

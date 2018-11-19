@@ -51,8 +51,9 @@ export class PrintT2Builder {
     const worker = this.pers;
     // https://github.com/bpampuch/pdfmake/blob/master/examples/textDecorations.js
     const name = {text: INSTITUTIONS_NAME + '\n\n', decoration: 'underline', width: '*'/*, decorationStyle: 'dashed'*/};
+    const contractDate =  HandleData.where(this.pers.workplaces, 'active', true, true).contractDate;
     const tblBody = [
-      HandleData.getRuDate(worker.contractDate),
+      HandleData.getRuDate(contractDate),
       worker.number,
       worker.inn,
       worker.insurance,
@@ -91,6 +92,8 @@ export class PrintT2Builder {
   }
 
   private makeSectionFirstToSixth() {
+    const contractNumber =  HandleData.where(this.pers.workplaces, 'active', true, true).contractNumber;
+    const contractDate =  HandleData.where(this.pers.workplaces, 'active', true, true).contractDate;
     const worker = this.pers;
     const title = {
       text: [
@@ -112,8 +115,8 @@ export class PrintT2Builder {
               table: {
                 widths: ['50%', '50%'],
                 body: [
-                  ['номер', worker.contractNumber],
-                  ['дата', HandleData.getRuDate(worker.contractDate)]
+                  ['номер', contractNumber],
+                  ['дата', HandleData.getRuDate(contractDate)]
                 ]
               },
               layout: defaultTableLayout

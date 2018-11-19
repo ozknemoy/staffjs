@@ -22,8 +22,6 @@ export class IPersonnel {
   name: string = null;
   surname: string = null;
   middleName: string = null;
-  contractNumber: string = null;
-  contractDate: string = null;
   foreignLanguage: string = null;
   foreignLanguageGrade: string = null;
   educationName: string = null;

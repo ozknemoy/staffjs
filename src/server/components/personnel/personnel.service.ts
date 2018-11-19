@@ -218,9 +218,12 @@ export class PersonnelService {
       active: Workplace['active'],
       department: WhereOptions<Workplace>,
       category: WhereOptions<Workplace>,
+      contractEndDate: WhereOptions<Workplace>,
     }> = {};
+    // пока ищу только среди активных
     let workerWhere: Partial<{
       active: Personnel['active'],
+      workType: any/*WhereOptions<Personnel>*/,
     }> = {active: true};
     let passportWhere: Partial<{
       birthDate: WhereOptions<Passport>,
@@ -235,12 +238,27 @@ export class PersonnelService {
     if(!HandleData.isNoValuePrimitive(fltr.category)) {
       workplaceWhere.category = {[Sequelize.Op.like]: fltr.category}
     }
+    if(fltr.contractEndDateMin !== defFilter.contractEndDateMin || fltr.contractEndDateMax !== defFilter.contractEndDateMax) {
+      const from = moment()
+        .add(fltr.contractEndDateMin, 'week')
+        .subtract(1, 'day')
+        .format('YYYY-MM-DD');
+      const to = moment()
+        .add(fltr.contractEndDateMax, 'week')
+        .add(1, 'day')
+        .format('YYYY-MM-DD');
+      workplaceWhere.contractEndDate = {[Sequelize.Op.between]: [from, to]}
+    }
     if(!HandleData.onlyEmptyKeys(workplaceWhere)) {
       workplaceWhere.active = true;
       include.push({model: Workplace, where: workplaceWhere})
     }
-    if(fltr.birthDateMin !== defFilter.birthDateMin || fltr.birthDateMax !== defFilter.birthDateMax) {
 
+    if(!HandleData.isNoValuePrimitive(fltr.workType)) {
+      workerWhere.workType = {[Sequelize.Op.like]: fltr.workType}
+    }
+
+    if(fltr.birthDateMin !== defFilter.birthDateMin || fltr.birthDateMax !== defFilter.birthDateMax) {
       const from = moment()
         .subtract(fltr.birthDateMax, 'year')
         .subtract(1, 'day')
@@ -249,7 +267,6 @@ export class PersonnelService {
         .subtract(fltr.birthDateMin, 'year')
         .add(1, 'day')
         .format('YYYY-MM-DD');
-      console.log('jjjjjjjjjjjj',from, to);
       passportWhere.birthDate = {[Sequelize.Op.between]: [from, to]}
     }
     if(!HandleData.onlyEmptyKeys(passportWhere)) {

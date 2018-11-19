@@ -3,6 +3,9 @@ export class IServerFilter {
   specialty: string = null;
   department: string = null;
   category: string = null;
-  birthDateMin: number = 10;
-  birthDateMax: number = 100;
+  workType: string = null;
+  contractEndDateMin = 0;
+  contractEndDateMax = 53;
+  birthDateMin = 10;
+  birthDateMax = 100;
 }

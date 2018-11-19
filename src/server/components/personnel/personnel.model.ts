@@ -57,8 +57,6 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @NotEmpty({msg: 'Не допускается пустая фамилия'})
   @Column surname: string;
   @Column middleName: string;
-  @Column contractNumber: string;
-  @Column({type: DataType.DATE}) contractDate: string;
   @Column foreignLanguage: string;
   @Column foreignLanguageGrade: string;
   @Column educationName: string;

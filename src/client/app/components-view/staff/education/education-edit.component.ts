@@ -20,7 +20,7 @@ export class EducationEditComponent implements OnInit {
   private datePropsInst: (keyof IInstitution)[] = ['endDate'];
   private datePropsScientificInst: (keyof IScientificInst)[] = ['endDate', 'statementDate'];
   private datePropsAcademicRank: (keyof IAcademicRank)[] = ['docDate', 'statementDate'];
-  private dateProps: (keyof IPersonnel)[] = ['contractDate', 'workExpDate', 'membershipGANDate', 'membershipOANDate', 'medicalCertDate', 'psychoCertDate',];
+  private dateProps: (keyof IPersonnel)[] = ['workExpDate', 'membershipGANDate', 'membershipOANDate', 'medicalCertDate', 'psychoCertDate',];
 
   constructor(protected http: HttpService, protected route: ActivatedRoute) {
 
