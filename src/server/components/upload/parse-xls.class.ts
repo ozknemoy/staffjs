@@ -86,7 +86,8 @@ export class ParseXls {
       : null;
     const attractionTerms = HandleData.where(attractionTermsDict, 'shortName', xls[44], true).name;
     const worker: Partial<IPersonnel> = {
-      number: xls[83],
+      // пропускаю только 4 значные
+      number: xls[83] && (parseInt(xls[83]) > 999) ? xls[83] : null,
       surname,
       name,
       middleName,
@@ -95,9 +96,9 @@ export class ParseXls {
       insurance: xls[3],
       educationName: xls[13],
       workType: attractionTerms,
-      workExpDate: xls[52],
+      workExpDate: xls[56],
       profession: xls[54],
-
+      contractNumber: xls[39],
       membershipGAN: !!xls[58],
       membershipGANDate: HandleData.ruDateToServer(xls[59]),
       membershipOAN: !!xls[60],
@@ -160,6 +161,7 @@ export class ParseXls {
       dismissalGround: xls[75],
       lawArticle: xls[77],
       active: true,
+      contractNumber: xls[39],
     };
     const workExp: Partial<IWorkExp[]> = this.getWorkExp(xls, null);
     const rewards = <Partial<IPersonnelNamedThingWithDoc>>this.getRewards(xls);
