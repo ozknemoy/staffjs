@@ -41,7 +41,6 @@ export class IPersonnel {
   psychoCertDate: string = null;
   convictionCert: boolean = null;
   disabilityDegree: string = null;
-  scientificRank: string = null;
   active: boolean = true;
 
   attestations: IAttestation[] = null;

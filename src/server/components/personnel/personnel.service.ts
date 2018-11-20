@@ -50,7 +50,10 @@ export class PersonnelService {
   }
 
   getAllByActivity(active: boolean) {
-    return Personnel.findAll({where: {active}, order: [['surname', 'ASC']]});
+    return Personnel.findAll({
+      // required : false в include делает поиск только по Workplace не отбрасывая родителя Personnel
+      where: {active}, order: [['surname', 'ASC']], include: [{model: Workplace, required : false, where: {active: true}}]
+    });
   }
 
   getOne(id) {
@@ -184,7 +187,7 @@ export class PersonnelService {
       .catch(err => this.errHandler.handlaAll(err))
   }
 
-  async createNewUserFromAdmin() {
+  async createNewWorker() {
     const newWorker = await Personnel.create({name: 'Новый сотрудник'});
     const personnelId = newWorker.id;
     await Promise.all(
@@ -207,6 +210,10 @@ export class PersonnelService {
     return Workplace.findAll({where: {active: true, specialty: {[Sequelize.Op.iLike]: '%' + subStr + '%'}}})
   }
 
+  findByFIO([surname, name, middleName]) {
+    return Personnel.findOne({where: {surname, name, middleName}});
+  }
+
   async filter(fltr: IServerFilter) {
     // только активные
     //return this.getActiveWorkplace(fltr.specialty)
@@ -224,6 +231,7 @@ export class PersonnelService {
     let workerWhere: Partial<{
       active: Personnel['active'],
       workType: any/*WhereOptions<Personnel>*/,
+      educationName: any/*WhereOptions<Personnel>*/,
     }> = {active: true};
     let passportWhere: Partial<{
       birthDate: WhereOptions<Passport>,
@@ -256,6 +264,10 @@ export class PersonnelService {
 
     if(!HandleData.isNoValuePrimitive(fltr.workType)) {
       workerWhere.workType = {[Sequelize.Op.like]: fltr.workType}
+    }
+
+    if(!HandleData.isNoValuePrimitive(fltr.educationName)) {
+      workerWhere.educationName = {[Sequelize.Op.like]: fltr.educationName}
     }
 
     if(fltr.birthDateMin !== defFilter.birthDateMin || fltr.birthDateMax !== defFilter.birthDateMax) {

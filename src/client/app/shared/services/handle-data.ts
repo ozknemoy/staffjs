@@ -63,7 +63,7 @@ export class HandleData {
   }
 
   // -> 2018-09-07
-  static dateSubtractNServer(n: number, date: any, unit = 'year') {
+  static dateSubtractN(n: number, date: any, unit = 'year') {
     return /*this.dateToServer*/(moment(date).subtract(<any>n, unit).format('YYYY-MM-DD'))
   }
 
@@ -275,5 +275,23 @@ export class HandleData {
       return true
     }
     return !_.values(obj).some(v => !HandleData.isNoValue(v))
+  }
+
+  // 137\17 от23.03.2017 -> ['137\17', '23.03.2017']
+  // если не получается разделить то все равно верну значение первым аргументом при returnSourceIfFail = true
+  // 137\17 23.03.2017 -> ['137\17 23.03.2017', null]
+  static splitByDivider(str: string, divider: string, returnSourceIfFail: boolean): [string, string] {
+    if(this.isInvalidPrimitive(str)) {
+      return [null, null]
+    }
+    if(str.indexOf(divider) > -1) {
+      let [a, b] = str.split(divider);
+      a = this.isInvalidPrimitive(a) ? null : a.trim();
+      b = this.isInvalidPrimitive(b) ? null : b.trim();
+      return [a, b]
+    } else if (str.indexOf(divider) === -1 && returnSourceIfFail) {
+      return [str, null]
+    }
+    return [null, null]
   }
 }

@@ -7,7 +7,7 @@ import {attractionTermsDict} from "./src/shared/dictionaries/attraction-terms.di
 
 const fio = HandleData.fieldsOrNotConcat([1, '', 5, null]);
 
-console.assert(fio === '1 5', 'HandleData.fieldsOrNotConcat', fio, fio.length);
+console.assert(fio === '1 5', 'fieldsOrNotConcat', fio, fio.length);
 
 const line = '______________________________________________';
 const f = '1111111111';
@@ -22,35 +22,42 @@ console.assert(l1 === '1111111111 5555555555', 'allocateTextToLine', l1, typeof 
 const [line1, line2, line3] =
   HandleData.allocateTextToLines([f, i, o, oo], [line, line, line]);
 console.assert(line1 === '1111111111 5555555555', '.allocateTextToLine', line1);
-console.assert(line2 === o, 'HandleData.allocateTextToLine', line2);
-console.assert(line3 === oo, 'HandleData.allocateTextToLine', line3);
+console.assert(line2 === o, 'allocateTextToLine', line2);
+console.assert(line3 === oo, 'allocateTextToLine', line3);
 
 const FIO = HandleData.getFIO(['123', '4567', '890']);
-console.assert(FIO === '123 48', 'HandleData.getFIO', FIO);
+console.assert(FIO === '123 48', 'getFIO', FIO);
 const _FIO = HandleData.getFIO([null, '4567', '890']);
-console.assert(_FIO === null, 'HandleData.getFIO', FIO);
+console.assert(_FIO === null, 'getFIO', FIO);
 
 console.assert(moment(new Date('2018-09-04 00:00:00.000000 +00:00')).format('DD.MM.YYYY') === '04.09.2018');
 
 
-console.assert(HandleData.parseNumber(undefined) === null, 'HandleData.parseNumber', 1);
-console.assert(HandleData.parseNumber('') === null, 'HandleData.parseNumber', 1);
-console.assert(HandleData.parseNumber('7') === 7, 'HandleData.parseNumber', 1);
-console.assert(HandleData.parseNumber('7,555 ') === 7.555, 'HandleData.parseNumber', 1);
-console.assert(HandleData.parseNumber('ret') === null, 'HandleData.parseNumber', 1);
-console.assert(HandleData.parseNumber(0.5) === 0.5, 'HandleData.parseNumber', 1);
+console.assert(HandleData.parseNumber(undefined) === null, 'parseNumber1', 1);
+console.assert(HandleData.parseNumber('') === null, 'parseNumber2', 1);
+console.assert(HandleData.parseNumber('7') === 7, 'parseNumber3', 1);
+console.assert(HandleData.parseNumber('7,555 ') === 7.555, 'parseNumber4', 1);
+console.assert(HandleData.parseNumber('ret') === null, 'parseNumber5', 1);
+console.assert(HandleData.parseNumber(0.5) === 0.5, 'parseNumber6', 1);
 
 
-console.assert(HandleData.onlyEmptyKeys({ret: '', tre: 1}) === false, 'HandleData.onlyEmptyKeys1');
-console.assert(HandleData.onlyEmptyKeys({ret: '', tre: null}) === true, 'HandleData.onlyEmptyKeys2');
-console.assert(HandleData.onlyEmptyKeys(null) === true, 'HandleData.onlyEmptyKeys3');
+console.assert(HandleData.onlyEmptyKeys({ret: '', tre: 1}) === false, 'onlyEmptyKeys1');
+console.assert(HandleData.onlyEmptyKeys({ret: '', tre: null}) === true, 'onlyEmptyKeys2');
+console.assert(HandleData.onlyEmptyKeys(null) === true, 'onlyEmptyKeys3');
 
-console.log(new Date().toJSON());
-console.log(moment().format('YYYY-MM-DD'));
-console.log(moment(undefined).format('YYYY-MM-DD'));
-console.log(moment().subtract(1, 'year').format('YYYY-MM-DD'));
-const someDate = HandleData.dateSubtractNServer(1, [2018, 10, 18, 0, 0, 0, 0]);
-console.assert(someDate === '2017-11-17T21:00:00.000Z', 'HandleData.dateSubtractNServer', someDate);
+const someDate = HandleData.dateSubtractN(1, [2018, 10, 18, 0, 0, 0, 0]);
+console.assert(someDate === '2017-11-18', 'dateSubtractN', someDate);
 
+
+const [a, b] = HandleData.splitByDivider('137\\17 от23.03.2017', 'от', true);
+console.assert(a === '137\\17' && b === '23.03.2017', 'splitByDivider1');
+const [c, d] = HandleData.splitByDivider('137\\17 о23.03.2017', 'от', true);
+console.assert(c === '137\\17 о23.03.2017' && d === null, 'splitByDivider2');
+const [e, g] = HandleData.splitByDivider('137\\17 о2', 'от', false);
+console.assert(e === null && g === null, 'splitByDivider3', [e, g]);
+const [h, k] = HandleData.splitByDivider('137\\17 от', 'от', true);
+console.assert(h === '137\\17' && k === null, 'splitByDivider4');
+const [j, p] = HandleData.splitByDivider('', 'от', false);
+console.assert(j === null && p === null, 'splitByDivider5', [e, g]);
 
 

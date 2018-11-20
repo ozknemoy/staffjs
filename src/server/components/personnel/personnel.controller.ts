@@ -55,8 +55,8 @@ export class StaffController {
   }
 
   @Post()
-  createNewOne() {
-    return this.personnelService.createNewUserFromAdmin();
+  createNewWorker() {
+    return this.personnelService.createNewWorker();
   }
 
   @Delete(':id')

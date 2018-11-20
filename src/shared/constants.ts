@@ -1,4 +1,6 @@
 import { join } from 'path';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 export const FOLDER_DIST = join(process.cwd(), 'dist');
 export const FOLDER_CLIENT = 'client';

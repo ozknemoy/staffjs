@@ -40,11 +40,9 @@ export class UploadService {
 
   async updateDBPersonnelByXls(buildedWorker: IBuildedFromXlsWorker) {
     // ищу если есть такой
-    const oldWorker = await Personnel.findOne({where: {
-      surname: buildedWorker.worker.surname,
-      name: buildedWorker.worker.name,
-      middleName: buildedWorker.worker.middleName,
-      }});
+    const oldWorker = await this.personnelService.findByFIO([
+      buildedWorker.worker.surname, buildedWorker.worker.name, buildedWorker.worker.middleName,
+    ]);
     if (oldWorker) {
       await oldWorker.update(buildedWorker.worker);
       buildedWorker.worker = oldWorker;

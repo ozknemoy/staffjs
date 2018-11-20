@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import {IPersonnel} from "../../../../server/components/personnel/personnel.interface";
 import {Router} from "@angular/router";
 import * as _ from 'lodash';
@@ -7,6 +6,7 @@ import {HttpService} from "../../services/http.service";
 import {IServerFilter} from "../../../../shared/interfaces/server-filter.interface";
 import {staffCategoriesDict} from "../../../../shared/dictionaries/staff-categories.dict";
 import {attractionTermsDict} from "../../../../shared/dictionaries/attraction-terms.dict";
+import {eduTypesDict} from '../../../../shared/dictionaries/edu-type.dict';
 
 class IFltr  {
   surname: null
@@ -27,6 +27,7 @@ export class StaffListComponent implements OnInit {
   public fltrServer = new IServerFilter();
   public staffCategoriesDict = staffCategoriesDict;
   public defaultServerFilter = new IServerFilter();
+  public eduTypesDict = eduTypesDict;
   public sliderOptionsBirth = {
     floor: this.defaultServerFilter.birthDateMin,
     ceil: this.defaultServerFilter.birthDateMax,
@@ -65,7 +66,7 @@ export class StaffListComponent implements OnInit {
     this.fltrServer = new IServerFilter();
   }
 
-  createNewOne() {
+  createNewWorker() {
     this.http.post('/personnel', {})
       .then(id => this.router.navigate(['/staff-edit', id]));
   }

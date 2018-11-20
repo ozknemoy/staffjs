@@ -102,7 +102,6 @@ export class ParseXls {
       membershipGANDate: HandleData.ruDateToServer(xls[59]),
       membershipOAN: !!xls[60],
       membershipOANDate: HandleData.ruDateToServer(xls[61]),
-      scientificRank: xls[25],
       phone: xls[85],
       medicalCert: !!xls[36],
       psychoCert: !!xls[118],
@@ -146,6 +145,7 @@ export class ParseXls {
       appointingAuthority: xls[32],
     };
     // Z-AH пока пропустил
+    const [contractNumber, contractD] = HandleData.splitByDivider(xls[39], 'от', true);
     const workplace: Partial<IPersonnel['workplaces'][0]> = {
       date: HandleData.ruDateToServer(xls[42] || xls[56]),
       department: xls[34],
@@ -160,7 +160,8 @@ export class ParseXls {
       dismissalGround: xls[75],
       lawArticle: xls[77],
       active: true,
-      contractNumber: xls[39],
+      contractNumber,
+      contractDate: HandleData.ruDateToServer(contractD),
       contractEndDate: HandleData.ruDateToServer(xls[41]),
     };
     const workExp: Partial<IWorkExp[]> = this.getWorkExp(xls, null);

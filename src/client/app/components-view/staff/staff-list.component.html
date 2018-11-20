@@ -10,14 +10,15 @@
 
       <table class="table table-sm table-responsive-sm table-bordered">
         <tr>
-          <th>Номер</th>
           <th>
             <input type="text" [(ngModel)]="fltr.surname" placeholder="поиск по фамилии" class="form-control form-control-sm">
           </th>
+          <th>Департамент</th>
+          <th>Должность</th>
           <th>
             <button class="btn btn-group-sm btn-outline-warning  btn-sm"
                     *ngIf="!isGotFiredState"
-                    (click)="createNewOne()">
+                    (click)="createNewWorker()">
               Создать нового сотрудника <i class="fa fa-user-plus"></i>
             </button>
           </th>
@@ -26,16 +27,17 @@
                     | filter : fltr
                     | paginate: { itemsPerPage: 50, currentPage: currentPage};
                     trackBy:trackByFn; let i = index">
-          <td>{{st.number}}</td>
-          <td><a [routerLink]="['../staff-edit', st.id]">
-            {{st.surname}} {{st.name}} {{st.middleName}}
-          </a></td>
+          <td>
+            <a [routerLink]="['../staff-edit', st.id]">{{st.surname}} {{st.name}} {{st.middleName}}</a>
+          </td>
+          <td>{{st.workplaces[0]?.department}}</td>
+          <td>{{st.workplaces[0]?.specialty}}</td>
           <td>
             <button class="btn btn-danger btn-outline-danger btn-sm"
                     confirmButton
                     (callback)="deleteOne(st.id, i, true)"
                     userRole rights="1"
-                    *ngIf="!isGotFiredState">Удалить сотрудника</button>
+                    *ngIf="!isGotFiredState">Удалить</button>
             <button class="btn btn-danger btn-outline-danger btn-sm ml-1"
                     confirmButton="В архив?"
                     (callback)="deleteOne(st.id, false)"
@@ -43,7 +45,7 @@
             <button class="btn btn-danger btn-outline-danger btn-sm"
                     confirmButton="Восстановить?"
                     (callback)="restoreOne(st.id, false)"
-                    *ngIf="isGotFiredState">Восстановить сотрудника</button>
+                    *ngIf="isGotFiredState">Восстановить</button>
           </td>
         </tr>
       </table>
@@ -59,7 +61,7 @@
       <p>Всего {{amount}} (Женщин {{amountW}}, Мужчин {{amountM}})</p>
 
       <div class="border rounded p-2" *ngIf="!isGotFiredState">
-        <button class="btn btn-info float-right btn-sm dib"
+        <button class="btn btn-info float-right btn-sm dib ml-1"
                 (click)="filterServer()">Искать</button>
         <button class="btn btn-outline-info float-right btn-sm dib"
                 (click)="clearFilter()">Очистить</button>
@@ -78,6 +80,11 @@
           <select [(ngModel)]="fltrServer.workType" class="form-control">
             <option [ngValue]="null"></option>
             <option value="{{row.name}}" *ngFor="let row of attractionTermsDict">{{row.name}}</option>
+          </select>
+          <label>Образование</label>
+          <select [(ngModel)]="fltrServer.educationName" class="form-control">
+            <option [ngValue]="null"></option>
+            <option [value]="row.name" *ngFor="let row of eduTypesDict">{{row.name}}</option>
           </select>
           <label>Период окончания трудового договора, недель</label>
           <ng5-slider [(value)]="fltrServer.contractEndDateMin" [(highValue)]="fltrServer.contractEndDateMax" [options]="sliderOptionsContractEnd"></ng5-slider>

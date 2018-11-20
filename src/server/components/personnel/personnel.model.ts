@@ -82,9 +82,8 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   @Column({type: DataType.DATE}) psychoCertDate;
   @Column convictionCert: boolean;
   @Column disabilityDegree: string;
-  @Column scientificRank: string;
   @Default(true)
-  @Column active: boolean = true;
+  @Column active: boolean;
 
   // в самом конце анкеты
   @Column extraInfo: string;
