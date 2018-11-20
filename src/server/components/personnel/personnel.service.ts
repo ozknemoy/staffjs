@@ -260,6 +260,9 @@ export class PersonnelService {
     if(!HandleData.onlyEmptyKeys(workplaceWhere)) {
       workplaceWhere.active = true;
       include.push({model: Workplace, where: workplaceWhere})
+    } else {
+      // в любом случае надо включить модель чтобы данные по active Workplace были
+      include.push({model: Workplace, where: {active: true}, required: false})
     }
 
     if(!HandleData.isNoValuePrimitive(fltr.workType)) {
