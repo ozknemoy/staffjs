@@ -3,6 +3,7 @@ import * as moment from "moment";
 import * as fs from "fs";
 import * as _ from "lodash";
 import {attractionTermsDict} from "./src/shared/dictionaries/attraction-terms.dict";
+import {ParseXls} from './src/server/components/upload/parse-diffs-xls.class';
 
 
 const fio = HandleData.fieldsOrNotConcat([1, '', 5, null]);
@@ -61,3 +62,5 @@ const [j, p] = HandleData.splitByDivider('', 'от', false);
 console.assert(j === null && p === null, 'splitByDivider5', [e, g]);
 
 
+const qual = ParseXls.parseQualification();
+console.log(qual);

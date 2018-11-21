@@ -294,4 +294,23 @@ export class HandleData {
     }
     return [null, null]
   }
+
+  // 1111 2222 3333 4444 , 3 -> ['1111','2222','3333 4444']
+  static splitByN(_str, n, splitter = ' ') {
+    const strArr = _str.split(splitter);
+    let out = [];
+    for (let i = 0; i < strArr.length; i++) {
+      if (strArr[i]) {
+        // пишем лишнее в последний элемент разбивая с помощью splitter
+        if (i > n - 1) {
+          out[n - 1] = out[n - 1] + splitter + strArr[i]
+        } else {
+          out.push(strArr[i])
+        }
+      } else {
+        out.push('')
+      }
+    }
+    return out
+  }
 }

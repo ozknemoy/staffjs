@@ -3,7 +3,7 @@ import {IFileUpload} from "../../../shared/interfaces/file-upload";
 import {ErrHandler} from "../../services/error-handler.service";
 import {PersonnelService} from "../personnel/personnel.service";
 import Personnel from "../personnel/personnel.model";
-import {IBuildedFromXlsWorker, ParseXls} from './parse-xls.class';
+import {IBuildedFromXlsWorker, ParsePersonnelXls} from './parse-personnel-xls.class';
 import Passport from '../personnel/relations/personnel-passport.model';
 import Institution from '../personnel/relations/personnel-institution.model';
 import ScientificInst from '../personnel/relations/personnel-scientific-inst.model';
@@ -16,6 +16,9 @@ import * as path from "path";
 import {HandleData} from "../../../client/app/shared/services/handle-data";
 import AcademicRank from "../personnel/relations/academic-rank.model";
 import Reward from "../personnel/relations/personnel-reward.model";
+import {IParsedQualification, ParseXls} from './parse-diffs-xls.class';
+import IQualImprovement from '../personnel/relations/personnel-qual-improvement.interface';
+import QualImprovement from '../personnel/relations/personnel-qual-improvement.model';
 
 export const dirLaborContractDocx = 'files/labor-contracts/';
 
@@ -28,14 +31,14 @@ export class UploadService {
 
   fillDBPersonnelByLocalXls(mass: boolean) {
     return mass
-      ? this.createMassDBPersonnelByXls(ParseXls.createMass())
-      : this.createDBPersonnelByXls(ParseXls.create());
+      ? this.createMassDBPersonnelByXls(ParsePersonnelXls.createMass())
+      : this.createDBPersonnelByXls(ParsePersonnelXls.create());
   }
 
   _fillDBPersonnelByLocalXls(update: boolean) {
     return update
-      ? this.updateDBPersonnelByXls(ParseXls.create())
-      : this.createDBPersonnelByXls(ParseXls.create());
+      ? this.updateDBPersonnelByXls(ParsePersonnelXls.create())
+      : this.createDBPersonnelByXls(ParsePersonnelXls.create());
   }
 
   async updateDBPersonnelByXls(buildedWorker: IBuildedFromXlsWorker) {
@@ -129,4 +132,22 @@ export class UploadService {
     await worker.update({'workHistoryFileUrl': newUrl});
     return newUrl
   }
+
+  async uploadQualification() {
+    const qual: IParsedQualification[] = ParseXls.parseQualification();
+    return Promise.all(
+      qual.map(row =>
+        this.personnelService.findByFIO([row.surname, row.name, row.middleName])
+          .then(worker =>
+            worker
+              ? QualImprovement.bulkCreate(row.rows.map(r => {
+                  r.id = worker.id;
+                  return r
+                }))
+              : null
+          )
+      )
+    )
+  }
+
 }

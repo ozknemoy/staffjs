@@ -19,7 +19,7 @@
             <button class="btn btn-group-sm btn-outline-warning  btn-sm"
                     *ngIf="!isGotFiredState"
                     (click)="createNewWorker()">
-              Создать нового сотрудника <i class="fa fa-user-plus"></i>
+              Создать сотрудника <i class="fa fa-user-plus"></i>
             </button>
           </th>
         </tr>
@@ -37,6 +37,7 @@
                     confirmButton
                     (callback)="deleteOne(st.id, i, true)"
                     userRole rights="1"
+                    title="Полностью удалить из базы"
                     *ngIf="!isGotFiredState">Удалить</button>
             <button class="btn btn-danger btn-outline-danger btn-sm ml-1"
                     confirmButton="В архив?"
@@ -68,21 +69,21 @@
         <p>ФИЛЬТР</p>
         <div class="form-group">
           <label>Должность</label>
-          <input type="text" [(ngModel)]="fltrServer.specialty" class="form-control">
+          <input type="text" [(ngModel)]="fltrServer.specialty" class="form-control form-control-sm">
           <label>Подразделение</label>
-          <input type="text" [(ngModel)]="fltrServer.department" class="form-control">
+          <input type="text" [(ngModel)]="fltrServer.department" class="form-control form-control-sm">
           <label>Категория</label>
-          <select [(ngModel)]="fltrServer.category" class="form-control">
+          <select [(ngModel)]="fltrServer.category" class="form-control form-control-sm">
             <option [ngValue]="null"></option>
             <option value="{{val}}" *ngFor="let val of staffCategoriesDict">{{val}}</option>
           </select>
           <label>Вид работы / Условия привлечения</label>
-          <select [(ngModel)]="fltrServer.workType" class="form-control">
+          <select [(ngModel)]="fltrServer.workType" class="form-control form-control-sm">
             <option [ngValue]="null"></option>
             <option value="{{row.name}}" *ngFor="let row of attractionTermsDict">{{row.name}}</option>
           </select>
           <label>Образование</label>
-          <select [(ngModel)]="fltrServer.educationName" class="form-control">
+          <select [(ngModel)]="fltrServer.educationName" class="form-control form-control-sm">
             <option [ngValue]="null"></option>
             <option [value]="row.name" *ngFor="let row of eduTypesDict">{{row.name}}</option>
           </select>

@@ -35,36 +35,36 @@
       <th>Класс условий</th>
     </tr>
     <tr *ngFor="let w of workplaces; let i = index">
-      <td><input type="checkbox" [(ngModel)]="w.active" class="form-control"></td>
-      <td><input type="date" [(ngModel)]="w.date" class="form-control"></td>
-      <td><input type="text" [(ngModel)]="w.department" class="form-control w200"></td>
-      <td><input type="text" [(ngModel)]="w.specialty" class="form-control"></td>
-      <td><input type="text" [(ngModel)]="w.contractNumber" class="form-control"></td>
-      <td><input type="date" [(ngModel)]="w.contractDate" class="form-control"></td>
-      <td><input type="date" [(ngModel)]="w.contractEndDate" class="form-control"></td>
-      <td><input type="number" [(ngModel)]="w.salary" class="form-control"></td>
-      <td><input type="text" [(ngModel)]="w.reason" class="form-control"></td>
-      <td><input type="date" [(ngModel)]="w.academicCouncilDate" class="form-control"></td>
+      <td><input type="checkbox" [(ngModel)]="w.active" class="form-control form-control-sm"></td>
+      <td><input type="date" [(ngModel)]="w.date" class="form-control form-control-sm"></td>
+      <td><input type="text" [(ngModel)]="w.department" class="form-control w200 form-control-sm"></td>
+      <td><input type="text" [(ngModel)]="w.specialty" class="form-control form-control-sm"></td>
+      <td><input type="text" [(ngModel)]="w.contractNumber" class="form-control form-control-sm"></td>
+      <td><input type="date" [(ngModel)]="w.contractDate" class="form-control form-control-sm"></td>
+      <td><input type="date" [(ngModel)]="w.contractEndDate" class="form-control form-control-sm"></td>
+      <td><input type="number" [(ngModel)]="w.salary" class="form-control form-control-sm"></td>
+      <td><input type="text" [(ngModel)]="w.reason" class="form-control form-control-sm"></td>
+      <td><input type="date" [(ngModel)]="w.academicCouncilDate" class="form-control form-control-sm"></td>
       <td>
-        <select [(ngModel)]="w.attractionTerms" class="form-control">
+        <select [(ngModel)]="w.attractionTerms" class="form-control form-control-sm">
           <option [ngValue]="null"></option>
           <option value="{{row.name}}" *ngFor="let row of attractionTermsDict">{{row.name}}</option>
         </select>
       </td>
-      <td><input type="number" [(ngModel)]="w.rate" class="form-control w70"></td>
-      <td><input type="number" [(ngModel)]="w.duration" class="form-control"></td>
+      <td><input type="number" [(ngModel)]="w.rate" class="form-control w70 form-control-sm"></td>
+      <td><input type="number" [(ngModel)]="w.duration" class="form-control form-control-sm"></td>
       <td>
-        <select [(ngModel)]="w.category" class="form-control">
+        <select [(ngModel)]="w.category" class="form-control form-control-sm">
           <option [ngValue]="null"></option>
           <option value="{{val}}" *ngFor="let val of staffCategoriesDict">{{val}}</option>
         </select>
       </td>
-      <td><input type="text" [(ngModel)]="w.terminationReason" class="form-control"></td>
-      <td><input type="date" [(ngModel)]="w.dismissalDate" class="form-control"></td>
-      <td><input type="text" [(ngModel)]="w.dismissalGround" class="form-control"></td>
-      <td><input type="text" [(ngModel)]="w.lawArticle" class="form-control"></td>
-      <td><input type="date" [(ngModel)]="w.soutDate" class="form-control"></td>
-      <td><input type="text" [(ngModel)]="w.soutClass" class="form-control"></td>
+      <td><input type="text" [(ngModel)]="w.terminationReason" class="form-control form-control-sm"></td>
+      <td><input type="date" [(ngModel)]="w.dismissalDate" class="form-control form-control-sm"></td>
+      <td><input type="text" [(ngModel)]="w.dismissalGround" class="form-control form-control-sm"></td>
+      <td><input type="text" [(ngModel)]="w.lawArticle" class="form-control form-control-sm"></td>
+      <td><input type="date" [(ngModel)]="w.soutDate" class="form-control form-control-sm"></td>
+      <td><input type="text" [(ngModel)]="w.soutClass" class="form-control form-control-sm"></td>
       <td><button class="btn btn-sm btn-danger" (click)="deleteRow(i)">Удалить</button></td>
     </tr>
   </table>

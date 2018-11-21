@@ -24,7 +24,7 @@ export interface IBuildedFromXlsWorker {
   rewards: Partial<IPersonnelNamedThingWithDoc[]>,
 }
 
-export class ParseXls {
+export class ParsePersonnelXls {
 
   static createFromFile(file) {
     const w = xlsx.parse(file)[0];
@@ -50,24 +50,6 @@ export class ParseXls {
     }
   }
 
-  static splitByN(_str, n, splitter = ' ') {
-    const strArr = _str.split(splitter);
-    let out = [];
-    for (let i = 0; i < strArr.length; i++) {
-      if (strArr[i]) {
-        // пишем лишнее в последний элемент разбивая с помощью splitter
-        if (i > n - 1) {
-          out[n - 1] = out[n - 1] + splitter + strArr[i]
-        } else {
-          out.push(strArr[i])
-        }
-      } else {
-        out.push('')
-      }
-    }
-    return out
-  }
-
   static parse(xls: string[]) {
     xls.forEach((cell, i) => {
       if (cell === '') {
@@ -75,11 +57,11 @@ export class ParseXls {
       }
     });
     try {
-      this.splitByN(xls[1], 3)
+      HandleData.splitByN(xls[1], 3)
     } catch (e) {
       ErrHandler.propogate('Ошибка разбора файла. Строка содержит пустую ячейку с ФИО. Вероятно excel содержит пустые строки', e);
     }
-    const [surname, name, middleName] = this.splitByN(xls[1], 3);
+    const [surname, name, middleName] = HandleData.splitByN(xls[1], 3);
     const sex = !HandleData.isInvalidPrimitive(middleName)
       ? middleName.trim().slice(-3) === 'вна'
         ? 'ж' : 'м'

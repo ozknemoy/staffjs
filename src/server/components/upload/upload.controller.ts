@@ -42,5 +42,10 @@ export class UploadController {
     return this.uploadService.uploadWorkHistoryFile(file, workerId)
   }
 
+  @Post('qualification-up')
+  uploadQualification() {
+    return this.uploadService.uploadQualification()
+  }
+
 
 }

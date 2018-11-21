@@ -42,7 +42,6 @@ export class PersonnelService {
 
   getAllFullData() {
     return staffJsDB.query(`SELECT * FROM Staff`).spread((results, metadata) => results);
-    /*Personnel.findAll();*/
   }
 
   getAll() {

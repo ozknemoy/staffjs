@@ -106,6 +106,10 @@ body {
   width: 163px;
 }
 
+.squeeze-date .form-control-sm[type=date] {
+  width: 138px;
+}
+
 nav-bar {
   display: block;
 }
