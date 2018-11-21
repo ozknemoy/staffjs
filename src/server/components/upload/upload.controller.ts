@@ -1,9 +1,8 @@
 import {
   Controller, Post, Body, FileInterceptor, UseInterceptors, UploadedFile,
-  UseGuards, Get, Query
+  UseGuards, Query, HttpStatus, HttpException
 } from '@nestjs/common';
 import {UploadService} from "./upload.service";
-import {ErrHandler} from "../../services/error-handler.service";
 import {AuthGuard} from "@nestjs/passport";
 import {IFileUpload} from "../../../shared/interfaces/file-upload";
 
@@ -23,12 +22,12 @@ export class UploadController {
   @Post('fill-db-by-local-xls')
   async fillDBPersonnelByLocalXls(@Body() body: {mass: boolean}) {
     return this.uploadService.fillDBPersonnelByLocalXls(body.mass)
-  }
+  }/*
 
   @Post('update-db-by-xls')
   async updateDBPersonnel() {
     return
-  }
+  }*/
 
   @Post('labor-contract')
   @UseInterceptors(FileInterceptor('file'))
@@ -44,7 +43,9 @@ export class UploadController {
 
   @Post('qualification-up')
   uploadQualification() {
+    //throw new HttpException('---------------Forbidden-------------', HttpStatus.FORBIDDEN);
     return this.uploadService.uploadQualification()
+      .catch((e) =>  e)
   }
 
 

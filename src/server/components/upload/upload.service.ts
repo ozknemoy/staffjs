@@ -141,13 +141,13 @@ export class UploadService {
           .then(worker =>
             worker
               ? QualImprovement.bulkCreate(row.rows.map(r => {
-                  r.id = worker.id;
+                  r.personnelId = worker.id;
                   return r
                 }))
               : null
           )
       )
-    )
+    )/*.then(() => qual)*/
   }
 
 }

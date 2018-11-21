@@ -59,7 +59,32 @@ export class HandleData {
   // https://blog.theodo.fr/2018/01/tips-tricks-date-handling-moment-js/
   // -> 2018-09-07T21:00:00.000Z
   static dateToServer(date: string) {
-    return (date && typeof date === 'string') ? new Date(date).toJSON() : null;
+    //return (date && typeof date === 'string') ? new Date(date).toJSON() : null;
+    return this.onlyDayToServer(date)
+  }
+
+  // '2018-01-01' -> '2017-12-31T21:00:00.000Z'
+  static onlyDayToServer(date: string, formatIn = 'YYYY-MM-DD') {
+    if (!date) {
+      return null;
+    }
+    return new Date(moment(date, formatIn).format()).toJSON()
+  }
+
+  // 2018 -> 2017-12-31T21:00:00.000Z
+  static setYear(year) {
+    if (!year) {
+      return null;
+    }
+    const d = new Date();
+    d.setFullYear(year, 0, 1);
+    d.setHours(0, 0, 0, 0);
+    return HandleData.dateToServer(d.toJSON())
+  }
+
+  // 13.11.2018 -> 2018-11-12T21:00:00.000Z
+  static ruDateToServer(date: string) {
+    return this.onlyDayToServer(date, 'DD-MM-YYYY')
   }
 
   // -> 2018-09-07
@@ -213,28 +238,23 @@ export class HandleData {
     return `${f} ${i}${short ? '' : ' '}${o}`
   }
 
-  // '2018-01-01' -> '2017-12-31T21:00:00.000Z'
-  static onlyDayToServer(date: string, formatIn = 'YYYY-MM-DD') {
-    if (!date) {
-      return null;
+  // 1111 2222 3333 4444 , 3 -> ['1111','2222','3333 4444']
+  static splitByN(_str, n, splitter = ' ') {
+    const strArr = _str.split(splitter);
+    let out = [];
+    for (let i = 0; i < strArr.length; i++) {
+      if (strArr[i]) {
+        // пишем лишнее в последний элемент разбивая с помощью splitter
+        if (i > n - 1) {
+          out[n - 1] = out[n - 1] + splitter + strArr[i]
+        } else {
+          out.push(strArr[i])
+        }
+      } else {
+        out.push('')
+      }
     }
-    return new Date(moment(date, formatIn).format()).toJSON()
-  }
-
-  // 2018 -> 2017-12-31T21:00:00.000Z
-  static setYear(year) {
-    if (!year) {
-      return null;
-    }
-    const d = new Date();
-    d.setFullYear(year, 0, 1);
-    d.setHours(0, 0, 0, 0);
-    return HandleData.dateToServer(d.toJSON())
-  }
-
-  // 13.11.2018 -> 2018-11-12T21:00:00.000Z
-  static ruDateToServer(date: string) {
-    return this.onlyDayToServer(date, 'DD-MM-YYYY')
+    return out
   }
 
   static isInvalidPrimitive(value) {
@@ -293,24 +313,5 @@ export class HandleData {
       return [str, null]
     }
     return [null, null]
-  }
-
-  // 1111 2222 3333 4444 , 3 -> ['1111','2222','3333 4444']
-  static splitByN(_str, n, splitter = ' ') {
-    const strArr = _str.split(splitter);
-    let out = [];
-    for (let i = 0; i < strArr.length; i++) {
-      if (strArr[i]) {
-        // пишем лишнее в последний элемент разбивая с помощью splitter
-        if (i > n - 1) {
-          out[n - 1] = out[n - 1] + splitter + strArr[i]
-        } else {
-          out.push(strArr[i])
-        }
-      } else {
-        out.push('')
-      }
-    }
-    return out
   }
 }
