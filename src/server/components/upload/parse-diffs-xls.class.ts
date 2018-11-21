@@ -4,18 +4,19 @@ import * as _ from "lodash";
 import xlsx from 'node-xlsx';
 import {ErrHandler} from "../../services/error-handler.service";
 import {HandleData} from '../../../client/app/shared/services/handle-data';
+import IQualImprovement from "../personnel/relations/personnel-qual-improvement.interface";
 
 export interface IParsedQualification {
   surname: string,
   name: string,
   middleName: string,
-  rows: {id?: number, endEduDate: string, type: string}[]
+  rows: Partial<IQualImprovement>[]//{id?: number, endEduDate: string, type: string}[]
 }
 
 export class ParseXls {
-  static parseQualification(excelPath = './qual-up.xls') {
+  static parseQualification() {
     try {
-      const firstList = xlsx.parse(fs.readFileSync(excelPath))[0];
+      const firstList = xlsx.parse(fs.readFileSync('./qual-up.xls'))[0];
       const parsedArr = firstList.data.slice(1).map((row, i) => this.parseRow(row)).filter(row => !!row);
       return this.createDedupedQualification(parsedArr)
     } catch (e) {
@@ -33,22 +34,20 @@ export class ParseXls {
   }
 
   static createDedupedQualification(arr: any[]): IParsedQualification[] {
-    let ret = /*<IParsedQualification>*/{};
+    let ret = {};
     arr.forEach(row => {
+      const rowQual: IParsedQualification['rows'][0] = {
+        endEduDate: row.endEduDate,
+        type: row.type,
+      };
       if(ret[row.index]) {
-        ret[row.index].rows.push({
-          endEduDate: row.endEduDate,
-          type: row.type,
-        })
+        (ret[row.index].rows).push(rowQual)
       } else {
-        ret[row.index] = {
+        ret[row.index] = <IParsedQualification>{
           surname: row.surname,
           name: row.name,
           middleName: row.middleName,
-          rows: [{
-            endEduDate: row.endEduDate,
-            type: row.type,
-          }],
+          rows: [rowQual],
         }
       }
     });
