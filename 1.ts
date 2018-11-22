@@ -62,5 +62,5 @@ const [j, p] = HandleData.splitByDivider('', 'от', false);
 console.assert(j === null && p === null, 'splitByDivider5', [e, g]);
 
 
-const qual = ParseXls.parseQualification();
-console.log(qual);
+console.assert(HandleData.isServerDate('2019-08-30T21:00:00.000Z') === true, 'isServerDate1');
+console.assert(HandleData.isServerDate('2019-0830T21:00:00.000Z') === false, 'isServerDate3');

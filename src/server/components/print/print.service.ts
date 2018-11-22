@@ -9,6 +9,12 @@ import LaborContractDocx from "./labor-contract-docx.model";
 import {ErrHandler} from "../../services/error-handler.service";
 import {dirLaborContractDocx} from "../upload/upload.service";
 import {FOLDER_SERVER, WORKING_DIRECTORY} from "../../../shared/constants";
+import Workplace from '../personnel/relations/personnel-workplace.model';
+import Personnel from '../personnel/personnel.model';
+import * as _ from 'lodash';
+import {IServerFilter} from '../../../shared/interfaces/server-filter.interface';
+import xlsx from "node-xlsx";
+import {HandleData} from '../../../client/app/shared/services/handle-data';
 
 const path = require('path');
 const DocxMerger = require('../../../shared/docx-merger/docx-merger-dist.js');
@@ -65,13 +71,17 @@ export class PrintService {
   }
 
   async printLaborContract(userId, typePart2, saveLocal) {
+    // если нет активного места работы то заверну
+    const user = await Personnel.findOne({where: {id: userId}, include: [{model: Workplace, where: {active: true}}, { all: true }]});
+    if (!user) {
+      ErrHandler.throw('Сначала выставите активное место работы (вкладка прием на работу)')
+    }
     const docx = await LaborContractDocx.findOne({where: {type: +typePart2}});
     if (!docx || !docx.url) {
       ErrHandler.throw('Сначала загрузите статическую часть договора')
     }
     // наличие папки с файлами не проверяю тк если загружен хотя бы один файл то папка существует
     const part2Uint = fs.readFileSync(dirLaborContractDocx + docx.url);
-    const user = await this.personnelService.getOneFull(userId);
     const [part1, part3] = new PrintLaborContractDynamicBuilder(user).make();
     const part1Uint = await this.createOfficeFileUint8(part1);
     const part3Uint = await this.createOfficeFileUint8(part3);
@@ -139,6 +149,40 @@ export class PrintService {
           console.log(err);
         });
     });
+  }
 
+  async filterAndXls(fltr: IServerFilter) {
+    const pers = await this.personnelService.filter(fltr);
+    const fields = {
+      // 1
+      surname: 'Фамилия',
+      name: 'Имя',
+      middleName: 'Отчество',
+      phone: 'Номер телефона',
+      inn: 'ИНН',
+      insurance: 'СНИЛС',
+      // 5
+      'workplaces[0]department': 'Структурное подразделение',
+      'workplaces[0]specialty': 'Должность',
+      'workplaces[0]attractionTerms': 'Условия привлечения',
+      'workplaces[0]contractNumber': 'Номер трудового договора',
+      'workplaces[0]contractDate': 'Дата трудового договора',
+      'workplaces[0]contractEndDate': 'Дата окончания трудового договора',
+      'workplaces[0]salary': 'Тарифная ставка',
+    };
+    const firstRow = _.values(fields);
+    const rows = pers.map(worker =>
+      Object.keys(fields).map(f => {
+        let v = _.get(worker, f, '');
+        v = HandleData.isInvalidPrimitive(v) ? '' : (v + '').trim();
+        console.log(v, HandleData.isServerDate(v));
+        return HandleData.isServerDate(v) ? HandleData.dateFromServer(v) : v
+      })
+    );
+    rows.unshift(firstRow);
+    let buffer = xlsx.build([{name: "1", data: rows}]);
+    //fs.writeFileSync('ret.xlsx', buffer);
+    //console.log('');
+    return Buffer.from(buffer)
   }
 }

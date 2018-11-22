@@ -76,11 +76,11 @@ export function getOneOneP() {
 
 export function addOneThreeP(doc: Document, worker: IPersonnel) {
   const text1 = new TextRun('по основной работе');
-  if (worker.workType === attractionTermsDict[0].name) {
+  if (worker.workplaces[0].attractionTerms === attractionTermsDict[0].name) {
     text1.underline();
   }
   const text2 = new TextRun('по совместительству');
-  if (worker.workType === attractionTermsDict[1].name) {
+  if (worker.workplaces[0].attractionTerms === attractionTermsDict[1].name) {
     text2.underline();
   }
   const oneThree = new Paragraph('1.3. Трудовой договор является договором .')

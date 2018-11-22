@@ -3,7 +3,8 @@ export class IServerFilter {
   specialty: string = null;
   department: string = null;
   category: string = null;
-  workType: string = null;
+  attractionTerms: string = null;
+  qualImprovementType: string = null;
   educationName: string = null;
   contractEndDateMin = 0;
   contractEndDateMax = 53;

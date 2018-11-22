@@ -71,6 +71,12 @@ export class HandleData {
     return date ? moment(date).format('YYYY-MM-DD') : date;
   }
 
+  // 2019-08-30T21:00:00.000Z -> true
+  static isServerDate(date): boolean {
+    return /^\d\d\d\d\-\d\d-\d\dT\d\d:/.test(date)
+  }
+
+
   static copy<T>(a: T): T {
     return JSON.parse(JSON.stringify(a))
   }

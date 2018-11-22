@@ -59,7 +59,7 @@ export class PrintT2Builder {
       worker.insurance,
       worker.surname ? worker.surname.charAt(0) : null,
       worker.workNature,
-      worker.workType,
+      worker.workplaces && worker.workplaces.length ? worker.workplaces[0].attractionTerms : '',
       worker.sex
     ];
     const tbl = {

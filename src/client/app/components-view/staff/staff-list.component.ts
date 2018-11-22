@@ -103,6 +103,10 @@ export class StaffListComponent implements OnInit {
     });
   }
 
+  filterServerXls() {
+    this.http.downloadAndSave('/print/filter-and-xls', this.fltrServer)
+  }
+
   trackByFn(index, item) {
     return item.id
   }
