@@ -49,7 +49,6 @@ export default class Personnel extends Model<Personnel> implements IPersonnel {
   inn: string;
   @Column insurance: string;
   @Column workNature: string;
-  @Column workType: string;
   @Column sex: string;
 
   @NotEmpty({msg: 'Не допускается пустое имя'})

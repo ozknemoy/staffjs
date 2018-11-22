@@ -66,6 +66,8 @@
                 (click)="filterServer()">Искать</button>
         <button class="btn btn-outline-info float-right btn-sm dib"
                 (click)="clearFilter()">Очистить</button>
+        <button class="btn btn-outline-info float-right btn-sm dib"
+                (click)="filterServerXls()">Скачать результат в excel</button>
         <p>ФИЛЬТР</p>
         <div class="form-group">
           <label>Должность</label>
@@ -78,7 +80,7 @@
             <option value="{{val}}" *ngFor="let val of staffCategoriesDict">{{val}}</option>
           </select>
           <label>Вид работы / Условия привлечения</label>
-          <select [(ngModel)]="fltrServer.workType" class="form-control form-control-sm">
+          <select [(ngModel)]="fltrServer.attractionTerms" class="form-control form-control-sm">
             <option [ngValue]="null"></option>
             <option value="{{row.name}}" *ngFor="let row of attractionTermsDict">{{row.name}}</option>
           </select>
@@ -87,6 +89,8 @@
             <option [ngValue]="null"></option>
             <option [value]="row.name" *ngFor="let row of eduTypesDict">{{row.name}}</option>
           </select>
+          <label>Повышение квалификации</label>
+          <input type="text" [(ngModel)]="fltrServer.qualImprovementType" class="form-control form-control-sm">
           <label>Период окончания трудового договора, недель</label>
           <ng5-slider [(value)]="fltrServer.contractEndDateMin" [(highValue)]="fltrServer.contractEndDateMax" [options]="sliderOptionsContractEnd"></ng5-slider>
           <label>Возраст</label>

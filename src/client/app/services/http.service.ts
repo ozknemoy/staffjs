@@ -4,6 +4,8 @@ import {HttpClient} from "@angular/common/http";
 import {AUTH_HEADER_PROP, GET_AUTH_HEADER_VALUE} from "../config/token-interceptor";
 import {ToastrService} from "ngx-toastr";
 import {map} from 'rxjs/operators';
+import {HandleData} from '../shared/services/handle-data';
+import {saveAs} from "file-saver";
 
 @Injectable()
 export class HttpService {
@@ -78,6 +80,21 @@ export class HttpService {
         value: GET_AUTH_HEADER_VALUE()
       }]
     });
+  }
+
+  downloadAndSave(url: string, obj = {}) {
+    return this.post(url, obj, undefined,
+      {
+        responseType: 'blob',
+        // to display the full response & as 'body' for type cast
+        observe: <'body'>'response',
+      })
+      .then((fullResponse) => {
+        console.log(fullResponse['body']);
+        saveAs(fullResponse['body'], HandleData.getFileNameFromHttpResponse(fullResponse));
+        // скачивает из json исходника
+        // pdfMake.createPdf(fullResponse.body).download(HandleData.getFileNameFromHttpResponse(fullResponse));
+      })
   }
 
 }

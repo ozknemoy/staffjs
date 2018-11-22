@@ -5,7 +5,6 @@ import IQualImprovement from "./relations/personnel-qual-improvement.interface";
 import {IFamily} from "./relations/personnel-family.interface";
 import QualImprovement from "./relations/personnel-qual-improvement.model";
 import Family from "./relations/personnel-family.model";
-import Institution from "./relations/personnel-institution.model";
 import ProfRetraining from './relations/personnel-prof-retraining.model';
 import IProfRetraining from './relations/personnel-prof-retraining.interface';
 import IAttestation from './relations/personnel-attestation.interface';
@@ -177,7 +176,7 @@ export class StaffController {
   }
 
   @Post('filter')
-  filter(@Param('id') id, @Body() filter: IServerFilter) {
+  filter(@Body() filter: IServerFilter) {
     return this.personnelService.filter(filter);
   }
 }

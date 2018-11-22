@@ -77,7 +77,6 @@ export class ParsePersonnelXls {
       inn: invalidINN(xls[2]) ? null : xls[2],
       insurance: xls[3],
       educationName: xls[13],
-      workType: attractionTerms,
       workExpDate: HandleData.ruDateToServer(xls[56]),
       profession: xls[54],
       membershipGAN: !!xls[58],

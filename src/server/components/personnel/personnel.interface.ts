@@ -17,7 +17,6 @@ export class IPersonnel {
   inn: string = null;
   insurance: string = null;
   workNature: string = null;
-  workType: string = null;
   sex: string = null;
   name: string = null;
   surname: string = null;

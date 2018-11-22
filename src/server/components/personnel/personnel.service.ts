@@ -25,7 +25,7 @@ import {ISocialSecurity} from './relations/personnel-social-security.interface';
 import SocialSecurity from './relations/personnel-social-security.model';
 import WorkExp from './relations/personnel-work-exp.model';
 import {workExpTypesDict} from '../../../shared/work-exp-types.dict';
-import * as _ from 'lodash/core';
+import * as _ from 'lodash';
 import Institution from './relations/personnel-institution.model';
 import ScientificInst from './relations/personnel-scientific-inst.model';
 import {HandleData} from '../../../client/app/shared/services/handle-data';
@@ -225,15 +225,18 @@ export class PersonnelService {
       department: WhereOptions<Workplace>,
       category: WhereOptions<Workplace>,
       contractEndDate: WhereOptions<Workplace>,
+      attractionTerms: WhereOptions<Workplace>,
     }> = {};
     // пока ищу только среди активных
     let workerWhere: Partial<{
       active: Personnel['active'],
-      workType: any/*WhereOptions<Personnel>*/,
       educationName: any/*WhereOptions<Personnel>*/,
     }> = {active: true};
     let passportWhere: Partial<{
       birthDate: WhereOptions<Passport>,
+    }> = {};
+    let qualImprWhere: Partial<{
+      type: WhereOptions<QualImprovement>,
     }> = {};
 
     if(!HandleData.isNoValuePrimitive(fltr.specialty)) {
@@ -244,6 +247,9 @@ export class PersonnelService {
     }
     if(!HandleData.isNoValuePrimitive(fltr.category)) {
       workplaceWhere.category = {[Sequelize.Op.like]: fltr.category}
+    }
+    if(!HandleData.isNoValuePrimitive(fltr.attractionTerms)) {
+      workplaceWhere.attractionTerms = {[Sequelize.Op.like]: fltr.attractionTerms}
     }
     if(fltr.contractEndDateMin !== defFilter.contractEndDateMin || fltr.contractEndDateMax !== defFilter.contractEndDateMax) {
       const from = moment()
@@ -264,13 +270,10 @@ export class PersonnelService {
       include.push({model: Workplace, where: {active: true}, required: false})
     }
 
-    if(!HandleData.isNoValuePrimitive(fltr.workType)) {
-      workerWhere.workType = {[Sequelize.Op.like]: fltr.workType}
-    }
-
     if(!HandleData.isNoValuePrimitive(fltr.educationName)) {
       workerWhere.educationName = {[Sequelize.Op.like]: fltr.educationName}
     }
+
 
     if(fltr.birthDateMin !== defFilter.birthDateMin || fltr.birthDateMax !== defFilter.birthDateMax) {
       const from = moment()
@@ -287,10 +290,14 @@ export class PersonnelService {
       include.push({model: Passport, where: passportWhere})
     }
 
-    // если простой не нужен то находим сначала всех
-    return !HandleData.onlyEmptyKeys(fltr)
-      ? await Personnel.findAll({where: workerWhere, include})
-      : await this.getAllByActivity(true);
+    if(!HandleData.isNoValuePrimitive(fltr.qualImprovementType)) {
+      qualImprWhere.type = {[Sequelize.Op.iLike]: '%' + fltr.qualImprovementType + '%'}
+    }
+    if(!HandleData.onlyEmptyKeys(qualImprWhere)) {
+      include.push({model: QualImprovement, where: qualImprWhere})
+    }
+
+    return await this.getAllByActivity(true);
 
   }
 }
