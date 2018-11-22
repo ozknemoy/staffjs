@@ -161,6 +161,8 @@ export class PrintService {
       phone: 'Номер телефона',
       inn: 'ИНН',
       insurance: 'СНИЛС',
+
+      'passport.birthDate': 'Дата рождения',
       // 5
       'workplaces[0]department': 'Структурное подразделение',
       'workplaces[0]specialty': 'Должность',
@@ -175,8 +177,9 @@ export class PrintService {
       Object.keys(fields).map(f => {
         let v = _.get(worker, f, '');
         v = HandleData.isInvalidPrimitive(v) ? '' : (v + '').trim();
-        console.log(v, HandleData.isServerDate(v));
-        return HandleData.isServerDate(v) ? HandleData.dateFromServer(v) : v
+        console.log(v + '', HandleData.isServerRawDate(v), HandleData.getRuDate(v));
+
+        return HandleData.isServerRawDate(v) ? HandleData.getRuDate(v) : v
       })
     );
     rows.unshift(firstRow);

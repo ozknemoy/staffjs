@@ -62,5 +62,13 @@ const [j, p] = HandleData.splitByDivider('', 'от', false);
 console.assert(j === null && p === null, 'splitByDivider5', [e, g]);
 
 
-console.assert(HandleData.isServerDate('2019-08-30T21:00:00.000Z') === true, 'isServerDate1');
-console.assert(HandleData.isServerDate('2019-0830T21:00:00.000Z') === false, 'isServerDate3');
+console.assert(HandleData.isISODate('2019-08-30T21:00:00.000Z') === true, 'isISODate1');
+console.assert(HandleData.isISODate('2019-0830T21:00:00.000Z') === false, 'isISODate2');
+
+console.assert(HandleData.isServerRawDate('Tue Feb 07 2017 00:00:00 GMT+0300 ...') === true, 'isServerDate1');
+console.assert(HandleData.isServerRawDate('Tue Feb 072017 00:00:00 GMT+0300 ...') === false, 'isServerDate1');
+
+console.assert(HandleData.ruDateToServer('13.11.2018') === '2018-11-12T21:00:00.000Z', 'dateFromServer');
+
+
+

@@ -63,12 +63,24 @@ export class HandleData {
     return this.onlyDayToServer(date)
   }
 
+  // -> 2017-02-07
+  static dateFromServer(date: string) {
+    console.log(typeof moment(date).format('YYYY-MM-DD') ,
+      moment(date).format('YYYY-MM-DD') ,
+      date,
+      new Date(date)
+    );
+    return date ? /*moment(date).format('YYYY-MM-DD')*/new Date(date) : date;
+  }
+
   // '2018-01-01' -> '2017-12-31T21:00:00.000Z'
-  static onlyDayToServer(date: string, formatIn = 'YYYY-MM-DD') {
+  static onlyDayToServer(date, formatIn = 'YYYY-MM-DD') {
     if (!date) {
       return null;
     }
-    return new Date(moment(date, formatIn).format()).toJSON()
+    console.log(new Date(date).toISOString() , date);
+    throw new Error();
+    return new Date(date).toISOString()//new Date(moment(date, formatIn).format()).toJSON()
   }
 
   // 2018 -> 2017-12-31T21:00:00.000Z
@@ -92,15 +104,16 @@ export class HandleData {
     return /*this.dateToServer*/(moment(date).subtract(<any>n, unit).format('YYYY-MM-DD'))
   }
 
-  static dateFromServer(date: string) {
-    return date ? moment(date).format('YYYY-MM-DD') : date;
-  }
-
   // 2019-08-30T21:00:00.000Z -> true
-  static isServerDate(date): boolean {
-    return /^\d\d\d\d\-\d\d-\d\dT\d\d:/.test(date)
+  static isISODate(date): boolean {
+    return /^\d\d\d\d-\d\d-\d\dT\d\d:/.test(date)
   }
 
+  // таким время вылетает из бд. оно отличается от того что лежит в бд
+  // Tue Feb 07 2017 00:00:00 GMT+0300 (Калининградское время (зима) -> true
+  static isServerRawDate(date): boolean {
+    return /\d\d\s\d\d\d\d\s\d\d:\d\d:\d\d\sGMT(\+|\-)\d\d\d\d\s/.test(date)
+  }
 
   static copy<T>(a: T): T {
     return JSON.parse(JSON.stringify(a))
@@ -128,7 +141,12 @@ export class HandleData {
     return HandleData.copy(arr).map( (row: T) => HandleData.handleDatesInObjectFromServer(row, stringsArr));
   };
 
+  // '2019-08-30T21:00:00.000Z' -> '31.08.2019' учитывает пояс
   static getRuDate(date) {
+    return date ? moment(new Date(date)).format('DD.MM.YYYY') : null
+  }
+  // Tue Feb 07 2017 00:00:00 GMT+0300 -> '31.08.2019' учитывает пояс
+  static getRuDateFromRaw(date) {
     return date ? moment(new Date(date)).format('DD.MM.YYYY') : null
   }
 

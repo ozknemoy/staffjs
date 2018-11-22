@@ -145,6 +145,7 @@ export class ParsePersonnelXls {
       contractDate: HandleData.ruDateToServer(contractD),
       contractEndDate: HandleData.ruDateToServer(xls[41]),
     };
+    console.log('reeeeeeeeeeeeee', xls[41], HandleData.ruDateToServer(xls[41]));
     const workExp: Partial<IWorkExp[]> = this.getWorkExp(xls, null);
     const rewards = <Partial<IPersonnelNamedThingWithDoc>>this.getRewards(xls);
     return {
