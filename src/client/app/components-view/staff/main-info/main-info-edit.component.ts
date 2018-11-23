@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {IPersonnel} from "../../../../../server/components/personnel/personnel.interface";
 import {ActivatedRoute} from "@angular/router";
 import {HttpService} from "../../../services/http.service";
-import {HandleData} from "../../../shared/services/handle-data";
+import {HandleData} from "../../../../../shared/handle-data";
 import {attractionTermsDict} from "../../../../../shared/dictionaries/attraction-terms.dict";
 
 @Component({

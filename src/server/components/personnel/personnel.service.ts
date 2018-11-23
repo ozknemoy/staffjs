@@ -28,7 +28,7 @@ import {workExpTypesDict} from '../../../shared/work-exp-types.dict';
 import * as _ from 'lodash';
 import Institution from './relations/personnel-institution.model';
 import ScientificInst from './relations/personnel-scientific-inst.model';
-import {HandleData} from '../../../client/app/shared/services/handle-data';
+import {HandleData} from '../../../shared/handle-data';
 import AcademicRank from "./relations/academic-rank.model";
 import {IServerFilter} from "../../../shared/interfaces/server-filter.interface";
 import {Sequelize} from "sequelize-typescript";

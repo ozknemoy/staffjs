@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpService} from '../../services/http.service';
-import LaborContractDocx from "../../../../server/components/print/labor-contract-docx.model";
 import {ILaborContractDocx} from "../../../../server/components/print/labor-contract-docx.interface";
-import {HandleData} from "../../shared/services/handle-data";
 
 @Component({
   selector: 'employment-contract',

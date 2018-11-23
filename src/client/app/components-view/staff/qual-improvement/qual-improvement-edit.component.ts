@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {HttpService} from "../../../services/http.service";
 import IQualImprovement from "../../../../../server/components/personnel/relations/personnel-qual-improvement.interface";
-import {HandleData} from '../../../shared/services/handle-data';
+import {HandleData} from '../../../../../shared/handle-data';
 
 @Component({
   selector: 'staff-qual-improvement',

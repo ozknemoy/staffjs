@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {HttpService} from "../../../services/http.service";
-import {HandleData} from '../../../shared/services/handle-data';
+import {HandleData} from '../../../../../shared/handle-data';
 import {ISocialSecurity} from '../../../../../server/components/personnel/relations/personnel-social-security.interface';
 
 @Component({

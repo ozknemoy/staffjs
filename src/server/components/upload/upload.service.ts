@@ -13,7 +13,7 @@ import * as fs from "fs-extra";
 import LaborContractDocx from "../print/labor-contract-docx.model";
 import {dirWorkHistory} from "../../../shared/constants";
 import * as path from "path";
-import {HandleData} from "../../../client/app/shared/services/handle-data";
+import {HandleData} from "../../../shared/handle-data";
 import AcademicRank from "../personnel/relations/academic-rank.model";
 import Reward from "../personnel/relations/personnel-reward.model";
 import {IParsedQualification, ParseXls} from './parse-diffs-xls.class';

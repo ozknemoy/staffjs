@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {HttpService} from '../../services/http.service';
 import {ILaborContractDocx} from "../../../../server/components/print/labor-contract-docx.interface";
-import {HandleData} from "../../shared/services/handle-data";
+import {HandleData} from "../../../../shared/handle-data";
 
 @Component({
   selector: 'app-staff-edit',

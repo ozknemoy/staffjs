@@ -14,7 +14,7 @@ import Personnel from '../personnel/personnel.model';
 import * as _ from 'lodash';
 import {IServerFilter} from '../../../shared/interfaces/server-filter.interface';
 import xlsx from "node-xlsx";
-import {HandleData} from '../../../client/app/shared/services/handle-data';
+import {HandleData} from '../../../shared/handle-data';
 
 const path = require('path');
 const DocxMerger = require('../../../shared/docx-merger/docx-merger-dist.js');

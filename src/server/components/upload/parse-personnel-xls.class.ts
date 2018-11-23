@@ -2,7 +2,7 @@
 import * as fs from "fs";
 import xlsx from 'node-xlsx';
 import {IPersonnel} from '../personnel/personnel.interface';
-import {HandleData} from '../../../client/app/shared/services/handle-data';
+import {HandleData} from '../../../shared/handle-data';
 import {invalidINN} from '../../../shared/validators';
 import {ErrHandler} from "../../services/error-handler.service";
 import {attractionTermsDict} from "../../../shared/dictionaries/attraction-terms.dict";
@@ -145,7 +145,6 @@ export class ParsePersonnelXls {
       contractDate: HandleData.ruDateToServer(contractD),
       contractEndDate: HandleData.ruDateToServer(xls[41]),
     };
-    console.log('reeeeeeeeeeeeee', xls[41], HandleData.ruDateToServer(xls[41]));
     const workExp: Partial<IWorkExp[]> = this.getWorkExp(xls, null);
     const rewards = <Partial<IPersonnelNamedThingWithDoc>>this.getRewards(xls);
     return {

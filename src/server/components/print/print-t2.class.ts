@@ -1,7 +1,7 @@
 import * as _ from 'lodash/core';
 import Personnel from '../personnel/personnel.model';
 import {INSTITUTIONS_NAME} from '../../../shared/constants';
-import {HandleData} from '../../../client/app/shared/services/handle-data';
+import {HandleData} from '../../../shared/handle-data';
 import * as moment from 'moment';
 import {IPdfSchema} from '../../../shared/interfaces/pdf-shema.interface';
 import {defaultFontSize, defaultTableLayout, tableFontSize} from './print.constants';

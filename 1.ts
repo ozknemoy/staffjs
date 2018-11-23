@@ -1,4 +1,4 @@
-import {HandleData} from "./src/client/app/shared/services/handle-data";
+import {HandleData} from "./src/shared/handle-data";
 import * as moment from "moment";
 import * as fs from "fs";
 import * as _ from "lodash";
@@ -68,7 +68,16 @@ console.assert(HandleData.isISODate('2019-0830T21:00:00.000Z') === false, 'isISO
 console.assert(HandleData.isServerRawDate('Tue Feb 07 2017 00:00:00 GMT+0300 ...') === true, 'isServerDate1');
 console.assert(HandleData.isServerRawDate('Tue Feb 072017 00:00:00 GMT+0300 ...') === false, 'isServerDate1');
 
-console.assert(HandleData.ruDateToServer('13.11.2018') === '2018-11-12T21:00:00.000Z', 'dateFromServer');
+console.assert(HandleData.onlyDayToServer('2018-01-01') === '2018-01-01T00:00:00+03:00', 'onlyDayToServer1');
+console.assert(HandleData.onlyDayToServer('2018-01-01T00:00:00+03:00') === '2018-01-01T00:00:00+03:00', 'onlyDayToServer2');
+console.assert(HandleData.onlyDayToServer('1969-12-31T21:00:00.000Z') === '1969-12-31T00:00:00+03:00', 'onlyDayToServer3');
+
+console.assert(HandleData.isRuDate('23.03.2017') === true, 'isRuDate1');
+console.assert(HandleData.isRuDate('23.03.2017') === true, 'isRuDate2');
+console.assert(HandleData.isRuDate('23-03-2017 ') === true, 'isRuDate3');
+console.assert(HandleData.isRuDate('23-03.2017 j') === false, 'isRuDate3');
+
+console.assert(HandleData.setYear('2018') === '2018-01-01T00:00:00+03:00', 'setYear1', HandleData.setYear('2018'));
 
 
 

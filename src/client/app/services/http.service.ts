@@ -4,7 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {AUTH_HEADER_PROP, GET_AUTH_HEADER_VALUE} from "../config/token-interceptor";
 import {ToastrService} from "ngx-toastr";
 import {map} from 'rxjs/operators';
-import {HandleData} from '../shared/services/handle-data';
+import {HandleData} from '../../../shared/handle-data';
 import {saveAs} from "file-saver";
 
 @Injectable()

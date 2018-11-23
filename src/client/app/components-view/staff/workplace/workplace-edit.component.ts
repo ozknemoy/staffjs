@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {HttpService} from "../../../services/http.service";
-import {HandleData} from '../../../shared/services/handle-data';
+import {HandleData} from '../../../../../shared/handle-data';
 import IWorkplace from '../../../../../server/components/personnel/relations/personnel-workplace.interface';
 import {attractionTermsDict} from "../../../../../shared/dictionaries/attraction-terms.dict";
 import * as _ from 'lodash';

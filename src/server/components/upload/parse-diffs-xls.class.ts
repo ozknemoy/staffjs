@@ -3,7 +3,7 @@ import * as fs from "fs";
 import * as _ from "lodash";
 import xlsx from 'node-xlsx';
 import {ErrHandler} from "../../services/error-handler.service";
-import {HandleData} from '../../../client/app/shared/services/handle-data';
+import {HandleData} from '../../../shared/handle-data';
 import IQualImprovement from "../personnel/relations/personnel-qual-improvement.interface";
 
 export interface IParsedQualification {

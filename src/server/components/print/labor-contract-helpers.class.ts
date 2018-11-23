@@ -4,7 +4,7 @@ import {
   getTitle, redI, removeTableBorders
 } from './docx-helpers';
 import {IPersonnel} from "../personnel/personnel.interface";
-import {HandleData} from "../../../client/app/shared/services/handle-data";
+import {HandleData} from "../../../shared/handle-data";
 import * as _ from 'lodash';
 import {attractionTermsDict} from "../../../shared/dictionaries/attraction-terms.dict";
 

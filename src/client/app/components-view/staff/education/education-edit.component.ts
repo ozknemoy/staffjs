@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {HttpService} from '../../../services/http.service';
 import IInstitution from '../../../../../server/components/personnel/relations/personnel-institution.interface';
 import {IPersonnel} from '../../../../../server/components/personnel/personnel.interface';
-import {HandleData} from '../../../shared/services/handle-data';
+import {HandleData} from '../../../../../shared/handle-data';
 import IScientificInst from '../../../../../server/components/personnel/relations/personnel-scientific-inst.interface';
 import * as _ from 'lodash/core';
 import {eduTypesDict} from "../../../../../shared/dictionaries/edu-type.dict";

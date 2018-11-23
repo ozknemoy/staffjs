@@ -3,7 +3,7 @@
  */
 import {Component, Input, HostListener} from '@angular/core';
 import {HttpService} from "../services/http.service";
-import {HandleData} from '../shared/services/handle-data';
+import {HandleData} from '../../../shared/handle-data';
 
 @Component({
   selector: 'print-button',
