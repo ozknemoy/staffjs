@@ -65,13 +65,7 @@ export class HandleData {
 
   // -> 2017-02-07
   static dateFromServer(date: string) {
-    console.log(
-      moment(date).format('YYYY-MM-DD') ,
-      date,
-      new Date(date)
-    );
-    console.log('FromServerdateFromServer');
-
+    //console.log(date, ' FromServer ->', date ? moment(date).format('YYYY-MM-DD') : date);
     return date ? moment(date).format('YYYY-MM-DD') : date;
   }
 
@@ -81,20 +75,17 @@ export class HandleData {
     if (!date) {
       return null;
     }
+    //console.log(date, ' ToServer -> ', moment(date, formatIn).format());
     return moment(date, formatIn).format()
   }
 
   // 2018 -> 2017-12-31T00:00:00+03:00
-  static setYear(year) {
+  static setYear(year: string | number) {
     if (!year) {
       return null;
     }
-    const d = new Date();
-    d.setFullYear(year, 0, 1);
-    d.setHours(0, 0, 0, 0);
-    console.log(d);
 
-    return HandleData.dateToServer(d + ''/*.toJSON()*/, null)
+    return HandleData.onlyDayToServer([year, 0, 1, 0, 0, 0, 0], null)
   }
 
   // 13.11.2018 -> 2018-11-12T21:00:00.000Z
@@ -347,5 +338,23 @@ export class HandleData {
       return [str, null]
     }
     return [null, null]
+  }
+
+  // пока не обрабатываю ситуацию когда все колонки пусты
+  // первый ряд не участвует в проверке на заполненость
+  static clearEmptyColumns(tbl: (string | number)[][]): (string | number)[][] {
+    const tblWithoutHeader = tbl.slice(1);
+    let emptyColumns = [];
+    tblWithoutHeader[0].forEach((cell, columnIndex) => {
+      if(tblWithoutHeader.every(row => this.isNoValuePrimitive(row[columnIndex]))) {
+        emptyColumns.push(columnIndex)
+      }
+    });
+    if(!emptyColumns.length) {
+      return tbl
+    }
+    return tbl.map(row =>
+      row.filter((cell, columnIndex) => !emptyColumns.includes(columnIndex))
+    )
   }
 }

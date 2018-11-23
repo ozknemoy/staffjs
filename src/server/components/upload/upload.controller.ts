@@ -45,7 +45,7 @@ export class UploadController {
   uploadQualification() {
     //throw new HttpException('---------------Forbidden-------------', HttpStatus.FORBIDDEN);
     return this.uploadService.uploadQualification()
-      .catch((e) =>  e)
+      //.catch((e) =>  e)
   }
 
 

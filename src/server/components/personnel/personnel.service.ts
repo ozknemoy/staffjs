@@ -213,7 +213,7 @@ export class PersonnelService {
     return Personnel.findOne({where: {surname, name, middleName}});
   }
 
-  async filter(fltr: IServerFilter) {
+  filter(fltr: IServerFilter) {
     // только активные
     //return this.getActiveWorkplace(fltr.specialty)
 
@@ -279,11 +279,11 @@ export class PersonnelService {
       const from = moment()
         .subtract(fltr.birthDateMax, 'year')
         .subtract(1, 'day')
-        .format('YYYY-MM-DD');
+        .format();
       const to = moment()
         .subtract(fltr.birthDateMin, 'year')
         .add(1, 'day')
-        .format('YYYY-MM-DD');
+        .format();
       passportWhere.birthDate = {[Sequelize.Op.between]: [from, to]}
     }
     if(!HandleData.onlyEmptyKeys(passportWhere)) {
@@ -297,7 +297,7 @@ export class PersonnelService {
       include.push({model: QualImprovement, where: qualImprWhere})
     }
 
-    return await this.getAllByActivity(true);
+    return Personnel.findAll({where: workerWhere, include});
 
   }
 }

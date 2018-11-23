@@ -68,16 +68,36 @@ console.assert(HandleData.isISODate('2019-0830T21:00:00.000Z') === false, 'isISO
 console.assert(HandleData.isServerRawDate('Tue Feb 07 2017 00:00:00 GMT+0300 ...') === true, 'isServerDate1');
 console.assert(HandleData.isServerRawDate('Tue Feb 072017 00:00:00 GMT+0300 ...') === false, 'isServerDate1');
 
-console.assert(HandleData.onlyDayToServer('2018-01-01') === '2018-01-01T00:00:00+03:00', 'onlyDayToServer1');
-console.assert(HandleData.onlyDayToServer('2018-01-01T00:00:00+03:00') === '2018-01-01T00:00:00+03:00', 'onlyDayToServer2');
-console.assert(HandleData.onlyDayToServer('1969-12-31T21:00:00.000Z') === '1969-12-31T00:00:00+03:00', 'onlyDayToServer3');
+console.assert(HandleData.onlyDayToServer('2018-01-01') === '2018-01-01T00:00:00+04:00', 'onlyDayToServer1', HandleData.onlyDayToServer('2018-01-01'));
+console.assert(HandleData.onlyDayToServer('2018-01-01T00:00:00+04:00') === '2018-01-01T00:00:00+04:00', 'onlyDayToServer2');
+console.assert(HandleData.onlyDayToServer('1969-12-31T21:00:00.000Z') === '1969-12-31T00:00:00+04:00', 'onlyDayToServer3');
 
 console.assert(HandleData.isRuDate('23.03.2017') === true, 'isRuDate1');
 console.assert(HandleData.isRuDate('23.03.2017') === true, 'isRuDate2');
 console.assert(HandleData.isRuDate('23-03-2017 ') === true, 'isRuDate3');
 console.assert(HandleData.isRuDate('23-03.2017 j') === false, 'isRuDate3');
 
-console.assert(HandleData.setYear('2018') === '2018-01-01T00:00:00+03:00', 'setYear1', HandleData.setYear('2018'));
+console.assert(HandleData.setYear('2018') === '2018-01-01T00:00:00+04:00', 'setYear1', HandleData.setYear('2018'));
+
+const tblFull = [
+  [1, 2, 3],
+  [1, 2, 3],
+  [1, 2, 3]
+];
+console.assert(HandleData.clearEmptyColumns(tblFull)[0][2] === 3, 'clearEmptyColumns1');
+const tblNotFull = [
+  ['header', 'header', 'header'],
+  ['', '', 3],
+  [1, '', 3]
+];
+console.assert(HandleData.clearEmptyColumns(tblNotFull)[1][1] === 3, 'clearEmptyColumns2');
+console.assert(HandleData.clearEmptyColumns(tblNotFull)[1][0] === '', 'clearEmptyColumns3');
+console.assert(HandleData.clearEmptyColumns(tblNotFull)[2][1] === 3, 'clearEmptyColumns4');
+
+
+
+
+
 
 
 

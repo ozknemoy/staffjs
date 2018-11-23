@@ -153,6 +153,9 @@ export class PrintService {
 
   async filterAndXls(fltr: IServerFilter) {
     const pers = await this.personnelService.filter(fltr);
+    if(!pers.length) {
+      ErrHandler.throw('Поиск никого не нашел')
+    }
     const fields = {
       // 1
       surname: 'Фамилия',
@@ -177,15 +180,11 @@ export class PrintService {
       Object.keys(fields).map(f => {
         let v = _.get(worker, f, '');
         v = HandleData.isInvalidPrimitive(v) ? '' : (v + '').trim();
-        console.log(v + '', HandleData.isServerRawDate(v), HandleData.getRuDate(v));
-
         return HandleData.isServerRawDate(v) ? HandleData.getRuDate(v) : v
       })
     );
     rows.unshift(firstRow);
-    let buffer = xlsx.build([{name: "1", data: rows}]);
-    //fs.writeFileSync('ret.xlsx', buffer);
-    //console.log('');
+    let buffer = xlsx.build([{name: "1", data: HandleData.clearEmptyColumns(rows)}]);
     return Buffer.from(buffer)
   }
 }

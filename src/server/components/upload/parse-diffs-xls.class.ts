@@ -20,16 +20,7 @@ export class ParseXls {
       const parsedArr = firstList.data.slice(1).map((row, i) => this.parseRow(row)).filter(row => !!row);
       return this.createDedupedQualification(parsedArr)
     } catch (e) {
-      ErrHandler.throw('Ошибка чтения/разбора файла', e);
-    }
-  }
-
-  static create(excelPath = './staff.xls') {
-    try {
-      const firstList = xlsx.parse(fs.readFileSync(excelPath))[0];
-      return  this.parseRow(firstList.data[1]);
-    } catch (e) {
-      ErrHandler.catchPropagate('Ошибка чтения/разбора файла', e);
+      ErrHandler.throw('Ошибка чтения/разбора файла', 500);
     }
   }
 
