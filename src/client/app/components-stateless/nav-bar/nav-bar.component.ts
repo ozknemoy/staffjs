@@ -11,7 +11,7 @@ export class NavBarComponent {
   constructor(private httpService: HttpService, private toast: ToastrService) {
   }
 
-  fillDBPersonnelByLocalXls(mass: boolean) {
+  createWorkersFromXls(mass: boolean) {
     this.httpService.postWithToast(
       'upload/fill-db-by-local-xls',
       {mass},

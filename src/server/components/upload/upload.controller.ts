@@ -14,20 +14,10 @@ export class UploadController {
 
   }
 
-  @Post('fill-db-by-xls')
-  async fillDBPersonnelByXls() {
-    return
-  }
-
   @Post('fill-db-by-local-xls')
-  async fillDBPersonnelByLocalXls(@Body() body: {mass: boolean}) {
-    return this.uploadService.fillDBPersonnelByLocalXls(body.mass)
-  }/*
-
-  @Post('update-db-by-xls')
-  async updateDBPersonnel() {
-    return
-  }*/
+  async createWorkersFromXls(@Body() body: {mass: boolean}) {
+    return this.uploadService.createWorkersFromXls(body.mass)
+  }
 
   @Post('labor-contract')
   @UseInterceptors(FileInterceptor('file'))
@@ -43,9 +33,7 @@ export class UploadController {
 
   @Post('qualification-up')
   uploadQualification() {
-    //throw new HttpException('---------------Forbidden-------------', HttpStatus.FORBIDDEN);
     return this.uploadService.uploadQualification()
-      //.catch((e) =>  e)
   }
 
 

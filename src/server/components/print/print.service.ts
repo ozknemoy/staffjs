@@ -165,6 +165,7 @@ export class PrintService {
       inn: 'ИНН',
       insurance: 'СНИЛС',
 
+      // пасспорт
       'passport.birthDate': 'Дата рождения',
       // 5
       'workplaces[0]department': 'Структурное подразделение',
