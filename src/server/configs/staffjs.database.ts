@@ -17,6 +17,7 @@ import User from "../components/user/user.model";
 import LaborContractDocx from "../components/print/labor-contract-docx.model";
 import {laborContractDocxDict} from "../../shared/dictionaries/labor-contract-docx.dict";
 import AcademicRank from "../components/personnel/relations/academic-rank.model";
+import {logger} from "../utils/logger";
 
 
 export const staffJsDB = new Sequelize({
@@ -62,7 +63,6 @@ Personnel.sync().then(() => {
   syncAndFillIfEmptyTable(LaborContractDocx, laborContractDocxDict);
   User.sync();
   AcademicRank.sync();
-
 });
 //Personnel.destroy({where: {}});
 

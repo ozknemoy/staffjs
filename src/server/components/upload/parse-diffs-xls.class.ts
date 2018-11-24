@@ -20,7 +20,7 @@ export class ParseXls {
       const parsedArr = firstList.data.slice(1).map((row, i) => this.parseRow(row)).filter(row => !!row);
       return this.createDedupedQualification(parsedArr)
     } catch (e) {
-      ErrHandler.throw('Ошибка чтения/разбора файла', 500);
+      ErrHandler.throw('Ошибка чтения/разбора файла qual-up.xls', 500);
     }
   }
 

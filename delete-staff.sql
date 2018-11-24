@@ -20,3 +20,5 @@ BEGIN
 END $$;
 
 DROP TABLE IF EXISTS "staff" cascade;
+
+COMMIT;

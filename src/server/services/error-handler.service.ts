@@ -1,23 +1,23 @@
 import {ForbiddenException, HttpException, HttpStatus} from "@nestjs/common";
 import {UniqueConstraintError} from "sequelize";
+import {logger} from "../utils/logger";
 
 export class ErrHandler {
 
   public STATUS_FOR_VALID_AND_UNIQUE_ERR = HttpStatus.NOT_ACCEPTABLE;
 
   static throw(err: string, code = HttpStatus.NOT_ACCEPTABLE) {
+    logger.error(err);
     throw new HttpException(err, code);
   }
 
-  static propogate(message, e: Error) {
-    console.log(e);
+  // следущте 2 метода должны использоваться совместно один в другом
+  // потомок у catchPropagate
+  static propagate(message, e: Error) {
     throw {message, propagate: true}
   }
-
+  // родитель у propogate
   static catchPropagate(message, e: Error) {
-    if (!e['propagate']) {
-      console.log(e);
-    }
     ErrHandler.throw(e['propagate'] ? e.message : message)
   }
   // пока простое преобразование в массив ошибок  вложенность в errors
@@ -40,6 +40,7 @@ export class ErrHandler {
     e = e
       .replace(/(,)/g, ';')
       .replace(/(Validation error:)/g, '');
+    logger.error(e);
     throw new HttpException(e, code);
   }
 
