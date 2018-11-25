@@ -18,6 +18,9 @@ import LaborContractDocx from "../components/print/labor-contract-docx.model";
 import {laborContractDocxDict} from "../../shared/dictionaries/labor-contract-docx.dict";
 import AcademicRank from "../components/personnel/relations/academic-rank.model";
 import {logger} from "../utils/logger";
+import SalaryDict from "../components/dict/salary-dict.model";
+import {salaryDict, salaryGroupDict} from "../../shared/dictionaries/salary.dict";
+import SalaryGroupDict from "../components/dict/salary-group-dict.model";
 
 
 export const staffJsDB = new Sequelize({
@@ -40,7 +43,7 @@ export const staffJsDB = new Sequelize({
 staffJsDB.addModels([
   Personnel, Family, Attestation, Passport, ProfRetraining, QualImprovement,
   Reward, SocialSecurity, Workplace, Army, Vacation, Institution, WorkExp, ScientificInst,
-  User, LaborContractDocx, AcademicRank
+  User, LaborContractDocx, AcademicRank, SalaryDict, SalaryGroupDict
 ]);
 /*{force: true}*/
 
@@ -57,10 +60,12 @@ Personnel.sync().then(() => {
   Army.sync();
   Vacation.sync();
   Institution.sync();
-  Workplace.sync();
+  Workplace.sync(/*{alter: true}*/);
   WorkExp.sync();
   ScientificInst.sync();
   syncAndFillIfEmptyTable(LaborContractDocx, laborContractDocxDict);
+  /*syncAndFillIfEmptyTable(SalaryGroupDict, salaryGroupDict)
+    .then(() => syncAndFillIfEmptyTable(SalaryDict, salaryDict));*/
   User.sync();
   AcademicRank.sync();
 });
@@ -68,9 +73,11 @@ Personnel.sync().then(() => {
 
 // хелпер добавления json в таблицу
 function syncAndFillIfEmptyTable(model, dict) {
-  model.sync().then(() => {
+  return model.sync().then(() =>
     model.count().then(n => {
-      if (n === 0) {model.bulkCreate(dict)}
+      if (n === 0) {
+        return model.bulkCreate(dict)
+      }
     })
-  });
+  );
 }
