@@ -48,6 +48,10 @@ export class HttpService {
     return this.post(url, data, textToast, config)
   }
 
+  postWithToastAtStart(url, data: any, textToast = 'Успешно создано', config?) {
+    this.checkAndShowToast(textToast);
+    return this.post(url, data, undefined, config)
+  }
 
   put(url, data: any, textToast = '', config?)  {
     return this.http.put<any>(this.BASE_URL + url, data, config)

@@ -6,6 +6,7 @@ export class IServerFilter {
   attractionTerms: string = null;
   qualImprovementType: string = null;
   educationName: string = null;
+  disabilityDegree: boolean = null;
   contractEndDateMin = 0;
   contractEndDateMax = 53;
   birthDateMin = 10;

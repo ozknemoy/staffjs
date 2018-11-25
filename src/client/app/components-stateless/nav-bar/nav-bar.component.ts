@@ -21,7 +21,7 @@ export class NavBarComponent {
   }
 
   fillDBQualificationUpXls() {
-    this.httpService.postWithToast(
+    this.httpService.postWithToastAtStart(
       'upload/qualification-up',
       {},
       'Сохраняю...'

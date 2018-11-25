@@ -37,7 +37,7 @@ import * as moment from "moment";
 
 @Injectable()
 export class PersonnelService {
-
+  private persOrder = [['surname', 'ASC'], ['name', 'ASC']];
   constructor(private dbTransactions: DbTransactions, private errHandler: ErrHandler) {}
 
   getAllFullData() {
@@ -51,7 +51,7 @@ export class PersonnelService {
   getAllByActivity(active: boolean) {
     return Personnel.findAll({
       // required : false в include делает поиск только по Workplace не отбрасывая родителя Personnel
-      where: {active}, order: [['surname', 'ASC']], include: [{model: Workplace, required : false, where: {active: true}}]
+      where: {active}, order: this.persOrder, include: [{model: Workplace, required : false, where: {active: true}}]
     });
   }
 
@@ -231,6 +231,7 @@ export class PersonnelService {
     let workerWhere: Partial<{
       active: Personnel['active'],
       educationName: any/*WhereOptions<Personnel>*/,
+      disabilityDegree: any
     }> = {active: true};
     let passportWhere: Partial<{
       birthDate: WhereOptions<Passport>,
@@ -274,6 +275,15 @@ export class PersonnelService {
       workerWhere.educationName = {[Sequelize.Op.like]: fltr.educationName}
     }
 
+    if(fltr.disabilityDegree === true) {
+      workerWhere.disabilityDegree = {[Sequelize.Op.regexp]: '\.'}
+      /* следущее превращается в простую конструкцию NOT NULL то есть ne: '' игнорируется
+      {
+        [Sequelize.Op.and]: {
+          [Sequelize.Op.ne]: '',
+          [Sequelize.Op.ne]: null
+        }}*/
+    }
 
     if(fltr.birthDateMin !== defFilter.birthDateMin || fltr.birthDateMax !== defFilter.birthDateMax) {
       const from = moment()
@@ -297,7 +307,7 @@ export class PersonnelService {
       include.push({model: QualImprovement, where: qualImprWhere})
     }
 
-    return Personnel.findAll({where: workerWhere, include});
+    return Personnel.findAll({where: workerWhere, include, order: this.persOrder});
 
   }
 }

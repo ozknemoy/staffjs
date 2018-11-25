@@ -77,7 +77,7 @@
           <label>Категория</label>
           <select [(ngModel)]="fltrServer.category" class="form-control form-control-sm">
             <option [ngValue]="null"></option>
-            <option value="{{val}}" *ngFor="let val of staffCategoriesDict">{{val}}</option>
+            <option value="{{val.name}}" *ngFor="let val of staffCategoriesDict">{{val.name}}</option>
           </select>
           <label>Вид работы / Условия привлечения</label>
           <select [(ngModel)]="fltrServer.attractionTerms" class="form-control form-control-sm">
@@ -91,6 +91,10 @@
           </select>
           <label>Повышение квалификации</label>
           <input type="text" [(ngModel)]="fltrServer.qualImprovementType" class="form-control form-control-sm">
+          <div class="form-check">
+            <input type="checkbox" [(ngModel)]="fltrServer.disabilityDegree" class="form-check-input" id="disabilityDegree">
+            <label class="form-check-label" for="disabilityDegree">Наличие инвалидности</label>
+          </div>
           <label>Период окончания трудового договора, недель</label>
           <ng5-slider [(value)]="fltrServer.contractEndDateMin" [(highValue)]="fltrServer.contractEndDateMax" [options]="sliderOptionsContractEnd"></ng5-slider>
           <label>Возраст</label>

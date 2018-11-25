@@ -1,0 +1,23 @@
+
+<div class="float-right">
+  <button class="btn btn-sm btn-success" (callback)="save()" confirmButton="Сохранить?">
+    Сохранить <i class="fa fa-floppy-o"></i>
+  </button>
+</div>
+ПРИЕМ НА РАБОТУ И ПЕРЕВОДЫ НА ДРУГУЮ РАБОТУ
+<div class="container-fluid">
+  <table class="table table-sm table-responsive-sm table-bordered squeeze-date">
+    <tr>
+      <th>Название</th>
+      <th>Оклад</th>
+      <th>
+        <button class="btn btn-sm btn-success" (callback)="addRow()" confirmButton="Добавить?">Добавить</button>
+      </th>
+    </tr>
+    <tr *ngFor="let s of salaries; let i = index">
+      <td><input type="checkbox" [(ngModel)]="s.name" class="form-control form-control-sm"></td>
+      <td><input type="checkbox" [(ngModel)]="s.salary" class="form-control form-control-sm"></td>
+      <td><button class="btn btn-sm btn-danger" (callback)="deleteRow(i)" confirmButton>Удалить</button></td>
+    </tr>
+  </table>
+</div>

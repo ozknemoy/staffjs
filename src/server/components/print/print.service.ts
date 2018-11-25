@@ -156,7 +156,7 @@ export class PrintService {
     if(!pers.length) {
       ErrHandler.throw('Поиск никого не нашел')
     }
-    const fields = {
+    const fields = <any>{
       // 1
       surname: 'Фамилия',
       name: 'Имя',
@@ -176,6 +176,10 @@ export class PrintService {
       'workplaces[0]contractEndDate': 'Дата окончания трудового договора',
       'workplaces[0]salary': 'Тарифная ставка',
     };
+    // только по запросу
+    if(fltr.disabilityDegree) {
+      fields.disabilityDegree = 'Инвалидность, степень'
+    }
     const firstRow = _.values(fields);
     const rows = pers.map(worker =>
       Object.keys(fields).map(f => {

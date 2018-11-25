@@ -32,6 +32,7 @@ import {UserEditorComponent} from './components-view/user-editor/user-editor.com
 import {SuperAdminGuard} from './services/super-admin-guard.service';
 import {GotFiredStaffListComponent} from "./components-view/staff/got-fired-staff/got-fired-staff-list.component";
 import {PipeModule} from "./pipes";
+import {SalaryEditorComponent} from "./components-view/salary-editor/salary-editor.component";
 
 
 declare const require;
@@ -48,6 +49,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     HomeComponent,
     EmploymentContractComponent,
     UserEditorComponent,
+    SalaryEditorComponent,
     // staff
     StaffListComponent,
     GotFiredStaffListComponent,

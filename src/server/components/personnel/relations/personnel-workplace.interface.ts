@@ -6,6 +6,7 @@ export default class IWorkplace {
   department: string;
   specialty: string;
   salary: number;
+  salaryCoef: number;
   reason: string;
   academicCouncilDate: string;
   attractionTerms: string;

@@ -13,6 +13,8 @@ import {JwtStrategy} from "./user/jwt.strategy";
 import {UserService} from "./user/user.service";
 import {JwtModule} from "@nestjs/jwt";
 import {PassportModule} from "@nestjs/passport";
+import {DictController} from "./dict/dict.controller";
+import {DictService} from "./dict/dict.service";
 
 // https://github.com/nestjs/nest/tree/master/sample/19-auth
 // https://docs.nestjs.com/techniques/authentication
@@ -28,7 +30,14 @@ import {PassportModule} from "@nestjs/passport";
       },
     }),
   ],
-  controllers: [ApiController, StaffController, UploadController, PrintController, UserController],
+  controllers: [
+    ApiController,
+    StaffController,
+    UploadController,
+    PrintController,
+    UserController,
+    DictController,
+  ],
   providers: [
     PersonnelService,
     ErrHandler,
@@ -36,7 +45,8 @@ import {PassportModule} from "@nestjs/passport";
     DbTransactions,
     PrintService,
     UserService,
-    JwtStrategy
+    JwtStrategy,
+    DictService,
   ],
 })
 export class MainModule {

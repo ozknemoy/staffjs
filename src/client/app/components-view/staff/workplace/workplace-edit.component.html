@@ -10,23 +10,24 @@
       <th rowspan="2">Дата</th>
       <th rowspan="2">Структурное подразделение</th>
       <th rowspan="2">Должность (специальность, профессия), разряд, класс (категория) квалификации</th>
-      <th rowspan="2">Номер трудового договора</th>
-      <th rowspan="2">Дата трудового договора</th>
-      <th rowspan="2">Дата окончания трудового договора</th>
-      <th rowspan="2">Тарифная ставка (оклад), надбавка, руб.</th>
-      <th rowspan="2">Основание (приказ, дата, №)</th>
-      <th rowspan="2">Ученый совет</th>
-      <th rowspan="2">Условия привлечения</th>
-      <th rowspan="2">Размер ставки</th>
-      <th rowspan="2">Продо- лжитель- ность рабочей недели, час.</th>
+      <th colspan="3" class="text-center">Трудовой договор</th>
       <th rowspan="2">Категория</th>
-      <th colspan="4">Прекращение трудовых отношений</th>
-      <th colspan="2">СОУТ</th>
+      <th rowspan="2">Тарифная ставка (оклад), надбавка, руб.</th><!--salary-->
+      <th rowspan="2">Условия привлечения</th><!--attractionTerms-->
+      <th rowspan="2">Размер ставки</th><!--rate-->
+      <th rowspan="2">Продо- лжитель- ность рабочей недели, час.</th><!--duration-->
+      <th rowspan="2">Основание (приказ, дата, №)</th><!--reason-->
+      <th rowspan="2">Ученый совет</th><!--academicCouncilDate-->
+      <th colspan="4" class="text-center">Прекращение трудовых отношений</th>
+      <th colspan="2" class="text-center">СОУТ</th>
       <th rowspan="2">
         <button class="btn btn-sm btn-success" (click)="addRow()">Добавить</button>
       </th>
     </tr>
     <tr>
+      <th>Номер</th>
+      <th>Дата</th>
+      <th>Дата окончания</th>
       <th>Увольнение, перевод, отмена совмещения</th>
       <th>Дата увольнения, перевода, отмены совмещения</th>
       <th>Основание (приказ, дата №)</th>
@@ -42,9 +43,19 @@
       <td><input type="text" [(ngModel)]="w.contractNumber" class="form-control form-control-sm"></td>
       <td><input type="date" [(ngModel)]="w.contractDate" class="form-control form-control-sm"></td>
       <td><input type="date" [(ngModel)]="w.contractEndDate" class="form-control form-control-sm"></td>
-      <td><input type="number" [(ngModel)]="w.salary" class="form-control form-control-sm"></td>
-      <td><input type="text" [(ngModel)]="w.reason" class="form-control form-control-sm"></td>
-      <td><input type="date" [(ngModel)]="w.academicCouncilDate" class="form-control form-control-sm"></td>
+      <td>
+        <select [(ngModel)]="w.category" class="form-control form-control-sm">
+          <option [ngValue]="null"></option>
+          <option value="{{val.name}}" *ngFor="let val of staffCategoriesDict">{{val.name}}</option>
+        </select>
+      </td>
+      <td>
+        <select [(ngModel)]="w.salaryCoef" class="form-control form-control-sm">
+          <option [ngValue]="null"></option>
+          <option value="{{val.name}}" *ngFor="let val of staffCategoriesDict">{{val.name}}</option>
+        </select>
+        <input type="number" [(ngModel)]="w.salary" class="form-control form-control-sm" disabled>
+      </td>
       <td>
         <select [(ngModel)]="w.attractionTerms" class="form-control form-control-sm">
           <option [ngValue]="null"></option>
@@ -53,12 +64,8 @@
       </td>
       <td><input type="number" [(ngModel)]="w.rate" class="form-control w70 form-control-sm"></td>
       <td><input type="number" [(ngModel)]="w.duration" class="form-control form-control-sm"></td>
-      <td>
-        <select [(ngModel)]="w.category" class="form-control form-control-sm">
-          <option [ngValue]="null"></option>
-          <option value="{{val}}" *ngFor="let val of staffCategoriesDict">{{val}}</option>
-        </select>
-      </td>
+      <td><input type="text" [(ngModel)]="w.reason" class="form-control form-control-sm"></td>
+      <td><input type="date" [(ngModel)]="w.academicCouncilDate" class="form-control form-control-sm"></td>
       <td><input type="text" [(ngModel)]="w.terminationReason" class="form-control form-control-sm"></td>
       <td><input type="date" [(ngModel)]="w.dismissalDate" class="form-control form-control-sm"></td>
       <td><input type="text" [(ngModel)]="w.dismissalGround" class="form-control form-control-sm"></td>
