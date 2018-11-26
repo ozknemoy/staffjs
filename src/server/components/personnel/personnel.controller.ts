@@ -53,6 +53,12 @@ export class StaffController {
       : this.personnelService.getOneWithInclude(id, _Model);
   }
 
+  @Get('full/:id')
+  getOneFull(@Param('id') id) {
+
+    return this.personnelService.getOneFull(id)
+  }
+
   @Post()
   createNewWorker() {
     return this.personnelService.createNewWorker();

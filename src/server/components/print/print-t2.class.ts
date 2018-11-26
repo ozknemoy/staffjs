@@ -79,13 +79,7 @@ export class PrintT2Builder {
       },
       layout: defaultTableLayout
     };
-    const title = {
-      text: [
-        {text: 'ЛИЧНАЯ КАРТОЧКА\n', fontSize: 14},
-        {text: 'работника', fontSize: 10}
-      ],
-      alignment: 'center'
-    };
+
     this.pdf.push(name);
     this.pdf.push(tbl);
     return this;

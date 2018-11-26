@@ -30,7 +30,7 @@ const fontDescriptors = {
 };
 const PdfPrinter = require('pdfmake');
 const printer = new PdfPrinter(fontDescriptors);
-
+export const tempDirForTesting = () => `${fs.existsSync('E:/') ? 'E' : 'C'}:/files/`;
 
 @Injectable()
 export class PrintService {
@@ -38,10 +38,8 @@ export class PrintService {
   constructor(private personnelService: PersonnelService) {}
 
   async saveLocalForDevelopmentPdf() {
-    const file = await this.printT2(1);
-    fs.writeFile('t2-dev.pdf', file, (e) => {
-      console.log('------saveLocalForDevelopment------', e);
-    });
+    const file = await this.printT2(2);
+    this.saveExactNameOrWithTimestampLocal(tempDirForTesting(), 't2-dev', '.pdf', file);
     return;
   }
 
@@ -55,7 +53,7 @@ export class PrintService {
     return this.printPdf(printer.createPdfKitDocument(pdfSchema));
   }
 
-  async printPdf(doc) {
+  printPdf(doc) {
     return new Promise((res) => {
       const chunks = [];
       doc
@@ -109,17 +107,19 @@ export class PrintService {
   }
 
   createOfficeFileLocal(uint8) {
-    const dir = `${fs.existsSync('E:/') ? 'E' : 'C'}:/files/`;
-    const name = 'doc-dev';
-    const ext = '.docx';
+    this.saveExactNameOrWithTimestampLocal(tempDirForTesting(), 'doc-dev', '.docx', uint8);
+    return {savedLocally: true};
+  }
+
+  saveExactNameOrWithTimestampLocal(dir: string, name: string, ext: string, buffer: Object) {
     console.log('-----  ok make  -----');
     // пробую писать
     fs.ensureDirSync(dir);
-    fs.writeFile(dir + name + ext, uint8, (e) => {
+    fs.writeFile(dir + name + ext, buffer, (e) => {
       if (e) {
         console.log('*****    ', e.code, '  make with timestamp  *****');
-        // при неудаче добавляю номер
-        fs.writeFileSync(`${dir}${name}-${ +new Date}${ext}`, uint8);
+        // при неудаче добавляю Timestamp
+        fs.writeFileSync(`${dir}${name}-${ +new Date}${ext}`, buffer);
       } else {
         console.log('-----  ok write  ----');
         // при удаче удаляю файлы с номерами
@@ -127,15 +127,13 @@ export class PrintService {
           if (files.length) {
             files.forEach(fileName => {
               if (fileName.indexOf(name + '-') > -1) {
-                fs.unlink(dir + fileName, () => {
-                })
+                fs.unlink(dir + fileName, () => {})
               }
             })
           }
         })
       }
     });
-    return {savedLocally: true};
   }
 
   printOffice(doc) {

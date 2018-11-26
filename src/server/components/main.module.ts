@@ -50,8 +50,10 @@ import {DictService} from "./dict/dict.service";
   ],
 })
 export class MainModule {
-  constructor(private personnelService: PersonnelService) {}
+  constructor(private personnelService: PersonnelService,
+              private print: PrintService) {}
     public configure(consumer: MiddlewareConsumer): void {
         //new PrintService(this.personnelService).saveLocalForDevelopmentDocx();
+      this.print.saveLocalForDevelopmentPdf()
     }
 }
