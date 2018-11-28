@@ -26,9 +26,6 @@ export class PrintT2Builder {
 
   private makeFamilyTable() {
     const f = this.pers.families;
-    /*if (_.isEmpty(f)) {
-      return this;
-    }*/
     const body: (string | number)[][] = f.map((row) => [row.relationshipDegree, row.fullName, row.birthYear]);
     const tbl = {
       fontSize: tableFontSize,

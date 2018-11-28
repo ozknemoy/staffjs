@@ -290,6 +290,10 @@ export class HandleData {
     return this.isInvalidPrimitive(value) || (Array.isArray(value) && !value.length)
   }
 
+  static getValidValue(value, defaultValue) {
+    return this.isInvalidValue(value) ? defaultValue : value
+  }
+
   static parseNumber(value: any): number {
     if (this.isInvalidPrimitive(value)) {
       return null
@@ -354,7 +358,7 @@ export class HandleData {
       return tbl
     }
     return tbl.map(row =>
-      row.filter((cell, columnIndex) => !emptyColumns.includes(columnIndex))
+      row.filter((cell, columnIndex) => !_.includes(emptyColumns, columnIndex))
     )
   }
 }
