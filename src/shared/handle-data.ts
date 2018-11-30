@@ -18,7 +18,7 @@ export class HandleData {
   }
 
 // [{[proOne]:2, [propTwo]: 'изменение'}] -> {[proOneValue]:[propTwoValue]}
-  static toKeyProp(obj: any[], proOne = 'id', propTwo = 'name'): ISimpleObj {
+  static toKeyProp<T>(obj: T[], proOne: (keyof T), propTwo: (keyof T)): ISimpleObj {
     let o = {};
     obj.forEach(row => {
       o[row[proOne].toString()] = row[propTwo];
@@ -156,7 +156,7 @@ export class HandleData {
   }
 
   // (имя,6) -> имя____
-  static getUnderlined(str: string | number, length: number, forceUnderline?): string {
+  static getUnderlined(str: string | number, length: number, forceUnderline?, addTab = false): string {
     if (HandleData.isNoValuePrimitive(str)) {
       str = '';
     } else {
@@ -166,6 +166,9 @@ export class HandleData {
       while (str.length < length) {
         str += ' '
       }
+    }
+    if(addTab) {
+      str += '\t'
     }
 
     return str

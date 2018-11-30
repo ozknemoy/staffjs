@@ -2,8 +2,7 @@
 
 export class ISalaryDict {
   id: number;
-  parentGroupId: number;
+  value: string;
   name: string = null;
-  coef: number = null;
-
+  salary: number = null;
 }

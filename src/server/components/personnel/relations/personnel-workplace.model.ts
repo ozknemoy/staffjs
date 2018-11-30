@@ -27,7 +27,7 @@ export default class Workplace extends Model<Workplace> implements IWorkplace {
   @Column department: string;
   @Column specialty: string;
   @Column salary: number;
-  @Column salaryCoef: number;
+  @Column({type: DataType.DECIMAL}) salaryCoef: number;
   @Column reason: string;
   @Column({type: DataType.DATE}) academicCouncilDate: string;
   @Column attractionTerms: string;

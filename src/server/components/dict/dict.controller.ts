@@ -1,7 +1,9 @@
-import {Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards} from '@nestjs/common';
+import {Body, Controller, Delete, Get, Param, Post, Put, UseGuards} from '@nestjs/common';
 import {DictService} from "./dict.service";
 import SalaryDict from "./salary-dict.model";
 import SalaryGroupDict from "./salary-group-dict.model";
+import {AuthGuard} from '@nestjs/passport';
+import {ISalaryDict} from './salary-dict.interface';
 
 
 @Controller('dict')
@@ -10,14 +12,15 @@ export class DictController {
   constructor(private dictService: DictService) {}
 
   @Get('salary')
-  //@UseGuards(AuthGuard())
   getSalary() {
-    return SalaryDict.findAll()
+    return SalaryDict.findAll({order: [['id', 'ASC']]})
   }
-  @Get('salary-dict')
-  //@UseGuards(AuthGuard())
-  getSalaryGroup() {
-    return SalaryGroupDict.findAll({include: [SalaryDict]})
+
+  @Put('salary/:id')
+  @UseGuards(AuthGuard())
+  async saveSalary(@Body() body: ISalaryDict, @Param('id') id: string) {
+    const row = await SalaryDict.findById(id);
+    return row.update(body)
   }
 
 

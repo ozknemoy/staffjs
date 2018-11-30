@@ -50,11 +50,12 @@
         </select>
       </td>
       <td>
-        <select [(ngModel)]="w.salaryCoef" class="form-control form-control-sm">
+        <!--<select [(ngModel)]="w.salaryCoef" class="form-control form-control-sm">
           <option [ngValue]="null"></option>
           <option value="{{val.name}}" *ngFor="let val of staffCategoriesDict">{{val.name}}</option>
-        </select>
-        <input type="number" [(ngModel)]="w.salary" class="form-control form-control-sm" disabled>
+        </select>-->
+        <input type="number" [(ngModel)]="w.salaryCoef" class="form-control form-control-sm">
+        <span *ngIf="w.category && w.salaryCoef">{{salaries[w.category] * w.salaryCoef }}</span>
       </td>
       <td>
         <select [(ngModel)]="w.attractionTerms" class="form-control form-control-sm">

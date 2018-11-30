@@ -1,11 +1,7 @@
 import {
-  Table, Column, Model, PrimaryKey, Unique, AutoIncrement, HasMany, HasOne,
-  DefaultScope, Is, DataType, Default, NotEmpty, ForeignKey, BelongsTo
+  Table, Column, Model, PrimaryKey, Unique, AutoIncrement, DataType
 } from 'sequelize-typescript';
 import {ISalaryDict} from "./salary-dict.interface";
-import SalaryGroupDict from "./salary-group-dict.model";
-
-
 
 @Table({
   tableName: 'dict-salary',
@@ -16,12 +12,7 @@ export default class SalaryDict extends Model<SalaryDict> implements ISalaryDict
   @PrimaryKey
   @Column id: number;
 
-
-  @ForeignKey(() => SalaryGroupDict)
-  @Column parentGroupId: number;
-  @BelongsTo(() => SalaryGroupDict/*, 'groupId'*/)
-  parentGroup;
-
+  @Column value: string;
   @Column name: string;
-  @Column({type: DataType.DECIMAL}) coef: number;
+  @Column({type: DataType.DECIMAL}) salary;
 }

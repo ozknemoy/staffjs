@@ -1,4 +1,4 @@
-import {Model, Sequelize} from 'sequelize-typescript';
+import {Sequelize} from 'sequelize-typescript';
 import Personnel from "../components/personnel/personnel.model";
 import Family from "../components/personnel/relations/personnel-family.model";
 import Attestation from "../components/personnel/relations/personnel-attestation.model";
@@ -17,10 +17,8 @@ import User from "../components/user/user.model";
 import LaborContractDocx from "../components/print/labor-contract-docx.model";
 import {laborContractDocxDict} from "../../shared/dictionaries/labor-contract-docx.dict";
 import AcademicRank from "../components/personnel/relations/academic-rank.model";
-import {logger} from "../utils/logger";
 import SalaryDict from "../components/dict/salary-dict.model";
-import {salaryDict, salaryGroupDict} from "../../shared/dictionaries/salary.dict";
-import SalaryGroupDict from "../components/dict/salary-group-dict.model";
+import {salaryDict} from "../../shared/dictionaries/salary.dict";
 
 
 export const staffJsDB = new Sequelize({
@@ -43,7 +41,7 @@ export const staffJsDB = new Sequelize({
 staffJsDB.addModels([
   Personnel, Family, Attestation, Passport, ProfRetraining, QualImprovement,
   Reward, SocialSecurity, Workplace, Army, Vacation, Institution, WorkExp, ScientificInst,
-  User, LaborContractDocx, AcademicRank, SalaryDict, SalaryGroupDict
+  User, LaborContractDocx, AcademicRank, SalaryDict,
 ]);
 /*{force: true}*/
 
@@ -64,8 +62,7 @@ Personnel.sync().then(() => {
   WorkExp.sync();
   ScientificInst.sync();
   syncAndFillIfEmptyTable(LaborContractDocx, laborContractDocxDict);
-  /*syncAndFillIfEmptyTable(SalaryGroupDict, salaryGroupDict)
-    .then(() => syncAndFillIfEmptyTable(SalaryDict, salaryDict));*/
+  syncAndFillIfEmptyTable(SalaryDict, salaryDict);
   User.sync();
   AcademicRank.sync();
 });
