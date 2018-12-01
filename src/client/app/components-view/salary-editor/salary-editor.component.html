@@ -5,16 +5,16 @@
   <table class="table table-sm table-responsive-sm table-bordered squeeze-date">
     <tr>
       <th>Название</th>
-      <th>Значение</th>
-      <th>Оклад</th>
-      <th>
+      <th class="w100">Значение</th>
+      <th class="w100">Оклад</th>
+      <th class="w200">
         <button class="btn btn-sm btn-success" (callback)="addRow()" confirmButton="Добавить?">Добавить</button>
       </th>
     </tr>
     <tr *ngFor="let s of salaries; let i = index">
       <td><input type="text" [(ngModel)]="s.name" class="form-control form-control-sm"></td>
-      <td><input type="text" [(ngModel)]="s.value" readonly class="form-control form-control-sm"></td>
-      <td><input type="text" [(ngModel)]="s.salary" class="form-control form-control-sm"></td>
+      <td><input type="text" [(ngModel)]="s.value" [readonly]="s.id" class="form-control form-control-sm"></td>
+      <td><input type="number" [(ngModel)]="s.salary" class="form-control form-control-sm"></td>
       <td>
         <button class="btn btn-sm btn-success mr-1" (callback)="save(i)" confirmButton="Сохранить?">
           Сохранить <i class="fa fa-floppy-o"></i>

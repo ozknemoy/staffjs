@@ -19,15 +19,19 @@ export class SalaryEditorComponent {
   }
 
   save(i) {
-    this.httpService.put('dict/salary/' + this.salaries[i].id, this.salaries[i])
+    this.httpService.putWithToast('dict/salary', this.salaries[i])
       .then(salary => this.salaries[i] = <any>salary)
   }
 
   addRow() {
-
+    this.salaries.push(new ISalaryDict())
   }
 
-  deleteRow() {
-
+  async deleteRow(i) {
+    // если не вновь созданая строка
+    if(this.salaries[i].id) {
+      await this.httpService.delete('dict/salary/' + this.salaries[i].id)
+    }
+    this.salaries.splice(i, 1)
   }
 }

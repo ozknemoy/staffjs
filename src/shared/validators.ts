@@ -1,3 +1,4 @@
+import {HandleData} from "./handle-data";
 
 
 export const phoneRegExp = /\d{11,13}/;
@@ -18,4 +19,10 @@ export function validateINN(inn: string) {
   }
 }
 
+export function hasValue(val: any, msg: string,) {
+  console.log(msg, val);
+  if (HandleData.isNoValuePrimitive(val)) {
+    throw new Error(msg);
+  }
+}
 

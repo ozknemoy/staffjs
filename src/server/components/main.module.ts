@@ -16,10 +16,6 @@ import {PassportModule} from "@nestjs/passport";
 import {DictController} from "./dict/dict.controller";
 import {DictService} from "./dict/dict.service";
 
-// https://github.com/nestjs/nest/tree/master/sample/19-auth
-// https://docs.nestjs.com/techniques/authentication
-// https://medium.com/@nielsmeima/auth-in-nest-js-and-angular-463525b6e071
-//
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -54,6 +50,6 @@ export class MainModule {
               private print: PrintService) {}
     public configure(consumer: MiddlewareConsumer): void {
         //new PrintService(this.personnelService).saveLocalForDevelopmentDocx();
-      this.print.saveLocalForDevelopmentPdf()
+      //this.print.saveLocalForDevelopmentPdf()
     }
 }

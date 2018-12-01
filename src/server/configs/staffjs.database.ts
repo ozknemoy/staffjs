@@ -34,7 +34,7 @@ export const staffJsDB = new Sequelize({
   },
   operatorsAliases: false,
   // storage: ':memory:',
-  modelPaths: [__dirname + '/../models']
+  //modelPaths: [__dirname + '/../models']
 });
 
 
