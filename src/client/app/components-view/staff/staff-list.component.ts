@@ -4,9 +4,9 @@ import {Router} from "@angular/router";
 import * as _ from 'lodash';
 import {HttpService} from "../../services/http.service";
 import {IServerFilter} from "../../../../shared/interfaces/server-filter.interface";
-import {staffCategoriesDict} from "../../../../shared/dictionaries/staff-categories.dict";
 import {attractionTermsDict} from "../../../../shared/dictionaries/attraction-terms.dict";
 import {eduTypesDict} from '../../../../shared/dictionaries/edu-type.dict';
+import {ISalaryDict} from "../../../../server/components/dict/salary-dict.interface";
 
 class IFltr  {
   surname: null
@@ -25,7 +25,7 @@ export class StaffListComponent implements OnInit {
   public isGotFiredState = false;
   public fltr = new IFltr();
   public fltrServer = new IServerFilter();
-  public staffCategoriesDict = staffCategoriesDict;
+  public staffCategoriesDict: ISalaryDict[];
   public defaultServerFilter = new IServerFilter();
   public eduTypesDict = eduTypesDict;
   public sliderOptionsBirth = {
@@ -46,6 +46,9 @@ export class StaffListComponent implements OnInit {
     if(this.isGotFiredState) {
       url += '?inactive=true'
     }
+    this.http.getStaffCategoriesDict().then(salaries => {
+      this.staffCategoriesDict = salaries;
+    });
     this.staffList = await this.http.get<IPersonnel[]>(url);
     this.afterGetStaff()
   }
@@ -105,6 +108,10 @@ export class StaffListComponent implements OnInit {
 
   filterServerXls() {
     this.http.downloadAndSave('/print/filter-and-xls', this.fltrServer)
+  }
+
+  downloadContractsByFilter() {
+    this.http.downloadAndSave('/print/filter-contracts-zipped', this.fltrServer)
   }
 
   trackByFn(index, item) {

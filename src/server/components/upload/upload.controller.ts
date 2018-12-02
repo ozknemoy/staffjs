@@ -17,6 +17,7 @@ export class UploadController {
   @Post('fill-db-by-local-xls')
   async createWorkersFromXls(@Body() body: {mass: boolean}) {
     return this.uploadService.createWorkersFromXls(body.mass)
+      //.catch(err => this.errHandler.handlaAll(err))
   }
 
   @Post('labor-contract')

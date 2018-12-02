@@ -1,4 +1,5 @@
 import {HandleData} from "./handle-data";
+import {Sequelize} from "sequelize-typescript";
 
 
 export const phoneRegExp = /\d{11,13}/;
@@ -20,9 +21,15 @@ export function validateINN(inn: string) {
 }
 
 export function hasValue(val: any, msg: string,) {
-  console.log(msg, val);
   if (HandleData.isNoValuePrimitive(val)) {
     throw new Error(msg);
   }
 }
 
+export const hasValueWhereOptions = {[Sequelize.Op.regexp]: '\.'};
+/* следущее превращается в простую конструкцию NOT NULL то есть ne: '' игнорируется
+{
+  [Sequelize.Op.and]: {
+    [Sequelize.Op.ne]: '',
+    [Sequelize.Op.ne]: null
+  }}*/

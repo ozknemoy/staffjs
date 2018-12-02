@@ -15,9 +15,15 @@ import * as _ from 'lodash';
 import {IServerFilter} from '../../../shared/interfaces/server-filter.interface';
 import xlsx from "node-xlsx";
 import {HandleData} from '../../../shared/handle-data';
+import {PrintRequisitesBuilder} from "./print-requisites.class";
+import Passport from "../personnel/relations/personnel-passport.model";
+import {ISalaryDict} from "../dict/salary-dict.interface";
+import {DictService} from "../dict/dict.service";
+import {PrintExtraLaborContractDynamicBuilder} from "./print-extra-labor-contract.class";
 
 const path = require('path');
 const DocxMerger = require('../../../shared/docx-merger/docx-merger-dist.js');
+const jszip = require("jszip");
 
 const fontsDir = path.join(WORKING_DIRECTORY, FOLDER_SERVER, 'assets/fonts');
 const fontDescriptors = {
@@ -35,7 +41,7 @@ export const tempDirForTesting = () => `${fs.existsSync('E:/') ? 'E' : 'C'}:/fil
 @Injectable()
 export class PrintService {
 
-  constructor(private personnelService: PersonnelService) {}
+  constructor(private personnelService: PersonnelService, private dictService: DictService) {}
 
   async saveLocalForDevelopmentPdf() {
     const file = await this.printT2(2);
@@ -151,9 +157,7 @@ export class PrintService {
 
   async filterAndXls(fltr: IServerFilter) {
     const pers = await this.personnelService.filter(fltr);
-    if(!pers.length) {
-      ErrHandler.throw('Поиск никого не нашел')
-    }
+    this.checkFilteredResultForEmptyness(pers);
     const fields = <any>{
       // 1
       surname: 'Фамилия',
@@ -187,7 +191,41 @@ export class PrintService {
       })
     );
     rows.unshift(firstRow);
-    let buffer = xlsx.build([{name: "1", data: HandleData.clearEmptyColumns(rows)}]);
+    const buffer = xlsx.build([{name: "1", data: HandleData.clearEmptyColumns(rows)}]);
     return Buffer.from(buffer)
+  }
+
+  checkFilteredResultForEmptyness(pers) {
+    if(!pers.length) {
+      ErrHandler.throw('Поиск никого не нашел')
+    }
+  }
+
+  async filterContractsZipped(fltr: IServerFilter) {
+    // тут часто может быть мало данных
+    let pers = await this.personnelService.filter(fltr);
+    this.checkFilteredResultForEmptyness(pers);
+    const ids = pers.map(w => w.id);
+    // лишняя работа но и лишней говнологики в фильтре нет
+    pers = await Personnel.findAll({where: {id: ids}, include: [{model: Workplace, where: {active: true}}, Passport]});
+
+    const salaries = HandleData.toKeyProp<ISalaryDict, number>(await this.dictService.getSalary(), 'value', 'salary');
+    return Promise.all(
+      pers.map(async (worker) => {
+        HandleData.addCountedSalary(worker, salaries);
+        return [
+          await this.createOfficeFileUint8(new PrintExtraLaborContractDynamicBuilder(worker).make()),
+          // винда только с 8 версии корректно отображает русские мена в архиве поэтому надо распаковывать например винраром
+          HandleData.getFIO([worker.surname, worker.name, worker.middleName], false) + ' ' + worker.id
+        ]})
+    ).then((all) => this.putDataToZip(all, '.docx')
+    ).then(Buffer.from)
+
+  }
+
+  async putDataToZip(all: any[], ext) {
+    let zip = new jszip();
+    all.forEach(([file,fileName], i) => zip.file(fileName + ext, file));
+    return await zip.generateAsync({type: 'uint8array'})
   }
 }

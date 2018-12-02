@@ -44,18 +44,20 @@
       <td><input type="date" [(ngModel)]="w.contractDate" class="form-control form-control-sm"></td>
       <td><input type="date" [(ngModel)]="w.contractEndDate" class="form-control form-control-sm"></td>
       <td>
-        <select [(ngModel)]="w.category" class="form-control form-control-sm">
+        <select [(ngModel)]="w.category" (ngModelChange)="onCategoryChange(w)" class="form-control form-control-sm">
           <option [ngValue]="null"></option>
-          <option value="{{val.name}}" *ngFor="let val of staffCategoriesDict">{{val.name}}</option>
+          <option value="{{cat.value}}" *ngFor="let cat of staffCategoriesDict">
+            {{cat.value}} / {{cat.name}} ({{cat.salary}})
+          </option>
         </select>
       </td>
       <td>
-        <!--<select [(ngModel)]="w.salaryCoef" class="form-control form-control-sm">
-          <option [ngValue]="null"></option>
-          <option value="{{val.name}}" *ngFor="let val of staffCategoriesDict">{{val.name}}</option>
-        </select>-->
-        <input type="number" [(ngModel)]="w.salaryCoef" class="form-control form-control-sm">
-        <span *ngIf="w.category && w.salaryCoef">{{salaries[w.category] * w.salaryCoef }}</span>
+        <input type="number"  class="form-control form-control-sm"
+               [(ngModel)]="w.salaryCoef"
+               [readonly]="!w.category || w.category && salaries[w.category] === 0">
+        <span *ngIf="w.category && w.active && w.salaryCoef && salaries[w.category]">
+          {{salaries[w.category] * w.salaryCoef }}
+        </span>
       </td>
       <td>
         <select [(ngModel)]="w.attractionTerms" class="form-control form-control-sm">

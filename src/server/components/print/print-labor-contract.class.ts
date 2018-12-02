@@ -7,14 +7,10 @@ import {
 import {IPersonnel} from "../personnel/personnel.interface";
 import {HandleData} from "../../../shared/handle-data";
 import * as _ from 'lodash'
+import {PrintRequisitesBuilder} from "./print-requisites.class";
 
 export class PrintLaborContractDynamicBuilder {
   private doc = new Document({
-    creator: "admin",
-    title: "LaborContract",
-    description: "LaborContract",
-  }, pageMargins);
-  private docRequisite = new Document({
     creator: "admin",
     title: "LaborContract",
     description: "LaborContract",
@@ -29,18 +25,13 @@ export class PrintLaborContractDynamicBuilder {
     .makeHeaderAndSectionOne()
     .makeSectionTwo()
       .makeSectionThree()
-      .makeSectionRequisite()
       .build();
   }
 
   private makeHeaderAndSectionOne() {
     const worker = this.pers;
     const contractNumber =  HandleData.where(worker.workplaces, 'active', true, true).contractNumber;
-    const header = new Paragraph()
-      .center()
-      .style('10')
-      .addRun(new TextRun(`Трудовой договор №${contractNumber || '____'}`).bold().break());
-    this.doc.addParagraph(header);
+    this.doc.addParagraph(getTitle(`Трудовой договор №${contractNumber || '____'}`));
     makeCommonHeader(this.doc, this.pers);
     const sciInstSp = !_.isEmpty(worker.scientificInst)
       ? worker.scientificInst[0].specialty
@@ -141,13 +132,7 @@ export class PrintLaborContractDynamicBuilder {
     return this
   }
 
-
-  makeSectionRequisite() {
-    makeRequisite(this.docRequisite, this.pers);
-    return this
-  }
-
   private build() {
-    return [this.doc, this.docRequisite]
+    return [this.doc, new PrintRequisitesBuilder(this.pers).make()]
   }
 }

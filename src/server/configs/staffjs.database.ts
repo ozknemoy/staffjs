@@ -66,6 +66,7 @@ Personnel.sync().then(() => {
   User.sync();
   AcademicRank.sync();
 });
+
 //Personnel.destroy({where: {}});
 
 // хелпер добавления json в таблицу

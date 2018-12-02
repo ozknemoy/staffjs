@@ -14,3 +14,4 @@ export const WORKING_DIRECTORY = process.env.NODE_ENV === 'production'
 export const INSTITUTIONS_NAME = 'ГУАП';
 
 export const dirWorkHistory = join(process.cwd(), FILES_FOLDER_SERVER, 'work-history/');
+export const dirLaborContracts = join(process.cwd(), FILES_FOLDER_SERVER, 'labor-contracts/');

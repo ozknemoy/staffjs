@@ -14,7 +14,7 @@ export class DictController {
 
   @Get('salary')
   getSalary() {
-    return SalaryDict.findAll({order: [['id', 'ASC']]})
+    return this.dictService.getSalary()
   }
 
   @Put('salary')

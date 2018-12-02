@@ -1,4 +1,4 @@
-import {Paragraph, TextRun, Document} from "docx";
+import {Paragraph, TextRun, Document} from "docx/build";
 import {
   addEmptyLineUnderlined, addEmptyLineWithTextUnderlined, addUnderlineText, getEmptyLinePlusText, getLRText,
   getTitle, redI, removeTableBorders
@@ -51,7 +51,7 @@ export function makeCommonHeader(doc: Document, u: IPersonnel) {
     .addRun(new TextRun('Работник').bold())
     .addRun(new TextRun('», с другой стороны, именуемые в дальнейшем «'))
     .addRun(new TextRun('Стороны').bold())
-    .addRun(new TextRun('», заключили настоящий договор о нижеследующем:'));
+    .addRun(new TextRun('», пришли к соглашению о нижеследующем:'));
   doc.addParagraph(eight);
   doc.addParagraph(getTitle('1. Предмет трудового договора'));
 
@@ -65,7 +65,7 @@ const onePointOneTextChunk3 = ' обязуется лично выполнять
 export function getOneOneP() {
   return new Paragraph()
     .style('9')
-    .spacing({before: 50})
+    //.spacing({before: 50})
     .addRun(new TextRun(onePointOneTextChunk1))
     .addRun(new TextRun('Работнику').bold())
     .addRun(new TextRun(onePointOneTextChunk2))
@@ -166,10 +166,10 @@ export function makeRequisite(doc: Document, worker: IPersonnel) {
     .addRun(new TextRun('Ректор (проректор)').break())
     .addRun(new TextRun('_______________/_________________').break());
   const footerR = new Paragraph()
-    .addRun(new TextRun(`____________________ (______________________)`).break())
+    .addRun(new TextRun(`____________________ (${FIO_SHORT || '______________________'})`).break())
     .addRun(new TextRun('(подпись ').break().italic())
     .addRun(new TextRun('Работника').bold().italic())
-    .addRun(new TextRun(')                       ФИО').italic());
+    .addRun(new TextRun(')                ФИО').italic());
 
   table.getCell(1, 0).addContent(left);
   table.getCell(1, 2).addContent(right);
@@ -191,7 +191,7 @@ export function makeRequisite(doc: Document, worker: IPersonnel) {
   doc.addParagraph(two);
   const three = new Paragraph()
     .style('8')
-    .addRun(new TextRun(`Экземпляр трудового договора на руки получил: ____________________(${FIO_SHORT || '_____________'})`).break())
+    .addRun(new TextRun(`Экземпляр трудового договора (доп. соглашения) на руки получил: ____________________(${FIO_SHORT || '_____________'})`).break())
     .addRun(new TextRun('\t\t\t                                         подпись Работника              ФИО').break().italic())
   ;
   doc.addParagraph(three);

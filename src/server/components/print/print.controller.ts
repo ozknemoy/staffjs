@@ -44,5 +44,13 @@ export class PrintController {
     return resp.send(buffer);
   }
 
+  @Post('filter-contracts-zipped')
+  async filterContractsZipped(@Res() resp, @Body() filter: IServerFilter) {
+    resp.contentType('applicaton/zip');
+    resp.setHeader('content-disposition', `attachment; filename=filtered-contracts.zip`);
+    const buffer = await this.printService.filterContractsZipped(filter);
+    return resp.send(buffer);
+  }
+
 
 }

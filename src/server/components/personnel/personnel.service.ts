@@ -34,6 +34,7 @@ import {IServerFilter} from "../../../shared/interfaces/server-filter.interface"
 import {Sequelize} from "sequelize-typescript";
 import {WhereOptions} from "sequelize";
 import * as moment from "moment";
+import {hasValueWhereOptions} from "../../../shared/validators";
 
 @Injectable()
 export class PersonnelService {
@@ -226,6 +227,7 @@ export class PersonnelService {
       category: WhereOptions<Workplace>,
       contractEndDate: WhereOptions<Workplace>,
       attractionTerms: WhereOptions<Workplace>,
+      salaryCoef: WhereOptions<Workplace>,
     }> = {};
     // пока ищу только среди активных
     let workerWhere: Partial<{
@@ -247,10 +249,13 @@ export class PersonnelService {
       workplaceWhere.department = {[Sequelize.Op.iLike]: '%' + fltr.department + '%'}
     }
     if(!HandleData.isNoValuePrimitive(fltr.category)) {
-      workplaceWhere.category = {[Sequelize.Op.like]: fltr.category}
+      workplaceWhere.category = {[Sequelize.Op.like]: '%' + fltr.category + '%'}
     }
     if(!HandleData.isNoValuePrimitive(fltr.attractionTerms)) {
       workplaceWhere.attractionTerms = {[Sequelize.Op.like]: fltr.attractionTerms}
+    }
+    if(fltr.hasNoSalary === true) {
+      workplaceWhere.salaryCoef = {[Sequelize.Op.eq]: null}
     }
     if(fltr.contractEndDateMin !== defFilter.contractEndDateMin || fltr.contractEndDateMax !== defFilter.contractEndDateMax) {
       const from = moment()
@@ -276,13 +281,7 @@ export class PersonnelService {
     }
 
     if(fltr.disabilityDegree === true) {
-      workerWhere.disabilityDegree = {[Sequelize.Op.regexp]: '\.'}
-      /* следущее превращается в простую конструкцию NOT NULL то есть ne: '' игнорируется
-      {
-        [Sequelize.Op.and]: {
-          [Sequelize.Op.ne]: '',
-          [Sequelize.Op.ne]: null
-        }}*/
+      workerWhere.disabilityDegree = hasValueWhereOptions
     }
 
     if(fltr.birthDateMin !== defFilter.birthDateMin || fltr.birthDateMax !== defFilter.birthDateMax) {

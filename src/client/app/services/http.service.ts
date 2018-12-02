@@ -6,6 +6,7 @@ import {ToastrService} from "ngx-toastr";
 import {map} from 'rxjs/operators';
 import {HandleData} from '../../../shared/handle-data';
 import {saveAs} from "file-saver";
+import {ISalaryDict} from "../../../server/components/dict/salary-dict.interface";
 
 @Injectable()
 export class HttpService {
@@ -94,11 +95,22 @@ export class HttpService {
         observe: <'body'>'response',
       })
       .then((fullResponse) => {
-        console.log(fullResponse['body']);
         saveAs(fullResponse['body'], HandleData.getFileNameFromHttpResponse(fullResponse));
-        // скачивает из json исходника
-        // pdfMake.createPdf(fullResponse.body).download(HandleData.getFileNameFromHttpResponse(fullResponse));
       })
+  }
+
+  getLocalOrRemote(varName: string, url: string): Promise<any[]> {
+    return this[varName]
+      ? Promise.resolve(this[varName])
+      : this.get(url).then(d => {
+        this[varName] = d;
+        return d;
+      })
+
+  }
+
+  getStaffCategoriesDict(): Promise<ISalaryDict[]> {
+    return this.getLocalOrRemote('staffCategoriesDict', 'dict/salary')
   }
 
 }

@@ -1,4 +1,4 @@
-import {BorderStyle, Paragraph, Table, TextRun} from 'docx';
+import {BorderStyle, Paragraph, Table, TextRun} from 'docx/build';
 
 export function setStandartStyles(doc, font = 'Arial') {
   doc.Styles.createParagraphStyle('10', "10")
@@ -76,6 +76,7 @@ export function addUnderlineText(left: number, text = 'нужное подчер
 
 export function getTitle(text: string) {
   return new Paragraph()
+    .spacing({after: 300})
     .center()
     .style('10')
     .addRun(new TextRun(text).break().bold());

@@ -61,13 +61,15 @@
       <div class="clearfix"></div>
       <p>Всего {{amount}} (Женщин {{amountW}}, Мужчин {{amountM}})</p>
 
-      <div class="border rounded p-2" *ngIf="!isGotFiredState">
+      <div class="border rounded p-1" *ngIf="!isGotFiredState">
         <button class="btn btn-info float-right btn-sm dib ml-1"
                 (click)="filterServer()">Искать</button>
-        <button class="btn btn-outline-info float-right btn-sm dib"
+        <button class="btn btn-outline-info float-right btn-sm dib ml-1"
                 (click)="clearFilter()">Очистить</button>
-        <button class="btn btn-outline-info float-right btn-sm dib"
+        <button class="btn btn-outline-info float-right btn-sm dib ml-1"
                 (click)="filterServerXls()">Скачать результат в excel</button>
+        <button class="btn btn-outline-info float-right btn-sm dib ml-1"
+                (click)="downloadContractsByFilter()">Скачать доп соглашения по ЗП</button>
         <p>ФИЛЬТР</p>
         <div class="form-group">
           <label>Должность</label>
@@ -77,7 +79,7 @@
           <label>Категория</label>
           <select [(ngModel)]="fltrServer.category" class="form-control form-control-sm">
             <option [ngValue]="null"></option>
-            <option value="{{val.name}}" *ngFor="let val of staffCategoriesDict">{{val.name}}</option>
+            <option value="{{cat.value}}" *ngFor="let cat of staffCategoriesDict">{{cat.value}}</option>
           </select>
           <label>Вид работы / Условия привлечения</label>
           <select [(ngModel)]="fltrServer.attractionTerms" class="form-control form-control-sm">
@@ -94,6 +96,10 @@
           <div class="form-check">
             <input type="checkbox" [(ngModel)]="fltrServer.disabilityDegree" class="form-check-input" id="disabilityDegree">
             <label class="form-check-label" for="disabilityDegree">Наличие инвалидности</label>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" [(ngModel)]="fltrServer.hasNoSalary" class="form-check-input" id="hasNoSalary">
+            <label class="form-check-label" for="hasNoSalary">Не заполнен оклад/ставка</label>
           </div>
           <label>Период окончания трудового договора, недель</label>
           <ng5-slider [(value)]="fltrServer.contractEndDateMin" [(highValue)]="fltrServer.contractEndDateMax" [options]="sliderOptionsContractEnd"></ng5-slider>

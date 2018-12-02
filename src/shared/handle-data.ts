@@ -1,9 +1,23 @@
 import {HttpHeaders} from '@angular/common/http/src/headers';
 import * as moment from "moment";
 import * as _ from 'lodash';
+import {IPersonnel} from "../server/components/personnel/personnel.interface";
 
 
 declare const Set;
+const _cf = (function () {
+  function _shift(x) {
+    const parts = x.toString().split('.');
+    return (parts.length < 2) ? 1 : Math.pow(10, parts[1].length)
+  }
+
+  return function (...rest) {
+    return Array.prototype.reduce.call(rest, function (prev, next) {
+      return prev === undefined || next === undefined || prev === null || next === null?
+        undefined : Math.max(prev, _shift(next))
+    }, -Infinity)
+  };
+})();
 
 export interface ISimpleObj {
   [key: string]: string
@@ -18,7 +32,7 @@ export class HandleData {
   }
 
 // [{[proOne]:2, [propTwo]: 'изменение'}] -> {[proOneValue]:[propTwoValue]}
-  static toKeyProp<T>(obj: T[], proOne: (keyof T), propTwo: (keyof T)): ISimpleObj {
+  static toKeyProp<T, V>(obj: T[], proOne: keyof T, propTwo: keyof T): {[key: string]: V} {
     let o = {};
     obj.forEach(row => {
       o[row[proOne].toString()] = row[propTwo];
@@ -363,5 +377,64 @@ export class HandleData {
     return tbl.map(row =>
       row.filter((cell, columnIndex) => !_.includes(emptyColumns, columnIndex))
     )
+  }
+
+  // считаю зп на лету
+  static addCountedSalary(worker: IPersonnel, dict: {[key: string]: number}) {
+    worker.workplaces.forEach(wp => {
+      if(wp.category && dict[wp.category]/*тут сработает проверка и на ноль*/) {
+        wp.salary = HandleData.multiply(wp.salaryCoef, dict[wp.category])
+      }
+
+    });
+    return worker
+  }
+
+  static precise(number, n?) {
+    return parseFloat(parseFloat('' + number).toPrecision(n || 15))
+  }
+
+  static _isCountable(a, b) {
+    return !!a && !!b
+  }
+
+  static _getCountable(a) {
+    return  a? HandleData.precise(a) : 0
+  }
+
+  static sum(...rest) {
+    rest = rest.map(this._getCountable);
+    const f = _cf.apply(null, rest);
+
+    if (f === undefined) return;
+    function cb(x, y) {
+      return x + f * y
+    }
+    return Array.prototype.reduce.call(rest, cb, 0) / f
+  }
+
+  static subtract(l, r) {
+    l = this._getCountable(l);
+    r = this._getCountable(r);
+    const f = _cf(l, r);
+    // добавил сюда multiply иначе не работало
+    return (this.multiply(l * f) - this.multiply(r * f)) / f
+  }
+
+  static multiply(...rest) {
+    rest = rest.map(this._getCountable);
+    const f = _cf.apply(null, rest);
+
+    function cb(x, y) {
+      return (x * f) * (y * f) / (f * f)
+    }
+
+    return Array.prototype.reduce.call(rest, cb, 1)
+  }
+
+  static divide(l, r) {
+    if(!this._isCountable(l, r)) return 0;
+    const f = _cf(l, r);
+    return (l * f) / (r * f);
   }
 }

@@ -36,7 +36,7 @@ export class ParsePersonnelXls {
       const firstList = xlsx.parse(fs.readFileSync(excelPath))[0];
       return  firstList.data.slice(1).map(row => this.parse(row));
     } catch (e) {
-      ErrHandler.throw('Ошибка чтения/разбора файла staff.xls', e);
+      ErrHandler.catchPropagate('Ошибка чтения/разбора файла staff.xls', e);
     }
   }
 
@@ -46,7 +46,6 @@ export class ParsePersonnelXls {
       return  this.parse(firstList.data[1]);
     } catch (e) {
       ErrHandler.catchPropagate('Ошибка чтения/разбора файла staff.xls', e);
-      //throw;
     }
   }
 
