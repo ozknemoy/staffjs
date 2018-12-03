@@ -36,7 +36,7 @@ export class WorkplaceComponent implements OnInit {
     const msgChunk = 'Обратите внимание что тарифная ставка удалилась и теперь запрещена для ввода';
     if(this.salaries[w.category] === 0) {
       w.salaryCoef = null;
-      this.toast.info('Вы выбрали базовую категорию, а надо ее подкатегорию. ' + msgChunk)
+      this.toast.info('Выбрана базовая категорию, а надо выбрать ее подкатегорию. ' + msgChunk)
     }
     if(w.category === null) {
       w.salaryCoef = null;

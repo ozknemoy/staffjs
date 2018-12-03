@@ -10,6 +10,8 @@ import {IServerFilter} from '../../../shared/interfaces/server-filter.interface'
 @Controller('print')
 export class PrintController {
   private msTypePrefix = 'application/vnd.openxmlformats-officedocument.';
+  private docxFormat = this.msTypePrefix + 'wordprocessingml.document;charset=Windows-1251';
+  private contentDisp = 'attachment; filename=';
   constructor(private printService: PrintService) {
 
   }
@@ -18,15 +20,15 @@ export class PrintController {
   printT2(@Query('userId') userId: string, @Res() resp) {
     return this.printService.printT2(userId).then(data => {
       resp.contentType('application/pdf;charset=utf-8');
-      resp.setHeader('content-disposition', `attachment; filename=${userId}-t2.pdf`);
+      resp.setHeader('content-disposition', `${this.contentDisp + userId}-t2.pdf`);
       return resp.send(data);
     })
   }
 
   @Post('labor-contract/:userId')
   async prntLaborContract(@Param('userId') userId: number, @Res() resp, @Query('type') type: string) {
-    resp.contentType(this.msTypePrefix + 'wordprocessingml.document;charset=Windows-1251');
-    resp.setHeader('content-disposition', `attachment; filename=${userId}-t2.docx`);
+    resp.contentType(this.docxFormat);
+    resp.setHeader('content-disposition', `${this.contentDisp + userId}-t2.docx`);
     const buffer = await this.printService.printLaborContract(userId, type, false);
     return resp.send(buffer);
   }
@@ -39,7 +41,7 @@ export class PrintController {
   @Post('filter-and-xls')
   async filterAndXls(@Res() resp, @Body() filter: IServerFilter) {
     resp.contentType(this.msTypePrefix + 'spreadsheetml.sheet;charset=Windows-1251');
-    resp.setHeader('content-disposition', `attachment; filename=filtered-list.xlsx`);
+    resp.setHeader('content-disposition', this.contentDisp + 'filtered-list.xlsx');
     const buffer = await this.printService.filterAndXls(filter);
     return resp.send(buffer);
   }
@@ -47,8 +49,16 @@ export class PrintController {
   @Post('filter-contracts-zipped')
   async filterContractsZipped(@Res() resp, @Body() filter: IServerFilter) {
     resp.contentType('applicaton/zip');
-    resp.setHeader('content-disposition', `attachment; filename=filtered-contracts.zip`);
+    resp.setHeader('content-disposition', this.contentDisp + `filtered-extra-contracts.zip`);
     const buffer = await this.printService.filterContractsZipped(filter);
+    return resp.send(buffer);
+  }
+
+  @Post('filter-contracts')
+  async filterContracts(@Res() resp, @Body() filter: IServerFilter) {
+    resp.contentType(this.docxFormat);
+    resp.setHeader('content-disposition', this.contentDisp + `filtered-extra-contracts.docx`);
+    const buffer = await this.printService.filterContracts(filter);
     return resp.send(buffer);
   }
 

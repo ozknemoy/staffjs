@@ -46,7 +46,7 @@
       <td>
         <select [(ngModel)]="w.category" (ngModelChange)="onCategoryChange(w)" class="form-control form-control-sm">
           <option [ngValue]="null"></option>
-          <option value="{{cat.value}}" *ngFor="let cat of staffCategoriesDict">
+          <option value="{{cat.value}}" [disabled]="cat.salary===0" *ngFor="let cat of staffCategoriesDict">
             {{cat.value}} / {{cat.name}} ({{cat.salary}})
           </option>
         </select>
@@ -55,8 +55,8 @@
         <input type="number"  class="form-control form-control-sm"
                [(ngModel)]="w.salaryCoef"
                [readonly]="!w.category || w.category && salaries[w.category] === 0">
-        <span *ngIf="w.category && w.active && w.salaryCoef && salaries[w.category]">
-          {{salaries[w.category] * w.salaryCoef }}
+        <span *ngIf="w.category && w.active && w.salaryCoef && salaries[w.category] && w.rate">
+          {{salaries[w.category] * w.salaryCoef * w.rate}}
         </span>
       </td>
       <td>

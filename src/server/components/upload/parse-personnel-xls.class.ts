@@ -12,6 +12,8 @@ import IScientificInst from '../personnel/relations/personnel-scientific-inst.in
 import {IPassport} from '../personnel/relations/personnel-passport.interface';
 import IInstitution from '../personnel/relations/personnel-institution.interface';
 import IAcademicRank from '../personnel/relations/academic-rank.interface';
+import {salaryDict} from "../../../shared/dictionaries/salary.dict";
+const salaryDictHandled = HandleData.handleSalary(salaryDict);
 
 export interface IBuildedFromXlsWorker {
   worker: Partial<IPersonnel>,
@@ -134,6 +136,7 @@ export class ParsePersonnelXls {
       academicCouncilDate: HandleData.ruDateToServer(xls[120]),
       attractionTerms,
       rate: HandleData.parseNumber(xls[37]),
+      salaryCoef: HandleData.parseNumber(xls[90]),
       duration: HandleData.parseNumber(xls[108]),
       category: xls[38],
       dismissalDate: HandleData.ruDateToServer(xls[74]),
@@ -144,12 +147,38 @@ export class ParsePersonnelXls {
       contractDate: HandleData.ruDateToServer(contractD),
       contractEndDate: HandleData.ruDateToServer(xls[41]),
     };
+    // не перемещать!!!
+    workplace.category = this.findCategory(workplace, HandleData.parseNumber(xls[89]));
     const workExp: Partial<IWorkExp[]> = this.getWorkExp(xls, null);
     const rewards = <Partial<IPersonnelNamedThingWithDoc>>this.getRewards(xls);
     return {
       worker, passport, institution, scientificInst , workplace, workExp,
       academicRank, rewards
     }
+  }
+
+  // по зп определяю категорию
+  static findCategory(wp, baseSalary): string {
+    if((wp.category !== 'АУП' && wp.category !== 'ОП')
+      || !wp.category
+      || !salaryDictHandled.hasOwnProperty(wp.category)) {
+      return wp.category
+    }
+    let category;
+    salaryDict.some(salaryRow => {
+      if(salaryRow.value.indexOf(wp.category) > -1 && baseSalary === salaryRow.salary) {
+        category = salaryRow.value;
+        return true
+      }
+      return false
+    });
+
+    if(category && wp.rate  && wp.salaryCoef) {
+      console.count('---------людей АУП/ОП у которых все норм с окладом, ставкой, коэф--------');
+    } else {
+      console.count('---------людей АУП/ОП у которых КОСЯК с окладом/ставкой/коэф-------------------------');
+    }
+    return category || wp.category
   }
 
   static getRewards(xls) {

@@ -110,8 +110,8 @@ export class StaffListComponent implements OnInit {
     this.http.downloadAndSave('/print/filter-and-xls', this.fltrServer)
   }
 
-  downloadContractsByFilter() {
-    this.http.downloadAndSave('/print/filter-contracts-zipped', this.fltrServer)
+  downloadContractsByFilter(zipped?) {
+    this.http.downloadAndSave(`/print/filter-contracts${zipped ? '-zipped' : ''}`, this.fltrServer)
   }
 
   trackByFn(index, item) {

@@ -13,28 +13,31 @@ export class PrintExtraLaborContractDynamicBuilder {
   }, pageMargins);
   private activeWorkplace: IPersonnel['workplaces'][0];
 
-  constructor(private pers: IPersonnel) {
+  constructor() {
     setStandartStyles(this.doc)
   }
 
-  make(): Document {
-    return this
-      .makeHeader()
-      .makeBodyAndRequisite()
-      .build();
+  make(worker: IPersonnel): Document {
+    return this.makeDoc(worker, false);
   }
 
-  private makeHeader() {
-    const worker = this.pers;
+  makeMoreThanOne(workers: IPersonnel[]): Document {
+    workers.forEach(worker => this.makeDoc(worker, true));
+
+    return this.doc
+  }
+
+  private makeDoc(worker: IPersonnel, breakPage: boolean) {
     const salaries = HandleData.toKeyProp<any, number>(salaryDict, 'value', 'salary');
-    HandleData.addCountedSalary(this.pers, salaries);
+    HandleData.addCountedSalary(worker, salaries);
     this.activeWorkplace = <IPersonnel['workplaces'][0]>HandleData.where(worker.workplaces, 'active', true, true);
-    this.doc.addParagraph(getTitle(`Дополнительное соглашение к Трудовому договору от ${HandleData.getRuDate(this.activeWorkplace.contractDate) || '____________'}\t№ ${this.activeWorkplace.contractNumber || '____'}`));
-    makeCommonHeader(this.doc, this.pers);
-    return this
-  }
+    const title = getTitle(`Дополнительное соглашение к Трудовому договору от ${HandleData.getRuDate(this.activeWorkplace.contractDate) || '____________'}\t№ ${this.activeWorkplace.contractNumber || '____'}`);
+    if(breakPage) {
+      title.pageBreakBefore()
+    }
+    this.doc.addParagraph(title);
+    makeCommonHeader(this.doc, worker);
 
-  makeBodyAndRequisite() {
     const one = new Paragraph()
       .style('9')
       .addRun(new TextRun('1.').bold())
@@ -47,13 +50,8 @@ export class PrintExtraLaborContractDynamicBuilder {
       .addRun(new TextRun('\tНастоящее дополнительное соглашение вступает в силу с момента его подписания Сторонами.'));
 
     this.doc.addParagraph(one);
-    makeRequisite(this.doc, this.pers);
-    return this
-  }
-
-
-
-  private build() {
+    makeRequisite(this.doc, worker);
     return this.doc
   }
+
 }

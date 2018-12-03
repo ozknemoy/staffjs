@@ -379,11 +379,15 @@ export class HandleData {
     )
   }
 
+  static handleSalary(salaryDict): {[key: string]: number} {
+    return HandleData.toKeyProp<any, number>(salaryDict, 'value', 'salary');
+  }
+
   // считаю зп на лету
   static addCountedSalary(worker: IPersonnel, dict: {[key: string]: number}) {
     worker.workplaces.forEach(wp => {
-      if(wp.category && dict[wp.category]/*тут сработает проверка и на ноль*/) {
-        wp.salary = HandleData.multiply(wp.salaryCoef, dict[wp.category])
+      if(wp.category && dict[wp.category]/*тут сработает проверка и на ноль*/ && wp.rate) {
+        wp.salary = HandleData.multiply(wp.salaryCoef, dict[wp.category], wp.rate)
       }
 
     });

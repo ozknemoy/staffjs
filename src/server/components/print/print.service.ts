@@ -214,12 +214,36 @@ export class PrintService {
       pers.map(async (worker) => {
         HandleData.addCountedSalary(worker, salaries);
         return [
-          await this.createOfficeFileUint8(new PrintExtraLaborContractDynamicBuilder(worker).make()),
+          await this.createOfficeFileUint8(new PrintExtraLaborContractDynamicBuilder().make(worker)),
           // винда только с 8 версии корректно отображает русские мена в архиве поэтому надо распаковывать например винраром
           HandleData.getFIO([worker.surname, worker.name, worker.middleName], false) + ' ' + worker.id
         ]})
     ).then((all) => this.putDataToZip(all, '.docx')
     ).then(Buffer.from)
+
+  }
+
+  async filterContracts(fltr: IServerFilter) {
+    // тут часто может быть мало данных
+    let pers = await this.personnelService.filter(fltr);
+    this.checkFilteredResultForEmptyness(pers);
+    const ids = pers.map(w => w.id);
+    // лишняя работа но и лишней говнологики в фильтре нет
+    pers = await Personnel.findAll({where: {id: ids}, include: [{model: Workplace, where: {active: true}}, Passport]});
+
+    const salaries = HandleData.toKeyProp<ISalaryDict, number>(await this.dictService.getSalary(), 'value', 'salary');
+    pers.forEach((worker) => {
+      HandleData.addCountedSalary(worker, salaries);
+    });
+    const allDocs = await this.createOfficeFileUint8(new PrintExtraLaborContractDynamicBuilder().makeMoreThanOne(pers));
+
+    return Buffer.from(<any>allDocs)/*Promise.all(
+
+    ).then(() => {
+
+      return this.createOfficeFileUint8()
+    })
+    ).then(Buffer.from)*/
 
   }
 
