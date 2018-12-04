@@ -53,8 +53,8 @@
       <td><input type="text" [(ngModel)]="q.docCode" class="form-control"></td>
       <td><input type="text" [(ngModel)]="q.docNumber" class="form-control"></td>
       <td><input type="date" [(ngModel)]="q.endDate" class="form-control"></td>
-      <td><input type="text" [(ngModel)]="q.qualification" class="form-control"></td>
-      <td><input type="text" [(ngModel)]="q.specialty" class="form-control"></td>
+      <td><textarea rows="2" cols="80" [(ngModel)]="q.qualification" class="form-control"></textarea></td>
+      <td><textarea rows="2" cols="80" [(ngModel)]="q.specialty" class="form-control"></textarea></td>
       <td><button class="btn btn-sm btn-danger" (click)="deleteInst(i)">Удалить</button></td>
     </tr>
   </table>
@@ -88,7 +88,7 @@
       <td><input type="text" [(ngModel)]="sciIns.name" class="form-control"></td>
       <td><textarea rows="3" [(ngModel)]="sciIns.fullInfo" class="form-control"></textarea></td>
       <td><input type="date" [(ngModel)]="sciIns.endDate" class="form-control"></td>
-      <td><input type="text" [(ngModel)]="sciIns.specialty" class="form-control"></td>
+      <td><textarea rows="3" [(ngModel)]="sciIns.specialty" class="form-control"></textarea></td>
       <td><input type="text" [(ngModel)]="sciIns.academicDegree" class="form-control"></td>
       <td><input type="text" [(ngModel)]="sciIns.scienceBranch" class="form-control"></td>
       <td><input type="text" [(ngModel)]="sciIns.dateAndNumber" class="form-control"></td>

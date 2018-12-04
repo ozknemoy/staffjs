@@ -26,10 +26,8 @@ export function hasValue(val: any, msg: string,) {
   }
 }
 
-export const hasValueWhereOptions = {[Sequelize.Op.regexp]: '\.'};
-/* следущее превращается в простую конструкцию NOT NULL то есть ne: '' игнорируется
-{
-  [Sequelize.Op.and]: {
-    [Sequelize.Op.ne]: '',
-    [Sequelize.Op.ne]: null
-  }}*/
+export const opHasValue = {[Sequelize.Op.regexp]: '\.'};
+export const opAll = {[Sequelize.Op.gt]: 0};
+// can't do an equal compare with a NULL value -> use Is (not IN (null, 0))
+// то же самое наоборот нельзя IS использовать с 0
+export const opZeroOrNull = {[Sequelize.Op.or]: [{[Sequelize.Op.eq]: 0},{[Sequelize.Op.is]: null}]};

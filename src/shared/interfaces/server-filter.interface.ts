@@ -8,6 +8,8 @@ export class IServerFilter {
   educationName: string = null;
   disabilityDegree: boolean = null;
   hasNoSalary: boolean = null;
+  hasScienceDegree: boolean = null;
+  hasAcademicRank: boolean = null;
   contractEndDateMin = 0;
   contractEndDateMax = 53;
   birthDateMin = 10;

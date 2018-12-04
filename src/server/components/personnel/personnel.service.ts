@@ -34,7 +34,7 @@ import {IServerFilter} from "../../../shared/interfaces/server-filter.interface"
 import {Sequelize} from "sequelize-typescript";
 import {WhereOptions} from "sequelize";
 import * as moment from "moment";
-import {hasValueWhereOptions} from "../../../shared/validators";
+import {opAll, opHasValue, opZeroOrNull} from "../../../shared/validators";
 
 @Injectable()
 export class PersonnelService {
@@ -227,7 +227,6 @@ export class PersonnelService {
       category: WhereOptions<Workplace>,
       contractEndDate: WhereOptions<Workplace>,
       attractionTerms: WhereOptions<Workplace>,
-      salaryCoef: WhereOptions<Workplace>,
     }> = {};
     // пока ищу только среди активных
     let workerWhere: Partial<{
@@ -241,6 +240,26 @@ export class PersonnelService {
     let qualImprWhere: Partial<{
       type: WhereOptions<QualImprovement>,
     }> = {};
+    let sciInstWhere: Partial<{
+      personnelId: WhereOptions<ScientificInst>,
+    }> = {};
+    let academicRankWhere: Partial<{
+      personnelId: WhereOptions<AcademicRank>,
+    }> = {};
+
+    if(fltr.hasScienceDegree === true) {
+      sciInstWhere.personnelId = opAll;
+    }
+    if(!HandleData.onlyEmptyKeys(sciInstWhere)) {
+      include.push({model: ScientificInst, where: sciInstWhere})
+    }
+
+    if(fltr.hasAcademicRank === true) {
+      academicRankWhere.personnelId = opAll;
+    }
+    if(!HandleData.onlyEmptyKeys(academicRankWhere)) {
+      include.push({model: AcademicRank, where: academicRankWhere})
+    }
 
     if(!HandleData.isNoValuePrimitive(fltr.specialty)) {
       workplaceWhere.specialty = {[Sequelize.Op.iLike]: '%' + fltr.specialty + '%'};
@@ -255,7 +274,11 @@ export class PersonnelService {
       workplaceWhere.attractionTerms = {[Sequelize.Op.like]: fltr.attractionTerms}
     }
     if(fltr.hasNoSalary === true) {
-      workplaceWhere.salaryCoef = {[Sequelize.Op.eq]: null}
+      // не забываем что symbol не итерируемый
+      workplaceWhere[Sequelize.Op.or] = [
+          {rate: opZeroOrNull},
+          {salaryCoef: opZeroOrNull}
+        ];
     }
     if(fltr.contractEndDateMin !== defFilter.contractEndDateMin || fltr.contractEndDateMax !== defFilter.contractEndDateMax) {
       const from = moment()
@@ -268,7 +291,7 @@ export class PersonnelService {
         .format('YYYY-MM-DD');
       workplaceWhere.contractEndDate = {[Sequelize.Op.between]: [from, to]}
     }
-    if(!HandleData.onlyEmptyKeys(workplaceWhere)) {
+    if(!HandleData.onlyEmptyKeys(workplaceWhere) || fltr.hasNoSalary === true) {
       workplaceWhere.active = true;
       include.push({model: Workplace, where: workplaceWhere})
     } else {
@@ -281,7 +304,7 @@ export class PersonnelService {
     }
 
     if(fltr.disabilityDegree === true) {
-      workerWhere.disabilityDegree = hasValueWhereOptions
+      workerWhere.disabilityDegree = opHasValue
     }
 
     if(fltr.birthDateMin !== defFilter.birthDateMin || fltr.birthDateMax !== defFilter.birthDateMax) {

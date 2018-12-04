@@ -101,6 +101,14 @@
             <input type="checkbox" [(ngModel)]="fltrServer.hasNoSalary" class="form-check-input" id="hasNoSalary">
             <label class="form-check-label" for="hasNoSalary">Не заполнен оклад/ставка</label>
           </div>
+          <div class="form-check">
+            <input type="checkbox" [(ngModel)]="fltrServer.hasScienceDegree" class="form-check-input" id="hasScienceDegree">
+            <label class="form-check-label" for="hasScienceDegree">Наличие ученой степени</label>
+          </div>
+          <div class="form-check">
+            <input type="checkbox" [(ngModel)]="fltrServer.hasAcademicRank" class="form-check-input" id="hasAcademicRank">
+            <label class="form-check-label" for="hasAcademicRank">Наличие ученого звания</label>
+          </div>
           <label>Период окончания трудового договора, недель</label>
           <ng5-slider [(value)]="fltrServer.contractEndDateMin" [(highValue)]="fltrServer.contractEndDateMax" [options]="sliderOptionsContractEnd"></ng5-slider>
           <label>Возраст</label>
