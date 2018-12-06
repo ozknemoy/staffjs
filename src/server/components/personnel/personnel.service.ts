@@ -38,7 +38,7 @@ import {opAll, opHasValue, opZeroOrNull} from "../../../shared/validators";
 
 @Injectable()
 export class PersonnelService {
-  private persOrder = [['surname', 'ASC'], ['name', 'ASC']];
+  static persOrder = [['surname', 'ASC'], ['name', 'ASC']];
   constructor(private dbTransactions: DbTransactions, private errHandler: ErrHandler) {}
 
   getAllFullData() {
@@ -52,7 +52,10 @@ export class PersonnelService {
   getAllByActivity(active: boolean) {
     return Personnel.findAll({
       // required : false в include делает поиск только по Workplace не отбрасывая родителя Personnel
-      where: {active}, order: this.persOrder, include: [{model: Workplace, required : false, where: {active: true}}]
+      // то есть если не найден ни один Workplace то Personnel все равно не отбросится
+      where: {active},
+      order: PersonnelService.persOrder.concat([['workplaces', 'id', 'DESC']]),
+      include: [{model: Workplace, required : false, where: {active: true}}]
     });
   }
 
@@ -329,7 +332,11 @@ export class PersonnelService {
       include.push({model: QualImprovement, where: qualImprWhere})
     }
 
-    return Personnel.findAll({where: workerWhere, include, order: this.persOrder});
+    return Personnel.findAll({
+      where: workerWhere,
+      include,
+      order: PersonnelService.persOrder.concat([['workplaces', 'id', 'DESC']])
+    });
 
   }
 }

@@ -3,9 +3,6 @@ import {IPersonnel} from "../personnel.interface";
 import Personnel from "../personnel.model";
 import IInstitution from "./personnel-institution.interface";
 
-/*@DefaultScope({
-  order: [['id', 'ASC']]
-})*/
 @Table({
   tableName: 'staff-institution'
 })

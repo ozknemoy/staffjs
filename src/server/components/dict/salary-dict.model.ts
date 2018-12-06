@@ -1,10 +1,12 @@
 import {
-  Table, Column, Model, PrimaryKey, Unique, AutoIncrement, DataType, NotEmpty, NotNull, Is, AllowNull
+  Table, Column, Model, PrimaryKey, Unique, AutoIncrement, DataType, NotEmpty, NotNull, Is, AllowNull, DefaultScope
 } from 'sequelize-typescript';
 import {ISalaryDict} from "./salary-dict.interface";
 import {hasValue} from '../../../shared/validators';
 
-
+@DefaultScope({
+  order: [['id', 'ASC']]
+})
 @Table({
   tableName: 'dict-salary',
 })

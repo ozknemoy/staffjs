@@ -15,11 +15,11 @@ import * as _ from 'lodash';
 import {IServerFilter} from '../../../shared/interfaces/server-filter.interface';
 import xlsx from "node-xlsx";
 import {HandleData} from '../../../shared/handle-data';
-import {PrintRequisitesBuilder} from "./print-requisites.class";
 import Passport from "../personnel/relations/personnel-passport.model";
-import {ISalaryDict} from "../dict/salary-dict.interface";
 import {DictService} from "../dict/dict.service";
 import {PrintExtraLaborContractBuilder} from "./print-extra-labor-contract.class";
+import {IPersonnel} from "../personnel/personnel.interface";
+import {Sequelize} from "sequelize-typescript";
 
 const path = require('path');
 const DocxMerger = require('../../../shared/docx-merger/docx-merger-dist.js');
@@ -205,17 +205,10 @@ export class PrintService {
   }
 
   async filterContractsZipped(fltr: IServerFilter) {
-    // тут часто может быть мало данных
-    let pers = await this.personnelService.filter(fltr);
-    this.checkFilteredResultForEmptyness(pers);
-    const ids = pers.map(w => w.id);
-    // лишняя работа но и лишней говнологики в фильтре нет
-    pers = await Personnel.findAll({where: {id: ids}, include: [{model: Workplace, where: {active: true}}, Passport]});
-
+    const pers = await this.handleAllWorkplaces(fltr);
     const salaries = await this.dictService.getSalary();
     return Promise.all(
       pers.map(async (worker) => {
-
         return [
           await this.createOfficeFileUint8(new PrintExtraLaborContractBuilder(salaries).make(worker)),
           // винда только с 8 версии корректно отображает русские мена в архиве поэтому надо распаковывать например винраром
@@ -227,27 +220,41 @@ export class PrintService {
   }
 
   async filterContracts(fltr: IServerFilter) {
-    // тут часто может быть мало данных
+    const pers = await this.handleAllWorkplaces(fltr);
+    const salaries = await this.dictService.getSalary();
+    const allDocs = await this.createOfficeFileUint8(new PrintExtraLaborContractBuilder(salaries).makeMoreThanOne(pers));
+    return Buffer.from(<any>allDocs)
+  }
+
+  async handleAllWorkplaces(fltr: IServerFilter): Promise<IPersonnel[]> {
+    // тут может быть мало данных
     let pers = await this.personnelService.filter(fltr);
     this.checkFilteredResultForEmptyness(pers);
     const ids = pers.map(w => w.id);
-    // лишняя работа но и лишней говнологики в фильтре нет
-    pers = await Personnel.findAll({where: {id: ids}, include: [{model: Workplace, where: {active: true}}, Passport]});
-
-    const salaries = await this.dictService.getSalary();
-    pers.forEach((worker) => {
-      //HandleData.addCountedSalary(worker, salaries);
+    let wpWhere = <any>{active: true};
+    // позволяю сузить поиск
+    if(fltr.category) {
+      wpWhere.category = {[Sequelize.Op.eq]: fltr.category}
+    }
+    // лишняя работа но и лишней говнологики в основном фильтре нет
+    pers = await Personnel.findAll({
+      where: {id: ids},
+      order: PersonnelService.persOrder,
+      include: [{model: Workplace, where: wpWhere}, Passport]});
+    // делаю каждый трудовой договор как отдельного работника чтобы распечатать каждый
+    let persExt: IPersonnel[] = [];
+    pers.forEach(w => {
+      if(w.workplaces.length == 1) {
+        persExt.push(w)
+      } else {
+        w.workplaces.forEach(wp => {
+          const newWorker = (HandleData.copy(w));
+          newWorker.workplaces = [wp];
+          persExt.push(newWorker)
+        })
+      }
     });
-    const allDocs = await this.createOfficeFileUint8(new PrintExtraLaborContractBuilder(salaries).makeMoreThanOne(pers));
-
-    return Buffer.from(<any>allDocs)/*Promise.all(
-
-    ).then(() => {
-
-      return this.createOfficeFileUint8()
-    })
-    ).then(Buffer.from)*/
-
+    return persExt
   }
 
   async putDataToZip(all: any[], ext) {

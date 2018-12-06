@@ -146,6 +146,7 @@ export class StaffController {
 
   @Get(':id/workplace')
   getWorkplace(@Param('id') personnelId, @Query('onlyActive') onlyActive) {
+    // сортирую на фронте
     return onlyActive
       ? this.personnelService.getActiveWorkplaceById(personnelId)
       : this.personnelService.getByParent(Workplace, personnelId);

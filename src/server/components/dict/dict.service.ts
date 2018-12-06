@@ -10,6 +10,6 @@ export class DictService {
   constructor(private dbTransactions: DbTransactions, private errHandler: ErrHandler) {}
 
   getSalary() {
-    return SalaryDict.findAll({order: [['id', 'ASC']]})
+    return SalaryDict.findAll()
   }
 }

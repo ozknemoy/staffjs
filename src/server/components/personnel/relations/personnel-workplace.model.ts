@@ -1,11 +1,14 @@
 import {
   Table, Column, Model, PrimaryKey, Unique, AutoIncrement, ForeignKey, BelongsTo,
-  DataType, NotEmpty
+  DataType, NotEmpty, DefaultScope
 } from 'sequelize-typescript';
 import IWorkplace from './personnel-workplace.interface';
 import Personnel from "../personnel.model";
 import {IPersonnel} from "../personnel.interface";
 
+@DefaultScope({
+  order: [['id', 'DESC']]
+})
 @Table({
   tableName: 'staff-workplace'
 })
