@@ -26,10 +26,14 @@ export class PrintController {
   }
 
   @Post('labor-contract/:userId')
-  async prntLaborContract(@Param('userId') userId: number, @Res() resp, @Query('type') type: string) {
+  async prntLaborContract(
+    @Param('userId') userId: number,
+    @Res() resp,
+    @Query('type') type: string,
+    @Query('workplaceId') workplaceId: string) {
     resp.contentType(this.docxFormat);
     resp.setHeader('content-disposition', `${this.contentDisp + userId}-t2.docx`);
-    const buffer = await this.printService.printLaborContract(userId, type, false);
+    const buffer = await this.printService.printLaborContract(userId, type, workplaceId, false);
     return resp.send(buffer);
   }
 

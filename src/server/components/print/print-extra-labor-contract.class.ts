@@ -4,8 +4,9 @@ import {getTitle, pageMargins, setStandartStyles} from "./docx-helpers";
 import {IPersonnel} from '../personnel/personnel.interface';
 import {HandleData} from '../../../shared/handle-data';
 import {salaryDict} from '../../../shared/dictionaries/salary.dict';
+import {ISalaryDict} from "../dict/salary-dict.interface";
 
-export class PrintExtraLaborContractDynamicBuilder {
+export class PrintExtraLaborContractBuilder {
   private doc = new Document({
     creator: "admin",
     title: "доп соглашение",
@@ -13,7 +14,7 @@ export class PrintExtraLaborContractDynamicBuilder {
   }, pageMargins);
   private activeWorkplace: IPersonnel['workplaces'][0];
 
-  constructor() {
+  constructor(private salaries: ISalaryDict[]) {
     setStandartStyles(this.doc)
   }
 
@@ -28,13 +29,21 @@ export class PrintExtraLaborContractDynamicBuilder {
   }
 
   private makeDoc(worker: IPersonnel, breakPage: boolean) {
-    const salaries = HandleData.toKeyProp<any, number>(salaryDict, 'value', 'salary');
-    HandleData.addCountedSalary(worker, salaries);
+    HandleData.addCountedSalary(worker, this.salaries);
     this.activeWorkplace = <IPersonnel['workplaces'][0]>HandleData.where(worker.workplaces, 'active', true, true);
-    const title = getTitle(`Дополнительное соглашение к Трудовому договору от ${HandleData.getRuDate(this.activeWorkplace.contractDate) || '____________'}\t№ ${this.activeWorkplace.contractNumber || '____'}`);
-    if(breakPage) {
-      title.pageBreakBefore()
+    // именно после this.activeWorkplace
+    // ставлю звездочку что данных не хватает
+    let dummy = '';
+    if(this.someFieldsDoNotExist(worker)) {
+      dummy = '*';
     }
+    // такая констукция жрет лишнюю строчку но pageBreakBefore надо ставить именно на первом параграфе
+    const dummyP = new Paragraph(dummy).right().style('8');
+    if(breakPage) {
+      dummyP.pageBreakBefore()
+    }
+    this.doc.addParagraph(dummyP);
+    const title = getTitle(`Дополнительное соглашение к Трудовому договору от ${HandleData.getRuDate(this.activeWorkplace.contractDate) || '____________'}    № ${this.activeWorkplace.contractNumber || '____'}`);
     this.doc.addParagraph(title);
     makeCommonHeader(this.doc, worker);
 
@@ -52,6 +61,23 @@ export class PrintExtraLaborContractDynamicBuilder {
     this.doc.addParagraph(one);
     makeRequisite(this.doc, worker);
     return this.doc
+  }
+
+  someFieldsDoNotExist(worker: IPersonnel): boolean {
+    return [
+      this.activeWorkplace.contractDate,
+      this.activeWorkplace.contractNumber,
+      worker.surname,
+      worker.name,
+      this.activeWorkplace.rate,
+      this.activeWorkplace.salary,
+      worker.passport,
+      worker.passport.birthDate,
+      worker.passport.birthPlace,
+      worker.passport.address,
+      worker.passport.number,
+      worker.passport.passportIssued
+    ].some(v => HandleData.isNoValuePrimitive(v))
   }
 
 }

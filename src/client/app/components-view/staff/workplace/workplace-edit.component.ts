@@ -7,6 +7,7 @@ import {attractionTermsDict} from "../../../../../shared/dictionaries/attraction
 import * as _ from 'lodash';
 import {ISalaryDict} from '../../../../../server/components/dict/salary-dict.interface';
 import {ToastrService} from "ngx-toastr";
+import {ILaborContractDocx} from "../../../../../server/components/print/labor-contract-docx.interface";
 @Component({
   selector: 'staff-workplace',
   templateUrl: './workplace-edit.component.html'
@@ -18,17 +19,20 @@ export class WorkplaceComponent implements OnInit {
   public staffCategoriesDict: ISalaryDict[];
   private dateProps: (keyof IWorkplace)[] = ['date', 'dismissalDate', 'academicCouncilDate', 'dismissalDate', 'contractDate', 'contractEndDate', 'soutDate'];
   public workplaces: IWorkplace[] = [];
+  contracts: ILaborContractDocx[];
+  selectedWorkplaceId: number;
   constructor(private http: HttpService, private route: ActivatedRoute, private toast: ToastrService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.id = this.route.snapshot.parent.params.id;
+    this.staffCategoriesDict = await this.http.getStaffCategoriesDict();
+    this.salaries = HandleData.toKeyProp<ISalaryDict, number>(this.staffCategoriesDict, 'value', 'salary');
     this.http.get(`/personnel/${this.id}/workplace`)
       .then((workplaces: IWorkplace[]) => this.afterRetrieving(workplaces));
 
-    this.http.getStaffCategoriesDict().then(salaries => {
-      this.staffCategoriesDict = salaries;
-      this.salaries = HandleData.toKeyProp<ISalaryDict, number>(salaries, 'value', 'salary');
-    });
+    this.http.get('print/labor-contract/all').then((contracts) => {
+      this.contracts = contracts;
+    })
 
   }
 
@@ -53,6 +57,7 @@ export class WorkplaceComponent implements OnInit {
   }
 
   addRow() {
+    this.selectedWorkplaceId = null;
     this.workplaces.unshift(new IWorkplace(null))
   }
 

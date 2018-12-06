@@ -19,7 +19,7 @@ import {PrintRequisitesBuilder} from "./print-requisites.class";
 import Passport from "../personnel/relations/personnel-passport.model";
 import {ISalaryDict} from "../dict/salary-dict.interface";
 import {DictService} from "../dict/dict.service";
-import {PrintExtraLaborContractDynamicBuilder} from "./print-extra-labor-contract.class";
+import {PrintExtraLaborContractBuilder} from "./print-extra-labor-contract.class";
 
 const path = require('path');
 const DocxMerger = require('../../../shared/docx-merger/docx-merger-dist.js');
@@ -50,7 +50,7 @@ export class PrintService {
   }
 
   async saveLocalForDevelopmentDocx() {
-    return this.printLaborContract(194, '1', true);
+    //return this.printLaborContract(194, '1', true);
   }
 
   async printT2(userId) {
@@ -74,16 +74,19 @@ export class PrintService {
     });
   }
 
-  async printLaborContract(userId, typePart2, saveLocal) {
-    // если нет активного места работы то заверну
-    const user = await Personnel.findOne({where: {id: userId}, include: [{model: Workplace, where: {active: true}}, { all: true }]});
+  async printLaborContract(userId, typePart2, workplaceId, saveLocal) {
+    const user = await Personnel.findOne({where: {id: userId}, include: [{model: Workplace, where: {active: true, id:  workplaceId}}, { all: true }]});
+    //  заверну если не найду
     if (!user) {
-      ErrHandler.throw('Сначала выставите активное место работы (вкладка прием на работу)')
+      ErrHandler.throw('Сначала выставите активное место работы, сохраните и потом запросите печать заново')
     }
     const docx = await LaborContractDocx.findOne({where: {type: +typePart2}});
     if (!docx || !docx.url) {
       ErrHandler.throw('Сначала загрузите статическую часть договора')
     }
+
+    const salaries = await this.dictService.getSalary();
+    user.workplaces[0].salary = HandleData.countSalaryWithoutRate(user.workplaces[0], salaries);
     // наличие папки с файлами не проверяю тк если загружен хотя бы один файл то папка существует
     const part2Uint = fs.readFileSync(dirLaborContractDocx + docx.url);
     const [part1, part3] = new PrintLaborContractDynamicBuilder(user).make();
@@ -209,12 +212,12 @@ export class PrintService {
     // лишняя работа но и лишней говнологики в фильтре нет
     pers = await Personnel.findAll({where: {id: ids}, include: [{model: Workplace, where: {active: true}}, Passport]});
 
-    const salaries = HandleData.toKeyProp<ISalaryDict, number>(await this.dictService.getSalary(), 'value', 'salary');
+    const salaries = await this.dictService.getSalary();
     return Promise.all(
       pers.map(async (worker) => {
-        HandleData.addCountedSalary(worker, salaries);
+
         return [
-          await this.createOfficeFileUint8(new PrintExtraLaborContractDynamicBuilder().make(worker)),
+          await this.createOfficeFileUint8(new PrintExtraLaborContractBuilder(salaries).make(worker)),
           // винда только с 8 версии корректно отображает русские мена в архиве поэтому надо распаковывать например винраром
           HandleData.getFIO([worker.surname, worker.name, worker.middleName], false) + ' ' + worker.id
         ]})
@@ -231,11 +234,11 @@ export class PrintService {
     // лишняя работа но и лишней говнологики в фильтре нет
     pers = await Personnel.findAll({where: {id: ids}, include: [{model: Workplace, where: {active: true}}, Passport]});
 
-    const salaries = HandleData.toKeyProp<ISalaryDict, number>(await this.dictService.getSalary(), 'value', 'salary');
+    const salaries = await this.dictService.getSalary();
     pers.forEach((worker) => {
-      HandleData.addCountedSalary(worker, salaries);
+      //HandleData.addCountedSalary(worker, salaries);
     });
-    const allDocs = await this.createOfficeFileUint8(new PrintExtraLaborContractDynamicBuilder().makeMoreThanOne(pers));
+    const allDocs = await this.createOfficeFileUint8(new PrintExtraLaborContractBuilder(salaries).makeMoreThanOne(pers));
 
     return Buffer.from(<any>allDocs)/*Promise.all(
 

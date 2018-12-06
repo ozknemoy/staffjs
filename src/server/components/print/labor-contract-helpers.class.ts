@@ -192,7 +192,7 @@ export function makeRequisite(doc: Document, worker: IPersonnel) {
   const three = new Paragraph()
     .style('8')
     .addRun(new TextRun(`Экземпляр трудового договора (доп. соглашения) на руки получил: ____________________(${FIO_SHORT || '_____________'})`).break())
-    .addRun(new TextRun('\t\t\t                                                           подпись Работника            ФИО').break().italic())
+    .addRun(new TextRun('\t\t\t                                                              подпись Работника            ФИО').break().italic())
   ;
   doc.addParagraph(three);
 

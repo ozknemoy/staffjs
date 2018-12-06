@@ -119,3 +119,9 @@ body {
 nav-bar {
   display: block;
 }
+
+.pointer-none {
+  pointer-events: none;
+  opacity: 0.7;
+}
+

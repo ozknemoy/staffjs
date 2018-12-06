@@ -1,6 +1,6 @@
 
 <nav-bar></nav-bar>
-<div class="btn-group">
+
   <div class="btn-group" dropdown>
     <button dropdownToggle type="button" class="btn btn-sm btn-outline-success dropdown-toggle">
       Меню <i class="fa fa-bars"></i>
@@ -20,17 +20,7 @@
       <a routerLinkActive="active" routerLink="social-security" class="dropdown-item">12 Социальные льготы</a>
     </div>
   </div>
-  <div class="btn-group" dropdown>
-    <button dropdownToggle type="button" class="btn btn-sm btn-outline-primary dropdown-toggle">
-      Печать <i class="fa fa-download"></i>
-    </button>
-    <div class="dropdown-menu" *dropdownMenu>
-      <print-button class="dropdown-item" url="print/t2?userId={{id}}">T2</print-button>
-      <print-button class="dropdown-item"
-                    *ngFor="let contr of contracts"
-                    url="print/labor-contract/{{id}}?type={{contr.type}}">{{contr.name}}</print-button>
-    </div>
-  </div>
-</div>
+
+
 
 <router-outlet></router-outlet>

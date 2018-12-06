@@ -2,6 +2,8 @@ import {HttpHeaders} from '@angular/common/http/src/headers';
 import * as moment from "moment";
 import * as _ from 'lodash';
 import {IPersonnel} from "../server/components/personnel/personnel.interface";
+import IWorkplace from "../server/components/personnel/relations/personnel-workplace.interface";
+import {ISalaryDict} from "../server/components/dict/salary-dict.interface";
 
 
 declare const Set;
@@ -384,7 +386,8 @@ export class HandleData {
   }
 
   // считаю зп на лету
-  static addCountedSalary(worker: IPersonnel, dict: {[key: string]: number}) {
+  static addCountedSalary(worker: IPersonnel, _dict: ISalaryDict[]) {
+    const dict = this.handleSalaryDict(_dict);
     worker.workplaces.forEach(wp => {
       if(wp.category && dict[wp.category]/*тут сработает проверка и на ноль*/ && wp.rate) {
         wp.salary = HandleData.multiply(wp.salaryCoef, dict[wp.category], wp.rate)
@@ -392,6 +395,17 @@ export class HandleData {
 
     });
     return worker
+  }
+
+  static countSalaryWithoutRate(wp: IWorkplace, dict: ISalaryDict[]) {
+    const handledDict = this.handleSalaryDict(dict);
+    return wp.category && handledDict[wp.category]/*тут сработает проверка и на ноль*/
+        ? HandleData.multiply(wp.salaryCoef, handledDict[wp.category])
+        : null;
+  }
+
+  static handleSalaryDict(salaryDict: ISalaryDict[]) {
+    return this.toKeyProp<ISalaryDict, number>(salaryDict, 'value', 'salary');
   }
 
   static precise(number, n?) {
