@@ -10,14 +10,14 @@ export interface IParsedQualification {
   surname: string,
   name: string,
   middleName: string,
-  rows: Partial<IQualImprovement>[]//{id?: number, endEduDate: string, type: string}[]
+  rows: Partial<IQualImprovement>[]
 }
 
 export class ParseXls {
   static parseQualification() {
     try {
       const firstList = xlsx.parse(fs.readFileSync('./qual-up.xls'))[0];
-      const parsedArr = firstList.data.slice(1).map((row, i) => this.parseRow(row)).filter(row => !!row);
+      const parsedArr = firstList.data.slice(2).map((row, i) => this.parseRow(row)).filter(row => !!row);
       return this.createDedupedQualification(parsedArr)
     } catch (e) {
       ErrHandler.throw('Ошибка чтения/разбора файла qual-up.xls', 500);

@@ -151,7 +151,7 @@ export class UploadService {
                   r.personnelId = worker.id;
                   return r
                 }), {transaction})
-                : Promise.resolve(null)
+                : Promise.resolve(<any>[row.surname, row.name, row.middleName].join(' '))
             )
         )
       )
