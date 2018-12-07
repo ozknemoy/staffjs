@@ -169,7 +169,7 @@ export function makeRequisite(doc: Document, worker: IPersonnel) {
     .addRun(new TextRun(`____________________ (${FIO_SHORT || '______________________'})`).break())
     .addRun(new TextRun('(подпись ').break().italic())
     .addRun(new TextRun('Работника').bold().italic())
-    .addRun(new TextRun(')                ФИО').italic());
+    .addRun(new TextRun(')             ФИО').italic());
 
   table.getCell(1, 0).addContent(left);
   table.getCell(1, 2).addContent(right);
@@ -192,7 +192,7 @@ export function makeRequisite(doc: Document, worker: IPersonnel) {
   const three = new Paragraph()
     .style('8')
     .addRun(new TextRun(`Экземпляр трудового договора (доп. соглашения) на руки получил: ____________________(${FIO_SHORT || '_____________'})`).break())
-    .addRun(new TextRun('\t\t\t                                                              подпись Работника            ФИО').break().italic())
+    .addRun(new TextRun('\t\t\t                                                                  подпись Работника            ФИО').break().italic())
   ;
   doc.addParagraph(three);
 

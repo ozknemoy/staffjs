@@ -50,7 +50,7 @@ export class PrintController {
     return resp.send(buffer);
   }
 
-  @Post('filter-contracts-zipped')
+  @Post('filter-extra-contracts-zipped')
   async filterContractsZipped(@Res() resp, @Body() filter: IServerFilter) {
     resp.contentType('applicaton/zip');
     resp.setHeader('content-disposition', this.contentDisp + `filtered-extra-contracts.zip`);
@@ -58,11 +58,19 @@ export class PrintController {
     return resp.send(buffer);
   }
 
-  @Post('filter-contracts')
+  @Post('filter-extra-contracts')
   async filterContracts(@Res() resp, @Body() filter: IServerFilter) {
     resp.contentType(this.docxFormat);
     resp.setHeader('content-disposition', this.contentDisp + `filtered-extra-contracts.docx`);
     const buffer = await this.printService.filterContracts(filter);
+    return resp.send(buffer);
+  }
+
+  @Post('extra-contract')
+  async oneContract(@Res() resp, @Query('workplaceId') workplaceId: number, @Query('userId') userId: number) {
+    resp.contentType(this.docxFormat);
+    resp.setHeader('content-disposition', this.contentDisp + `extra-contracts.docx`);
+    const buffer = await this.printService.oneContract(workplaceId, userId);
     return resp.send(buffer);
   }
 

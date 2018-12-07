@@ -24,7 +24,6 @@ export class PrintExtraLaborContractBuilder {
 
   makeMoreThanOne(workers: IPersonnel[]): Document {
     workers.forEach(worker => this.makeDoc(worker, true));
-
     return this.doc
   }
 

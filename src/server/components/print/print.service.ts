@@ -219,6 +219,13 @@ export class PrintService {
 
   }
 
+  async oneContract(wpId: number, userId: number) {
+    const pers = await Personnel.findOne({where : {id: userId}, include: [{model: Workplace, where: {id: wpId}}, Passport]});
+    const salaries = await this.dictService.getSalary();
+    const allDocs = await this.createOfficeFileUint8(new PrintExtraLaborContractBuilder(salaries).make(pers));
+    return Buffer.from(<any>allDocs)
+  }
+
   async filterContracts(fltr: IServerFilter) {
     const pers = await this.handleAllWorkplaces(fltr);
     const salaries = await this.dictService.getSalary();
