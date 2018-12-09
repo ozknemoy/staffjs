@@ -33,6 +33,7 @@ import {SuperAdminGuard} from './services/super-admin-guard.service';
 import {GotFiredStaffListComponent} from "./components-view/staff/got-fired-staff/got-fired-staff-list.component";
 import {PipeModule} from "./pipes";
 import {SalaryEditorComponent} from "./components-view/salary-editor/salary-editor.component";
+import {StructureEditorComponent} from "./components-view/structure-editor/structure-editor.component";
 
 
 declare const require;
@@ -66,6 +67,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     RewardComponent,
     SocialSecurityComponent,
     WorkExpComponent,
+    StructureEditorComponent,
 
     FileUploaderComponent,
     PrintButtonComponent,

@@ -1,0 +1,39 @@
+
+<nav-bar></nav-bar>
+РЕДАКТОР ОКЛАДОВ
+<div class="container-fluid">
+  <table class="table table-sm table-responsive-sm table-bordered squeeze-date">
+    <tr>
+      <th class="w300">Название</th>
+      <th>Подразделения</th>
+      <th class="w200">
+        <button class="btn btn-sm btn-success" (callback)="addFaculty()" confirmButton="Добавить факультет?">Добавить факультет</button>
+      </th>
+    </tr>
+    <tr *ngFor="let f of faculties; let i = index">
+      <td><textarea rows="3" [(ngModel)]="f.name" class="form-control form-control-sm"></textarea></td>
+      <td>
+        <table *ngIf="f.id" class="table table-sm table-responsive-sm table-bordered squeeze-date">
+          <tr>
+            <th>Название</th>
+            <th class="w100">
+              <button class="btn btn-sm btn-outline-success" (callback)="addDepartment(i)" confirmButton="Добавить?">Добавить</button>
+            </th>
+          </tr>
+          <tr *ngFor="let d of f.departments; let j = index">
+            <td><textarea rows="2" [(ngModel)]="d.name" class="form-control form-control-sm"></textarea></td>
+            <td>
+              <button class="btn btn-sm btn-outline-danger" (callback)="deleteDepartment(i, j)" confirmButton>Удалить</button>
+            </td>
+          </tr>
+        </table>
+      </td>
+      <td>
+        <button class="btn btn-sm btn-success mr-1" (callback)="save(i)" confirmButton="Сохранить?">
+          Сохранить <i class="fa fa-floppy-o"></i>
+        </button>
+        <button class="btn btn-sm btn-danger" (callback)="deleteRow(i)" confirmButton>Удалить</button>
+      </td>
+    </tr>
+  </table>
+</div>

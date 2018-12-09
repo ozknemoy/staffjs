@@ -21,6 +21,7 @@ import {UserEditorComponent} from './components-view/user-editor/user-editor.com
 import {SuperAdminGuard} from './services/super-admin-guard.service';
 import {GotFiredStaffListComponent} from "./components-view/staff/got-fired-staff/got-fired-staff-list.component";
 import {SalaryEditorComponent} from "./components-view/salary-editor/salary-editor.component";
+import {StructureEditorComponent} from "./components-view/structure-editor/structure-editor.component";
 
 export const routes: Route[] = [
   {
@@ -49,6 +50,10 @@ export const routes: Route[] = [
   }, {
     path: 'salary-editor',
     component: SalaryEditorComponent,
+    canActivate: [SuperAdminGuard]
+  }, {
+    path: 'structure-editor',
+    component: StructureEditorComponent,
     canActivate: [SuperAdminGuard]
   }, {
     path: 'staff-edit/:id',

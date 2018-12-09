@@ -19,6 +19,10 @@ import {laborContractDocxDict} from "../../shared/dictionaries/labor-contract-do
 import AcademicRank from "../components/personnel/relations/academic-rank.model";
 import SalaryDict from "../components/dict/salary-dict.model";
 import {salaryDict} from "../../shared/dictionaries/salary.dict";
+import {IFacultyDict} from "../components/dict/faculty-dict.interface";
+import {FacultyDict} from "../components/dict/faculty-dict.model";
+import {departmentDict, facultyDict} from "../../shared/dictionaries/faculty.dict";
+import {DepartmentDict} from "../components/dict/department-dict.model";
 
 
 export const staffJsDB = new Sequelize({
@@ -41,7 +45,7 @@ export const staffJsDB = new Sequelize({
 staffJsDB.addModels([
   Personnel, Family, Attestation, Passport, ProfRetraining, QualImprovement,
   Reward, SocialSecurity, Workplace, Army, Vacation, Institution, WorkExp, ScientificInst,
-  User, LaborContractDocx, AcademicRank, SalaryDict,
+  User, LaborContractDocx, AcademicRank, SalaryDict, FacultyDict, DepartmentDict,
 ]);
 /*{force: true}*/
 
@@ -63,6 +67,8 @@ Personnel.sync().then(() => {
   ScientificInst.sync();
   syncAndFillIfEmptyTable(LaborContractDocx, laborContractDocxDict);
   syncAndFillIfEmptyTable(SalaryDict, salaryDict);
+  syncAndFillIfEmptyTable(FacultyDict, facultyDict)
+    .then(() => syncAndFillIfEmptyTable(DepartmentDict, departmentDict));
   User.sync();
   AcademicRank.sync();
 });
