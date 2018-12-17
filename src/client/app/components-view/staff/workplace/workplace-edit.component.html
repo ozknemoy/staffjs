@@ -10,14 +10,21 @@
   </button>
   <div class="dropdown-menu" *dropdownMenu>
     <print-button class="dropdown-item" url="print/t2?userId={{id}}">T2</print-button>
-    <span title="{{selectedWorkplaceId ? '' : 'Сначала выберите активный договор'}}">
+    <span title="{{getTitleByActiveWorkplace()}}">
       <print-button class="dropdown-item"
                     [ngClass]="{'pointer-none':!selectedWorkplaceId}"
                     url="print/extra-contract?workplaceId={{selectedWorkplaceId}}&userId={{id}}">
         Доп соглашение
       </print-button>
     </span>
-    <span title="{{selectedWorkplaceId ? '' : 'Сначала выберите активный договор'}}"
+    <span title="{{getTitleByActiveWorkplace()}}">
+      <print-button class="dropdown-item"
+                    [ngClass]="{'pointer-none':!selectedWorkplaceId}"
+                    url="print/fish?workplaceId={{selectedWorkplaceId}}&userId={{id}}">
+        Рыба доп соглашения
+      </print-button>
+    </span>
+    <span title="{{getTitleByActiveWorkplace()}}"
           *ngFor="let contr of contracts">
       <print-button class="dropdown-item"
                     [ngClass]="{'pointer-none':!selectedWorkplaceId}"

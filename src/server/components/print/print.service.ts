@@ -20,6 +20,7 @@ import {DictService} from "../dict/dict.service";
 import {PrintExtraLaborContractBuilder} from "./print-extra-labor-contract.class";
 import {IPersonnel} from "../personnel/personnel.interface";
 import {Sequelize} from "sequelize-typescript";
+import {FishDynamicBuilder} from './fish.class';
 
 const path = require('path');
 const DocxMerger = require('../../../shared/docx-merger/docx-merger-dist.js');
@@ -224,6 +225,18 @@ export class PrintService {
     const salaries = await this.dictService.getSalary();
     const allDocs = await this.createOfficeFileUint8(new PrintExtraLaborContractBuilder(salaries).make(pers));
     return Buffer.from(<any>allDocs)
+  }
+
+  async printFish(wpId: number, userId: number) {
+    const worker = await Personnel.findOne({where : {id: userId}, include: [{model: Workplace, where: {id: wpId}}, Passport]});
+    const [part1, part2] = new FishDynamicBuilder(worker).make();
+    const part1Uint = await this.createOfficeFileUint8(part1);
+    const part2Uint = await this.createOfficeFileUint8(part2);
+    const merger = new DocxMerger({pageBreak: false}, [part1Uint, part2Uint]);
+
+    return new Promise((res, fail) => {
+      merger.save('nodebuffer', (uint) => res(Buffer.from(uint)));
+    });
   }
 
   async filterContracts(fltr: IServerFilter) {

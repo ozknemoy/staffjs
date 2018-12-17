@@ -74,5 +74,14 @@ export class PrintController {
     return resp.send(buffer);
   }
 
+  @Post('fish')
+  printFish(@Query('userId') userId: number, @Query('workplaceId') workplaceId: number, @Res() resp) {
+    return this.printService.printFish(workplaceId, userId).then(data => {
+      resp.contentType(this.docxFormat);
+      resp.setHeader('content-disposition', `${this.contentDisp + userId}-fish.docx`);
+      return resp.send(data);
+    })
+  }
+
 
 }

@@ -71,4 +71,7 @@ export class WorkplaceComponent implements OnInit {
       .then((workplaces: IWorkplace[]) => this.afterRetrieving(<any>workplaces))
   }
 
+  getTitleByActiveWorkplace() {
+    return this.selectedWorkplaceId ? '' : 'Сначала выберите активный договор'
+  }
 }

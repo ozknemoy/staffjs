@@ -53,7 +53,6 @@ export function makeCommonHeader(doc: Document, u: IPersonnel) {
     .addRun(new TextRun('Стороны').bold())
     .addRun(new TextRun('», пришли к соглашению о нижеследующем:'));
   doc.addParagraph(eight);
-  doc.addParagraph(getTitle('1. Предмет трудового договора'));
 
   return doc
 }

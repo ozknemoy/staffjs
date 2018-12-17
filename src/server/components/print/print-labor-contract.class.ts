@@ -35,6 +35,7 @@ export class PrintLaborContractDynamicBuilder {
     const contractNumber =  workplace.contractNumber;
     this.doc.addParagraph(getTitle(`Трудовой договор №${contractNumber || '____'}`));
     makeCommonHeader(this.doc, this.pers);
+    this.doc.addParagraph(getTitle('1. Предмет трудового договора'));
     const sciInstSp = !_.isEmpty(worker.scientificInst)
       ? worker.scientificInst[0].specialty
       : '___________________________________ _______________________________________';
