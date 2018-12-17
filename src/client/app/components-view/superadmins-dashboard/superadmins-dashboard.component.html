@@ -1,0 +1,12 @@
+<nav-bar></nav-bar>
+
+<div class="container mt-3">
+  <div class="dib">
+    <button (click)="createWorkersFromXls(false)">Загрузить одного</button>
+    <button (callback)="createWorkersFromXls(true)" confirmButton="Уверен???">
+      Загрузить ВЕСЬ(!) персонал
+    </button>
+    <button (click)="fillDBQualificationUpXls()">Загрузить квалификациюUP</button>
+  </div>
+
+</div>

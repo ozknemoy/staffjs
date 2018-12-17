@@ -32,7 +32,7 @@ export class PrintController {
     @Query('type') type: string,
     @Query('workplaceId') workplaceId: string) {
     resp.contentType(this.docxFormat);
-    resp.setHeader('content-disposition', `${this.contentDisp + userId}-t2.docx`);
+    resp.setHeader('content-disposition', `${this.contentDisp + userId}-labor-contract.docx`);
     const buffer = await this.printService.printLaborContract(userId, type, workplaceId, false);
     return resp.send(buffer);
   }

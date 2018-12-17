@@ -34,6 +34,7 @@ import {GotFiredStaffListComponent} from "./components-view/staff/got-fired-staf
 import {PipeModule} from "./pipes";
 import {SalaryEditorComponent} from "./components-view/salary-editor/salary-editor.component";
 import {StructureEditorComponent} from "./components-view/structure-editor/structure-editor.component";
+import {SuperadminsDashboardComponent} from './components-view/superadmins-dashboard/superadmins-dashboard.component';
 
 
 declare const require;
@@ -68,6 +69,7 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
     SocialSecurityComponent,
     WorkExpComponent,
     StructureEditorComponent,
+    SuperadminsDashboardComponent,
 
     FileUploaderComponent,
     PrintButtonComponent,

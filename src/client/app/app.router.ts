@@ -22,6 +22,7 @@ import {SuperAdminGuard} from './services/super-admin-guard.service';
 import {GotFiredStaffListComponent} from "./components-view/staff/got-fired-staff/got-fired-staff-list.component";
 import {SalaryEditorComponent} from "./components-view/salary-editor/salary-editor.component";
 import {StructureEditorComponent} from "./components-view/structure-editor/structure-editor.component";
+import {SuperadminsDashboardComponent} from './components-view/superadmins-dashboard/superadmins-dashboard.component';
 
 export const routes: Route[] = [
   {
@@ -54,6 +55,10 @@ export const routes: Route[] = [
   }, {
     path: 'structure-editor',
     component: StructureEditorComponent,
+    canActivate: [SuperAdminGuard]
+  }, {
+    path: 'superadmins-dashboard',
+    component: SuperadminsDashboardComponent,
     canActivate: [SuperAdminGuard]
   }, {
     path: 'staff-edit/:id',
