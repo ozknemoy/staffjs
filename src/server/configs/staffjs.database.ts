@@ -23,10 +23,15 @@ import {IFacultyDict} from "../components/dict/faculty-dict.interface";
 import {FacultyDict} from "../components/dict/faculty-dict.model";
 import {departmentDict, facultyDict} from "../../shared/dictionaries/faculty.dict";
 import {DepartmentDict} from "../components/dict/department-dict.model";
+import {FakePersonnel} from '../../shared/faker/fake-personnel';
+import {UploadService} from '../components/upload/upload.service';
+import {ErrHandler} from '../services/error-handler.service';
+import {PersonnelService} from '../components/personnel/personnel.service';
+import {DbTransactions} from '../services/db-transactions.service';
 
 
 export const staffJsDB = new Sequelize({
-  database: 'staffjs',
+  database: 'staffjs_millions',
   dialect: 'postgres',
   username: 'postgres',
   password: '1',
@@ -71,6 +76,9 @@ Personnel.sync().then(() => {
     .then(() => syncAndFillIfEmptyTable(DepartmentDict, departmentDict));
   User.sync();
   AcademicRank.sync();
+  new UploadService(
+    new ErrHandler(),
+    new PersonnelService(new DbTransactions(), new ErrHandler())).createFakerWorkers(10)
 });
 
 //Personnel.destroy({where: {}});

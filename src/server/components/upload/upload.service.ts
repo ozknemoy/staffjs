@@ -19,6 +19,7 @@ import Reward from "../personnel/relations/personnel-reward.model";
 import {IParsedQualification, ParseXls} from './parse-diffs-xls.class';
 import QualImprovement from '../personnel/relations/personnel-qual-improvement.model';
 import {staffJsDB} from "../../configs/staffjs.database";
+import {FakePersonnel} from '../../../shared/faker/fake-personnel';
 
 export const dirLaborContractDocx = 'files/labor-contracts/';
 
@@ -33,6 +34,10 @@ export class UploadService {
     return mass
       ? this.createAllWorkersFromXls(ParsePersonnelXls.createMass())
       : this.createOneWorkerFromXls(ParsePersonnelXls.create());
+  }
+
+  createFakerWorkers(amount: number) {
+    return this.createAllWorkersFromXls(FakePersonnel.create(amount))
   }
 
   /* _createWorkersFromXls(update: boolean) {
