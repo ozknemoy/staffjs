@@ -1,12 +1,16 @@
 import {departments} from "./departments";
 import {specialties} from "./specialties";
 import {IPersonnel} from '../../server/components/personnel/personnel.interface';
+import {attractionTermsDict} from "../dictionaries/attraction-terms.dict";
+import {eduTypesDict} from "../dictionaries/edu-type.dict";
+import {IPersonnelNamedThingWithDoc} from "../../server/components/personnel/relations/personnel-named-thing-with-doc.interface";
 const faker: Faker.FakerStatic = require('faker/locale/ru');
 
 const depLength = departments.length;
 const categories = Object.keys(specialties);
 const catLength = categories.length;
-
+const attractionTerms = attractionTermsDict.map(d => d.name);
+const eduTypes = eduTypesDict.map(d => d.name);
 
 function past(years?: number) {
   return faker.date.past(years).toISOString()
@@ -37,13 +41,14 @@ export class FakePersonnel {
   static build() {
     const [surname, name] = faker.name.findName().split(' ');
     const worker: Partial<IPersonnel> = {
+      active: !booleanRareTrue(1000),
       number: faker.random.number({min: 1000, max: 9999}).toString(),
       surname,
       name,
       middleName: faker.lorem.word(),
       inn: faker.random.number({min: 1000000000, max: 9999999999}).toString(),
       insurance: faker.random.uuid().slice(0, 12),
-      educationName: faker.lorem.word(),
+      educationName: faker.random.arrayElement(eduTypes),
       sex: faker.random.arrayElement(['м', 'ж']),
       workNature: faker.random.arrayElement(['на воздухе', 'оффисный']),
       foreignLanguageGrade: faker.random.number({max: 5}).toString(),
@@ -59,7 +64,7 @@ export class FakePersonnel {
       medicalCert: faker.random.boolean(),
       psychoCert: faker.random.boolean(),
       convictionCert: faker.random.boolean(),
-      disabilityDegree: faker.lorem.words(),
+      disabilityDegree: booleanRareTrue(100) ? faker.lorem.words(2) : null,
     };
     const passport: Partial<IPersonnel['passport']> = {
       birthDate: dateBetween(80, 20),
@@ -104,14 +109,14 @@ export class FakePersonnel {
     const specialty: string = faker.random.arrayElement(specialties[category]);
 
 
-    const workplaces: Partial<IPersonnel['workplaces'][0]> = {
-      date: faker.lorem.words(2),
+    const workplace: Partial<IPersonnel['workplaces'][0]> = {
+      date: dateBetween(11, 3),
       department: departments[faker.random.number({min: 0, max: depLength - 1})],
       specialty,
       reason: faker.lorem.words(2),
       academicCouncilDate: dateBetween(11, 3),
-      attractionTerms: faker.lorem.words(2),
-      rate: faker.random.number({min: 2, max: 4}) * 0.25,
+      attractionTerms: faker.random.objectElement(attractionTerms, ),
+      rate: booleanRareTrue(10000) ? null : faker.random.number({min: 2, max: 4}) * 0.25,
       duration: faker.random.number({min: 30, max: 40}),
       category,
       salaryCoef: faker.random.number({min: 10, max: 26}) / 10,
@@ -121,17 +126,17 @@ export class FakePersonnel {
       active: !booleanRareTrue(10000),
       contractNumber: faker.random.number({min: 100000, max: 999999}).toString(),
       contractDate: dateBetween(-1, -2),
-      contractEndDate: dateBetween(-1, -2),
+      contractEndDate: dateBetween(-0.5, -2),
     };
     const rewards = this.getRewards();
     const workExp: Partial<IPersonnel['workExp']> = this.getWorkExp(null);
     return {
       worker, rewards, academicRank, passport, institution, scientificInst ,
-      workplaces, workExp
+      workplace, workExp
     }
   }
 
-  static getRewards() {
+  static getRewards(): IPersonnelNamedThingWithDoc[] {
     const r = [];
     if(booleanRareTrue()) r.push('ОрденаМедали');
     if(booleanRareTrue()) r.push('ВедомствНагр');
@@ -151,7 +156,7 @@ export class FakePersonnel {
     if(booleanRareTrue()) r.push('ПочРабОбО');
     if(booleanRareTrue()) r.push('ПочРабНауки');
 
-    return r.map((name) => ({name}))
+    return r.map((name) => ({name, id: undefined, personnelId: undefined, docNumber: undefined, docName: undefined, docDate: undefined}))
   }
 
   static getWorkExp(personnelId): Partial<IPersonnel['workExp']> {

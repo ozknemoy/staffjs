@@ -25,7 +25,7 @@
         </tr>
         <tr *ngFor="let st of staffList
                     | filter : fltr
-                    | paginate: { itemsPerPage: 50, currentPage: currentPage};
+                    | paginate: { itemsPerPage: 200, currentPage: currentPage};
                     trackBy:trackByFn; let i = index">
           <td>
             <a [routerLink]="['../staff-edit', st.id]">{{st.surname}} {{st.name}} {{st.middleName}}</a>

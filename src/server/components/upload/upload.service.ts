@@ -20,6 +20,7 @@ import {IParsedQualification, ParseXls} from './parse-diffs-xls.class';
 import QualImprovement from '../personnel/relations/personnel-qual-improvement.model';
 import {staffJsDB} from "../../configs/staffjs.database";
 import {FakePersonnel} from '../../../shared/faker/fake-personnel';
+import {deprecate, time} from 'core-decorators';
 
 export const dirLaborContractDocx = 'files/labor-contracts/';
 
@@ -36,84 +37,75 @@ export class UploadService {
       : this.createOneWorkerFromXls(ParsePersonnelXls.create());
   }
 
+  private createdFakesIterations = 0;
+  createFakerWorkerscreatedFakesIterations(amount: number, iterations = 500) {
+    return this.createFakerWorkers(amount).then(() => {
+      this.createdFakesIterations ++;
+      return this.createdFakesIterations >= iterations
+        ? Promise.resolve() : this.createFakerWorkerscreatedFakesIterations(amount)
+    })
+  }
   createFakerWorkers(amount: number) {
     return this.createAllWorkersFromXls(FakePersonnel.create(amount))
   }
 
-  /* _createWorkersFromXls(update: boolean) {
-   return update
-      ? this.updateDBPersonnelByXls(ParsePersonnelXls.create())
-      : this.createOneWorkerFromXls(ParsePersonnelXls.create());
-  }
-
-  async updateDBPersonnelByXls(buildedWorker: IBuildedFromXlsWorker) {
-    // ищу если есть такой
-    const oldWorker = await this.personnelService.findByFIO([
-      buildedWorker.worker.surname, buildedWorker.worker.name, buildedWorker.worker.middleName,
-    ]);
-    if (oldWorker) {
-      await oldWorker.update(buildedWorker.worker);
-      buildedWorker.worker = oldWorker;
-      return this.createRelsForNewWorker(buildedWorker, null)
-    } else {
-      return this.createOneWorkerFromXls(buildedWorker)
-    }
-  }*/
-
   createOneWorkerFromXls(buildedWorker) {
-    return staffJsDB.transaction((transaction) => this._createOneWorkerFromXls(buildedWorker, transaction));
+    return staffJsDB.transaction((transaction) => this.createOneWorker(buildedWorker, transaction));
   }
 
-  _createOneWorkerFromXls(buildedWorker, transaction) {
-    return Personnel.create(buildedWorker.worker, {transaction}).then(newWorker => {
-      buildedWorker.worker = newWorker;
-      return this.createRelsForNewWorker(buildedWorker, transaction)
-    })
-
-  }
-  async createAllWorkersFromXls(table: any[]) {
-    return staffJsDB.transaction((transaction) => Promise.all(
-      table.map((row) => this._createOneWorkerFromXls(row, transaction))
-    ))
+  createOneWorker(_worker: IBuildedFromXlsWorker, transaction) {
+    const {worker, include} = this.createOneWorkerWithRels(_worker);
+    return Personnel.create(worker, {transaction, raw:true, include})
   }
 
-  createRelsForNewWorker({worker, passport, institution, scientificInst , workplace, workExp, academicRank, rewards}: IBuildedFromXlsWorker, transaction) {
-    const pId = worker.id;
-    passport.personnelId = pId;
-    let promises = [Passport.upsert(passport, {transaction})];
-    // наполняю таблицу только если есть хоть одно значение в связанной сущности
+  createOneWorkerWithRels({worker, passport, institution, scientificInst , workplace, workExp, academicRank, rewards}: IBuildedFromXlsWorker) {
+    let include: any[] = [Passport];
+    worker.passport = passport;
+    if (!HandleData.onlyEmptyKeys(workplace)) {
+      include.push(Workplace);
+      worker.workplaces = [workplace]
+    }
     if (!HandleData.onlyEmptyKeys(institution)) {
-      institution.personnelId = pId;
-      promises.push(Institution.upsert(institution, {transaction}))
+      include.push(Institution);
+      worker.institutions = [institution]
     }
     if (!HandleData.onlyEmptyKeys(scientificInst)) {
-      scientificInst.personnelId = pId;
-      promises.push(ScientificInst.upsert(scientificInst, {transaction}))
-    }
-    if (!HandleData.onlyEmptyKeys(workplace)) {
-      workplace.personnelId = pId;
-      promises.push(Workplace.upsert(workplace, {transaction}))
+      include.push(ScientificInst);
+      worker.scientificInst = [scientificInst]
     }
     if (!HandleData.onlyEmptyKeys(academicRank)) {
-      academicRank.personnelId = pId;
-      promises.push(AcademicRank.upsert(academicRank, {transaction}))
+      include.push(AcademicRank);
+      worker.academicRank = [academicRank]
     }
     if (rewards) {
-      promises = promises.concat(
-        rewards.map(rew => {
-          rew.personnelId = pId;
-          return Reward.upsert(rew, {transaction})
-        })
-      );
+      include.push(Reward);
+      worker.rewards = rewards
     }
-    promises = promises.concat(
-      workExp.map(workExpRow => {
-        workExpRow.personnelId = pId;
-        return WorkExp.upsert(workExpRow, {transaction})
-      })
-    );
-    return Promise.all(promises).then(() =>
-      ({worker, passport, institution, scientificInst , workplace, workExp, academicRank, rewards}));
+    include.push(WorkExp);
+    worker.workExp = workExp;
+
+    return {worker, include}
+  }
+
+  //@time('createAllFakeWorkers')
+  createAllFakeWorkers(tablez: any[]) {
+    let include;
+    const workers = tablez.map((worker, i) => {
+      // include у всех одинаковы
+      if(i === 0) {
+        include = worker.include
+      }
+      return this.createOneWorkerWithRels(worker).worker
+    });
+    Personnel.bulkCreate(workers, /*{include}*/)
+
+  }
+
+
+  createAllWorkersFromXls(table: any[]) {
+    return staffJsDB.transaction((transaction) => Promise.all(
+      table.map((row) => this.createOneWorker(row, transaction))
+    ))
   }
 
   async uploadLaborContractDocx(file: IFileUpload, type) {
@@ -145,7 +137,7 @@ export class UploadService {
 
   uploadQualification() {
     const qual: IParsedQualification[] = ParseXls.parseQualification();
-    // после резолва будет автокомкомит. так же обещают и авторобек если упадет. хотя в доках нет автоматики
+    // после резолва будет автокоммит. так же обещают и авторолбек если упадет. хотя в доках нет автоматики
     return staffJsDB.transaction((transaction) =>
       Promise.all(
         qual.map(row =>

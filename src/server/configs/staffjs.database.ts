@@ -55,7 +55,7 @@ staffJsDB.addModels([
 /*{force: true}*/
 
 // обязательный порядок
-Personnel.sync().then(() => {
+Personnel.sync().then(async () => {
   // не обязательный
   Attestation.sync();
   Passport.sync();
@@ -67,20 +67,21 @@ Personnel.sync().then(() => {
   Army.sync();
   Vacation.sync();
   Institution.sync();
-  Workplace.sync(/*{alter: true}*/);
+  await Workplace.sync(/*{alter: true}*/);
   WorkExp.sync();
   ScientificInst.sync();
-  syncAndFillIfEmptyTable(LaborContractDocx, laborContractDocxDict);
+  /*syncAndFillIfEmptyTable(LaborContractDocx, laborContractDocxDict);
   syncAndFillIfEmptyTable(SalaryDict, salaryDict);
   syncAndFillIfEmptyTable(FacultyDict, facultyDict)
-    .then(() => syncAndFillIfEmptyTable(DepartmentDict, departmentDict));
+    .then(() => syncAndFillIfEmptyTable(DepartmentDict, departmentDict));*/
   User.sync();
-  AcademicRank.sync();
+  await AcademicRank.sync();
+  console.time('1');
   new UploadService(
     new ErrHandler(),
-    new PersonnelService(new DbTransactions(), new ErrHandler())).createFakerWorkers(10)
+    new PersonnelService(new DbTransactions(), new ErrHandler())).createFakerWorkerscreatedFakesIterations(500)
+    .then(()=>console.timeEnd('1'))
 });
-
 //Personnel.destroy({where: {}});
 
 // хелпер добавления json в таблицу

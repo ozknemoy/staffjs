@@ -13,17 +13,18 @@ import {IPassport} from '../personnel/relations/personnel-passport.interface';
 import IInstitution from '../personnel/relations/personnel-institution.interface';
 import IAcademicRank from '../personnel/relations/academic-rank.interface';
 import {salaryDict} from "../../../shared/dictionaries/salary.dict";
+import IWorkplace from "../personnel/relations/personnel-workplace.interface";
 const salaryDictHandled = HandleData.handleSalary(salaryDict);
 
 export interface IBuildedFromXlsWorker {
-  worker: Partial<IPersonnel>,
-  passport: Partial<IPassport>,
-  institution: Partial<IInstitution>,
-  scientificInst: Partial<IScientificInst>,
-  workplace: Partial<IWorkExp>,
-  workExp: Partial<IWorkExp[]>,
-  academicRank: Partial<IAcademicRank>,
-  rewards: Partial<IPersonnelNamedThingWithDoc[]>,
+  worker: IPersonnel,
+  passport: IPassport,
+  institution: IInstitution,
+  scientificInst: IScientificInst,
+  workplace: IWorkplace,
+  workExp: IWorkExp[],
+  academicRank: IAcademicRank,
+  rewards: IPersonnelNamedThingWithDoc[],
 }
 
 export class ParsePersonnelXls {
