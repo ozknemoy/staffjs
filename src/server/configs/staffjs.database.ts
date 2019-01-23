@@ -76,11 +76,54 @@ Personnel.sync().then(async () => {
     .then(() => syncAndFillIfEmptyTable(DepartmentDict, departmentDict));*/
   User.sync();
   await AcademicRank.sync();
-  console.time('1');
+  /*console.time('1');
   new UploadService(
     new ErrHandler(),
     new PersonnelService(new DbTransactions(), new ErrHandler())).createFakerWorkerscreatedFakesIterations(500)
-    .then(()=>console.timeEnd('1'))
+    .then(()=>console.timeEnd('1'))*/
+});
+var dbStreamer = require('db-streamer'),
+  connString = 'jdbc:postgresql://localhost:5432/postgres';
+
+// create inserter
+const inserter = dbStreamer.getInserter({
+  dbConnString: connString,
+  tableName: 'staffjs_millions',
+  useSequelizeBulkInsert: true,
+  sequelizeModel: Personnel
+});
+const workers = FakePersonnel.create(0);
+// establish connection
+console.time('-------end------');
+inserter.connect(function(err, client) {
+
+  // push some rows
+  workers.map(worker => inserter.push(worker.worker));
+  // create child table inserter using deferring strategy
+  // this is useful to avoid missing foreign key conflicts as a result of race conditions
+  /*const childInserter = dbStreamer.getInserter({
+    dbConnString: connString,
+    tableName: 'staffjs_millions',
+    useSequelizeBulkInsert: true,
+    sequelizeModel: Passport
+  });
+  console.log(workers[0].worker);
+
+  childInserter.push(workers[0].passport);
+
+  childInserter.setEndHandler((log) => {
+    console.log('-------child end------', log);
+  });*/
+
+  // set end callback
+  inserter.setEndHandler(function(log) {
+    console.timeEnd('-------end------');
+    //childInserter.end();
+  });
+
+  // announce end
+  inserter.end();
+
 });
 //Personnel.destroy({where: {}});
 

@@ -4,6 +4,7 @@ import {IPersonnel} from '../../server/components/personnel/personnel.interface'
 import {attractionTermsDict} from "../dictionaries/attraction-terms.dict";
 import {eduTypesDict} from "../dictionaries/edu-type.dict";
 import {IPersonnelNamedThingWithDoc} from "../../server/components/personnel/relations/personnel-named-thing-with-doc.interface";
+import {IBuildedFromXlsWorker} from '../../server/components/upload/parse-personnel-xls.class';
 const faker: Faker.FakerStatic = require('faker/locale/ru');
 
 const depLength = departments.length;
@@ -30,7 +31,7 @@ function dateBetween(from: number, to: number) {
 }
 
 export class FakePersonnel {
-  static create(amount: number) {
+  static create(amount: number): IBuildedFromXlsWorker[] {
     let ret = [];
     for (let i = 0; i < amount; i++) {
       ret.push(FakePersonnel.build())
